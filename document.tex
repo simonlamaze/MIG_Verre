@@ -1,0 +1,144 @@
+\documentclass[12pt, a4paper, french, BCOR = 0pt, DIV = 10]{scrartcl}
+\usepackage{graphicx} % Required for inserting images
+\usepackage{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\graphicspath{ {./images/} }
+
+\usepackage{bigints}
+
+\usepackage{pxfonts}
+
+\title{MIG Verre - Modélisation des fours}
+\author{\small{Simon Lamaze - Corto Beck - Girardet Grégoire -Fraenkel Paul}}
+
+\begin{document}
+	
+	\maketitle
+	
+	\section{Introduction}
+	\raggedright
+	Ce mini-projet traite de la modélisation et de l'optimisation énergétique des fours à verre.  La compréhension des phénomènes physiques qui prennt place dans un four est essentielle à l'optimisation des procédés. \\ [0.5 cm]
+	Voici un four à fusion:
+	
+
+	
+	
+	
+	
+	\section{ Déroulement de la simulation}
+	\raggedright
+	Tâche 1 : positionnement du problème : \\
+	Conditions limites, conditions initiales, mise en équations \\[0.3 cm]
+	Tâche 2: prise en main des outils de calcul\\
+	Maillage, cluster, post-traitement, CIMLIB, vitesse des calculs \\ [0.3 cm]
+	
+	Tâche 3 : Calcul sur un cas à voûte chaude\\ 
+	Obtenir un cas convergé, bilan énergétique \\ [0.3 cm]
+	
+	Tâche 4 : Calcul sur un cas à voûte plus froide \\ 
+	Same\\ [0.3 cm]
+	
+	Tâche 5: Bilan du gain énergétique et des émissions carbone \\ [0.5cm]
+	
+	
+	On  utilise le logiciel Paraview pour visualiser les résultats.
+	Visualiser la propagation d'un champ pour définir le temps de résidence.
+	Faire plusieurs calculs avec des tailles différentes.
+	
+	\section{Positionnement du problème}
+	- Les équations que nous nous appliquerons à résoudre seront les suivantes : \\
+	\subsection{ Equations de Navier-Stokes et thermique}
+	- Les équations que nous nous appliquerons à résoudre seront les suivantes : \\
+	\centering
+	$$
+	\left\{
+	\begin{array} {ll} 
+		\vec {\nabla}. \vec{V} = 0 ~~~~~~~~~  conservation~de~la~masse\\
+		
+		\rho_{0} \frac{D\vec{V}}{Dt} = -\rho_{0} \beta (T-T_{0}) \vec{g} + \vec {\nabla} [ 2 \eta (T) \vec{D}] - \vec {\nabla} P  ~~~~~~~~~ conservation~du~'momentum' \\   
+		
+		\vec{D} = \frac{1}{2} [\vec{\nabla} \vec{V} + (\vec{\nabla} \vec{V})^t ] \\
+		\rho [ C_{p}+ \Delta H_{r} \frac{d\alpha}{dT}] \frac{DT}{Dt} = \vec {\nabla} (\lambda_{eq}(T) \vec{\nabla} T ) + \sigma_{e}(T) (\vec \nabla\phi)^2  ~~~~~~~~~ equation~de ~la~chaleur \\
+		
+		
+	\end{array}
+	\right. 
+	$$
+	\\ [0.5 cm]
+	
+	
+	\subsection{Puissance électrique}
+	\raggedright
+	On se place dans le cas uniphasé, en réalité, dans l'industrie le régime est triphasé, plus de calculs en annexes. \\ [0.2 cm ]
+	\centering
+	\[ P_{eq}=\int_\Omega \sigma_{e}(T)(\vec \nabla\phi)^2~dV  = \int_\Omega \vec \nabla[\sigma_{e}(T)\vec \nabla\phi]~dV \]\\
+	\raggedright
+	par intégration par partie et loi de conservation du potentiel ($ \vec{\nabla}^2 \phi = 0 $). Le théorème de Green-Ostrogradski donne: 
+	
+	\[ P_{eq}=\phi_{elec} \int_{\partial elec} \sigma_{e}(T)\vec \nabla\phi \cdot \vec{n}~dS\]
+	\\
+	Car le potentiel est constant = $\phi_{elec} $ à la rontière des électrodes. \\
+	\subsection{ Expressions des différentes grandeurs et constantes}
+	Le taux de conversion $\alpha$ est une sigmoïde : fonction d'erreur de Gauss\\ [0.3cm]
+	
+	- On modélise la dépendance de la viscosité à la température par une loi de type VFT ( Vogel-Fulcher-Tamman) \\ [0.5 cm]
+	
+	\centering
+	$$
+	\eta (T)  = 10^{A_{\eta}} e^{\frac{ln(10) B}{T-T_{\eta}}} ~~~~~~~~~ log(\eta) = A_{\eta} + \frac{B}{T-T_{\eta}}
+	$$
+	
+	
+	\raggedright
+	- La dépendance de la masse volumique est : \\ [0.5 cm]
+	\begin{center}
+		
+		
+		$$
+		\rho(T) = \rho_{0}  (1 - \beta \Delta T) ~~~~~~~~~ 
+		\beta = -\frac{1}{\rho_{0}} \frac{d\rho}{dt}
+		$$
+		\\
+	\end{center}
+	
+	
+	
+	- La dépendance de la conductivité électrique est : \\ [0.5 cm]
+	\begin{center}
+		$ 
+		\sigma_{e} (T) =  A_{e} e^{\frac{-B_{e}}{T}}
+		$
+	\end{center}
+	
+	- Dérivée particulaire : ~~~~~~~( importante en méca flu )\\
+	
+	\begin{center}
+		$ \frac{DG}{Dt}=\frac{\partial G}{\partial t} + (\vec {v} \cdot \vec {\nabla } ) G
+		$ \\    
+	\end{center}
+	
+	
+	
+	- Pour calculer le temps  de résidence, à savoir la réponse à un échelon C en entrée :\\ [0.5cm]
+	$$
+	\phi_{C} =  \oiint_S C\vec{u} \cdot \vec{n}~dS  ~~~~~~~~~~ \phi = \oiint_S \vec{u} \cdot \vec{n}~dS  ~~~~~~~~~~
+	\langle C \rangle = \frac{\phi_{C}}{\phi}
+	$$ 
+	\\ [0.5 cm]
+	La distribution des temps de résidence, à savoir la réponse à un dirac, est donnée par \[E(t)=\frac{d\langle C \rangle}{dt}\]
+	
+	\subsection{Etat aux frontières}
+	
+	Les flux thermiques sont donnés par les lois de Newton et Stefan aux parois et surfaces libres. le batch est introduit à iso température. on considère les transfert thermiques de Boltzmann seulement pour la surface libre.
+	On peut calculer les flux aux frontières par la loi de Newton sur les transferts conducto-convectifs.\\ 
+	\begin{center}
+		$$
+		\phi_{wall} = h_{wall} (T - T_{\infty})
+		$$
+	\end{center}
+	
+	
+	
+\end{document}
