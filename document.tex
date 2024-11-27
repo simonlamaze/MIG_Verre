@@ -122,23 +122,29 @@
 	
 	
 	
-	- Pour calculer le temps  de résidence, à savoir la réponse à un échelon C en entrée :\\ [0.5cm]
+	- Le calcul tu temps de résidence dans le four est particulièrement important car il conditionne la qualité de la fusion, en réduisant la quantité de bulles ou la présence d'infondus. Une première méthode consiste à étudier la réponse à un Dirac d'apport en matière dans le four en observant le flux de matière à la sortie au cours du temps. Le flux normalisé d'un scalaire C à travers la surface de sortie est donné par :\\[0.3 cm]
 	$$
 	\phi_{C} =  \oiint_S C\vec{u} \cdot \vec{n}~dS  ~~~~~~~~~~ \phi = \oiint_S \vec{u} \cdot \vec{n}~dS  ~~~~~~~~~~
 	\langle C \rangle = \frac{\phi_{C}}{\phi}
 	$$ 
 	\\ [0.5 cm]
-	La distribution des temps de résidence, à savoir la réponse à un dirac, est donnée par \[E(t)=\frac{d\langle C \rangle}{dt}\]
+	Néanmoins, il est plus aisé de calculer la réponse à un échelon, ce qui implique que la distribution des temps de résidence, à savoir la réponse à un dirac, est donnée par \[E(t)=\frac{d\langle C \rangle}{dt}\]
 	
 	\subsection{État aux frontières}
 	
-	Les flux thermiques sont donnés par les lois de Newton et Stefan aux parois et surfaces libres. le batch est introduit à iso température. on considère les transfert thermiques de Boltzmann seulement pour la surface libre.
+	Les flux thermiques sont donnés par les lois de Newton et Stefan aux parois et surfaces libres. Le batch (matière d'entrée) est introduit à iso température. on considère les transfert thermiques de Boltzmann seulement pour la surface libre.
 	On peut calculer les flux aux frontières par la loi de Newton sur les transferts conducto-convectifs.\\ 
 	\centering
 	$$
 	\phi_{wall} = h_{wall} (T - T_{\infty}) ~~~~~~~~	
 	\phi_{haut} = h_{haut} (T - T_{haut}) + \epsilon \sigma (T^4 - T_{haut}^4)
 	$$
+    \\[0.5 cm]
+    \raggedright
+    Il est possible de définir la température $T_{haut}$ comme une constante sur l'ensemble de la surface libre. Néanmoins, le chauffage par flamme dans un four industriel présente une hétérogénéité de cet apport calorifique, avec généralement une température plus important au centre. Bien qu'il serait théoriquement possible de réaliser une simulation CFD de la dynamique du gaz lors de sa combustion, ceci est inenvisageable à cause du temps de calcul nécessaire. Il convient donc d'approximer cette répartition de température par une fonction constante du temps.
+    $$
+        T_{haut}(x, y) = T_{haut, min} + \Delta T_{haut} \space e^{-||\vec{r^{\prime}}||}
+    $$
 	
 	\section{Prise en main du langage et des logiciels de visualisation}
  
