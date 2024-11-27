@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2024.11.25)  25 NOV 2024 16:44
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2024.11.25)  27 NOV 2024 10:00
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -503,19 +503,31 @@ LaTeX Font Info:    Font shape `T1/pxss/b/n' in size <17.28> not available
 a/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/base/8r.enc}]
 LaTeX Font Info:    Font shape `T1/pxss/b/n' in size <14.4> not available
 (Font)              Font shape `T1/pxss/bx/n' tried instead on input line 52.
- [2] [3]
-(document.aux)
+
+
+LaTeX Warning: Command \texttwosuperior invalid in math mode on input line 69.
+
+LaTeX Font Info:    Trying to load font information for TS1+pxr on input line 6
+9.
+(C:\Users\lasma\AppData\Local\Programs\MiKTeX\tex/latex/pxfonts\ts1pxr.fd
+File: ts1pxr.fd 2000/12/14 v1.0
+)
+
+LaTeX Warning: Command \texttwosuperior invalid in math mode on input line 69.
+
+Missing character: There is no ² in font pxr!
+[2] [3] [4] (document.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-01-04>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 8494 strings out of 474486
- 160133 string characters out of 5743754
+ 8539 strings out of 474486
+ 161039 string characters out of 5743754
  1934542 words of memory out of 5000000
- 30682 multiletter control sequences out of 15000+600000
- 596579 words of font info for 118 fonts, out of 8000000 for 9000
+ 30721 multiletter control sequences out of 15000+600000
+ 598257 words of font info for 121 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  108i,9n,107p,10958b,428s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <C:/Users/lasma/AppData/Local/Programs/MiKTeX/fonts/type1/public/pxfonts/pxex
@@ -527,9 +539,9 @@ c/pxfonts/rpxr.pfb><C:/Users/lasma/AppData/Local/Programs/MiKTeX/fonts/type1/ur
 w/helvetic/uhvb8a.pfb><C:/Users/lasma/AppData/Local/Programs/MiKTeX/fonts/type1
 /urw/palatino/uplr8a.pfb><C:/Users/lasma/AppData/Local/Programs/MiKTeX/fonts/ty
 pe1/urw/palatino/uplri8a.pfb>
-Output written on document.pdf (3 pages, 73876 bytes).
+Output written on document.pdf (4 pages, 76843 bytes).
 PDF statistics:
- 53 PDF objects out of 1000 (max. 8388607)
+ 56 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 

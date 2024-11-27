@@ -141,8 +141,29 @@
 	$$
 	
 	\section{Prise en main du langage et des logiciels de visualisation}
- 
+ 	\raggedright
+	Apprentissage du logiciel gmsh pour définir la géométrie d'un four et calculer la maillage qui servira à appliquer la méthode aux éléments finis . Ensuite traduction en format .t , convenant au langage mtc , des fichier gmsh . 
+	Connexion au cluster de calcul, prise en main du logiciel Paraview pour visualiser les résultats .
 	
+	Pour le script, nous avons utilisé un squelette de code fourni par F.Pigeonneau .
 	
+	\section{Simulations réalisées}
+	
+	\subsection{Première série de calculs}
+	\paragraph{}
+	 Disposant de 4 postes de calculs , nous avons commencé par chercher à simuler un four  d'une forme ressemblant à celle d'un four industriel .
+	 
+	 \paragraph{Liste des instructions:}
+	 cd /work/MINES-PARISTECH/slamaze
+	 sf
+	 nano ihm.mtc => changer le temps à 0
+	 cd GlassFurnace3D/
+	 cimlib_CFD_driver glassfurnce3d.mtc
+	 
+	 ls Geometrie /
+	 mv Geometrie/indicfrontieres.vtu /work/MINES-PARISTECH/slamaze/ => open avec PARAVIEW, vérifier les frontières
+	 nano ihm.mtc , modifier le temps
+	 sbatch job.sh
+	 
 	
 \end{document}
