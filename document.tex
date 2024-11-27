@@ -19,7 +19,7 @@
 	
 	\section{Introduction}
 	\raggedright
-	Ce mini-projet traite de la modélisation et de l'optimisation énergétique des fours à verre.  La compréhension des phénomènes physiques qui prennt place dans un four est essentielle à l'optimisation des procédés. \\ [0.5 cm]
+	Ce mini-projet traite de la modélisation et de l'optimisation énergétique des fours à verre.  La compréhension des phénomènes physiques qui prennet place dans un four est essentielle à l'optimisation des procédés de fusion, et à la mise en place d'une simulation numérique. \\ [0.5 cm]
 	Voici un four à fusion:
 	
 
@@ -30,17 +30,19 @@
 	\section{ Déroulement de la simulation}
 	\raggedright
 	Tâche 1 : positionnement du problème : \\
-	Conditions limites, conditions initiales, mise en équations \\[0.3 cm]
-	Tâche 2: prise en main des outils de calcul\\
-	Maillage, cluster, post-traitement, CIMLIB, vitesse des calculs \\ [0.3 cm]
+	Il nous faut tout d'abord définir l'environnement du problème physique, à savoir, les équations régissant domaine liquide, les conditions limites de ce domaine pour modéliser l'interaction avec l'extérieur, et les conditions initiales. \\[0.3 cm]
+	
+    Tâche 2: prise en main des outils de calcul\\
+	Les calculs de la modélisation ont été réalisés sur cluster de calcul Laffite du CEMEF, avec le logiciel Cimlib. Cet environnement nécessite plusieurs étapes de modélisation : création de la géométrie du four, et maillage, écriture de la maquette de la simulation, envoi sur le cluster, puis post-traitement.\\ [0.3 cm]
 	
 	Tâche 3 : Calcul sur un cas à voûte chaude\\ 
-	Obtenir un cas convergé, bilan énergétique \\ [0.3 cm]
+	Une fois les calculs maîtrisés, nous réalisons une simulation d'un four à voûte chaude jusqu'à obtenir un cas convergé. Nous avons ensuite réalisé un bilan énergétique \\ [0.3 cm]
 	
 	Tâche 4 : Calcul sur un cas à voûte plus froide \\ 
-	Same\\ [0.3 cm]
+    Les mêmes calculs sont réalisés pour une température de voûte plus froide, compensée par un apport énergétique des électrodes.\\ [0.3 cm]
 	
-	Tâche 5: Bilan du gain énergétique et des émissions carbone \\ [0.5cm]
+	Tâche 5: Bilan du gain énergétique et des émissions carbone\\
+    Les résultats des simulations précédentes permettent de réaliser le bilan énergétique et de quantifier les émissions de carbone\\ [0.5cm]
 	
 	
 	On  utilise le logiciel Paraview pour visualiser les résultats.
@@ -48,68 +50,69 @@
 	Faire plusieurs calculs avec des tailles différentes.
 	
 	\section{Positionnement du problème}
-	- Les équations que nous nous appliquerons à résoudre seront les suivantes : \\
-	\subsection{ Equations de Navier-Stokes et thermique}
-	- Les équations que nous nous appliquerons à résoudre seront les suivantes : \\
-	\centering
-	$$
-	\left\{
-	\begin{array} {ll} 
-		\vec {\nabla}. \vec{V} = 0 ~~~~~~~~~  conservation~de~la~masse\\
-		
-		\rho_{0} \frac{D\vec{V}}{Dt} = -\rho_{0} \beta (T-T_{0}) \vec{g} + \vec {\nabla} . [ 2 \eta (T) \vec{D}] - \vec {\nabla} P  ~~~~~~~~~ conservation~du~moment \\   
-		
-		\vec{D} = \frac{1}{2} [\vec{\nabla} \vec{V} + (\vec{\nabla} \vec{V})^t ] \\
-		\rho [ C_{p}+ \Delta H_{r} \frac{d\alpha}{dT}] \frac{DT}{Dt} = \vec {\nabla} .  (\lambda_{eq}(T) \vec{\nabla} T ) + \sigma_{e}(T) (\vec \nabla\phi)^2  ~~~~~~~~~ \acute equation~de ~la~chaleur \\
-		
-		
-	\end{array}
-	\right. 
-	$$
-	Comme les transfert de chaleur sous formes radiatives sont très importants, on ne peut pas les négliger dans l'équation habituelle de diffusion de la chaleur: $ \rho C_{p} \frac{\partial T}{\partial t} = - \vec{\nabla} . (\lambda\vec{\nabla}T) $. Cependant, comme le milieu est semi-transparent, on peut modéliser l'ensemble des transfert en remplaçant $\lambda$ par $\lambda_{eq} = \lambda + \frac{16n² \sigma T^{3}}{3\beta_{R}} $.
+	Les équations et approximations que nous avons choisies qui régissent le système sont les suivantes : \\
+	\subsection{ Equations de Navier-Stokes et thermique }
+    - Conservation de la masse :
+    $$\vec{\nabla}\cdot \vec(u)=0$$
+
+    - Conservation du moment :
+    $$\rho_{0} \frac{D\vec{V}}{Dt} = -\rho_{0} \beta (T-T_{0}) \vec{g} + \vec {\nabla} . [ 2 \eta (T) \vec{E}] - \vec {\nabla} P$$
+
+    - Equation de la chaleur :
+    $$\rho C_{p} \frac{DT}{Dt} = \vec {\nabla} .  (\lambda_{eq}(T) \vec{\nabla} T ) + \sigma_{e}(T) (\vec \nabla\phi)^2 - \rho\Delta H_{r} \frac{d\alpha}{dT}$$
+    
+	Comme les transferts de chaleur sous formes radiatives sont très importants, on ne peut pas les négliger dans l'équation habituelle de diffusion de la chaleur: $ \rho C_{p} \frac{\partial T}{\partial t} = - \vec{\nabla} . (\lambda\vec{\nabla}T) $. Cependant, comme le milieu est semi-transparent, on peut utiliser l'approximation de Rosseland qui consiste à approximer le terme de flux radiatif $\vec{q_r}$ par un transfert thermique de fourier de conductivité thermique $\lambda_{r} = \frac{16n² \sigma T^{3}}{3\beta_{R}} $. On définit alors $\lambda_{eq} = \lambda + \lambda_r$
 	\\ [0.5 cm]
-	
 	
 	\subsection{Puissance électrique}
 	\raggedright
-	On se place dans le cas uniphasé, en réalité, dans l'industrie le régime est triphasé, plus de calculs en annexes. \\ [0.2 cm ]
-	\centering
-	\[ P_{eq}=\int_\Omega \sigma_{e}(T)(\vec \nabla\phi)^2~dV  = \int_\Omega \vec \nabla[\sigma_{e}(T)\vec \nabla\phi]~dV \]\\
+    L'apport de puissance électrique par les électrodes peut être réalisé sous deux fonctionnements : uniphasé ou triphasé.
+	On se place dans un premier temps dans le cas uniphasé :\\ [0.2 cm ]
+    L'effet joule volumique est donnée par l'équation suivante :
+    $$ d^3P_{eq} = \sigma_{e}(T)(\vec \nabla\phi \cdot \vec \nabla\phi) = \sigma_{e}(T)(\vec \nabla\phi)^2$$
+    Sur l'ensemble du volume du système, on obtient alors la puissance électrique totale : 
+	$$P_{eq}=\int_\Omega \sigma_{e}(T)(\vec \nabla\phi)^2~dV  = \int_\Omega \vec \nabla[\sigma_{e}(T)\vec \nabla\phi]~dV $$\\
 	\raggedright
-	par intégration par partie et loi de conservation du potentiel ($ \vec{\nabla}^2 \phi = 0 $). Le théorème de Green-Ostrogradski donne: 
+	Par intégration par partie et loi de conservation du potentiel ($ \vec{\nabla}^2 \phi = 0 $). Le théorème de Green-Ostrogradski donne: 
 	
-	\[ P_{eq}=\phi_{elec} \int_{\partial elec} \sigma_{e}(T)\vec \nabla\phi \cdot \vec{n}~dS\]
-	\\
-	Car le potentiel est constant = $\phi_{elec} $ à la rontière des électrodes. \\
+	$$ P_{eq}=\phi_{elec} \int_{\partial electrode} \sigma_{e}(T)\vec \nabla\phi \cdot \vec{n}~dS\ $$
+    
+	Car le potentiel $\phi$ est constant $\phi=\phi_{elec} $ à la frontière des électrodes. \\
+
+    Dans le cas de l'industrie, on utilise plus souvent un courant triphasé dans un triplet d'électrodes. Pour prendre en compte ce déphasage, on utilise des potentiels complexes, pour lesquels on résoud les équations précedentes sur le champe réel et le champ complexe.
+
+    
 	\subsection{ Expressions des différentes grandeurs et constantes}
-	Le taux de conversion $\alpha$ est une sigmoïde : fonction d'erreur de Gauss\\ [0.3cm]
+    Plusieurs paramètres du verres varient avec la température, et il convient de modéliser ces variations.\\ [0,5 cm]
 	
-	- On modélise la dépendance de la viscosité à la température par une loi de type VFT ( Vogel-Fulcher-Tamman) \\ [0.5 cm]
-	
-	\centering
+	- On modélise la dépendance de la viscosité à la température par une loi de type VFT ( Vogel-Fulcher-Tamman) \\
 	$$
 	\eta (T)  = 10^{A_{\eta}} e^{\frac{ln(10) B}{T-T_{\eta}}} ~~~~~~~~~ log(\eta) = A_{\eta} + \frac{B}{T-T_{\eta}}
-	$$
+	$$\\ [0,5 cm]
+
+    
+	Le taux de conversion $\alpha$ est une sigmoïde : fonction d'erreur de Gauss\\ [0.3cm]
 	
 	
 	\raggedright
 	- La dépendance de la masse volumique est :
-	$$
-		\rho(T) = \rho_{0}  (1 - \beta \Delta T) ~~~~~~~~~ 
-		\beta = -\frac{1}{\rho_{0}} \frac{d\rho}{dt}
-	$$
-    $\Delta T = T-T_0$\break
+	$$ \rho(T) = \rho_{0}  (1 - \beta \Delta T) $$
+    \setlength{\parindent}{20pt}
+    Avec : \\
+    $\beta = -\frac{1}{\rho_{0}} \frac{d\rho}{dt}$\\
+    $\Delta T = T-T_0$\\
     $T_0, \rho_0$ : (resp.) température et masse volumique de références\\[0.5 cm]
-	
+	\setlength{\parindent}{0pt}
 	
 	
 	- La dépendance de la conductivité électrique est :
-    $$ 
-	   \sigma_{e} (T) =  A_{e} e^{\frac{-B_{e}}{T}}
-	$$
+    $$ \sigma_{e} (T) =  A_{e} e^{\frac{-B_{e}}{T}}	$$
+    \setlength{\parindent}{20pt}
+    Avec :\\
     $A_e,B_e$ : Coefficients de la loi d'Arrhénius\break\\[0.5 cm]
-	
-	- Dérivée particulaire : ~~~~~~~( importante en méca flu )\\
+    \setlength{\parindent}{0pt}
+    
+	- Dérivée particulaire : \\
 	$$ \frac{DG}{Dt}=\frac{\partial G}{\partial t} + (\vec {v} \cdot \vec {\nabla } ) G
 	$$\\[0.5cm]
 	
