@@ -1,0 +1,32 @@
+------------------------------------
+Calcul de la conductivite electrique
+------------------------------------
+
+{ ConductiviteElectrique=
+  { Type= ModeleArithmetique }
+  { Affichage= 1 }
+  { Data=
+    { Champ= 
+      { Type= P1_Scalaire_Par }
+      { Nom= SigmaElec }
+      { Data= ValeurItem 1 0. }
+    }
+  }
+  { DependanceModifiable=
+    { Champ= SigmaElec }
+  }
+  { Dependance= 
+    { Maillage= MaillagePrincipal }
+    { Champ= T }
+    { Champ= Asigmaelec }
+    { Champ= Bsigmaelec }
+  }
+
+  Calcul de la conductivite electrique
+  ------------------------------------
+
+  { Operation= SigmaElec = Bsigmaelec }
+  { Operation= SigmaElec /= T }
+  { Operation= SigmaElec EXP SigmaElec }
+  { Operation= SigmaElec *= Asigmaelec }
+}

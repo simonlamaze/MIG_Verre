@@ -1,0 +1,22 @@
+------------------------------
+Sauvegarde du nouveau maillage
+------------------------------
+
+{ SortieMaillage=
+  { Type= ModeleSortie }
+  { Data=
+    { NomFichier= Maillage/Four5Elec }
+    { NomFrequence= NombreRemaillage }
+    { NomCompteur= CompteurRemaillage }
+    { TypeFichier= SortieMtc }
+  }
+  { Dependance=
+    { Maillage= MaillagePrincipal }
+    { Champ= CompteurRemaillage }
+    { Champ= NombreRemaillage }
+  }
+
+  { DependanceAEcrire=
+    { Maillage= MaillagePrincipal }             
+ }
+}

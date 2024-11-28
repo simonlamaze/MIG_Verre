@@ -1,0 +1,200 @@
+------------------------------------------------------
+Definitions des parametres utilises au cours du calcul
+
+------------------------------------------------------
+
+{ ConstantesNumeriques=
+  { Type= ModeleConstant }
+  { Affichage= 1 }
+  { Data=
+    --------------------------------------
+    Constantes numeriques utiles au calcul
+    --------------------------------------
+
+    { Champ=
+      { Type= P0C_Scalaire_Par }
+      { Nom= Un }
+      { Data= ValeurItem 1 1. }
+    }
+    { Champ=
+      { Type= P0C_Scalaire_Par }
+      { Nom= Pi }
+      { Data= ValeurItem 1 3.141592653589793 }
+    }
+    { Champ=
+      { Type= P0C_Scalaire_Par }
+      { Nom= 2 }
+      { Data= ValeurItem 1 2. }
+    }
+    { Champ=
+      { Type= P0C_Scalaire_Par }
+      { Nom= sqrt2 }
+      { Data= ValeurItem 1 1.4142135623730951 }
+    }
+    { Champ=
+      { Type= P0C_Scalaire_Par }
+      { Nom= 3 }
+      { Data= ValeurItem 1 3. }
+    }
+    { Champ=
+      { Type= P0C_Scalaire_Par }
+      { Nom= 4 }
+      { Data= ValeurItem 1 4. }
+    }
+    { Champ=
+      { Type= P0C_Scalaire_Par }
+      { Nom= 16 }
+      { Data= ValeurItem 1 16. }
+    }
+    { Champ=
+      { Type= P0C_Scalaire_Par }
+      { Nom= 0.5 }
+      { Data= ValeurItem 1 0.5 }
+    }
+    { Champ=
+      { Type= P0C_Scalaire_Par }
+      { Nom= -0.5 }
+      { Data= ValeurItem 1 -0.5 }
+    }
+
+    { Champ=
+      { Type= P0C_Scalaire_Par }
+      { Nom= Sqrt3/2 }
+      { Data= ValeurItem 1 0.8660254037844386 }
+    }
+    { Champ=
+      { Type= P0C_Scalaire_Par }
+      { Nom= -Sqrt3/2 }
+      { Data= ValeurItem 1 -0.8660254037844386 }
+    }
+
+    { Champ=
+      { Type= P0C_Scalaire_Par }
+      { Nom= -1 }
+      { Data= ValeurItem 1 -1. }
+    }
+    { Champ=
+      { Type= P0C_Scalaire_Par }
+      { Nom= Zero }
+      { Data= ValeurItem 1 0. }
+    }
+    { Champ=
+      { Type= P1_Scalaire_Par }
+      { Nom= ZeroP1 }
+      { Data= ValeurItem 1 0. }
+    }
+    { Champ= 
+      { Type= P1_Vecteur_Par }
+      { Nom= ZeroVecteur }
+      { Data: ParametresNum/vecteur.txt }
+    }
+
+    ---------------------------------------
+    Variables liees des methodes numeriques
+    ---------------------------------------
+    
+    { Champ=
+      { Type= P0C_Scalaire_Par }
+      { Nom= PrecisionFrontieres }
+      { Data= ValeurItem 1 1.e-7 }
+    }
+    { Champ=
+      { Type= P0C_Scalaire_Par }
+      { Nom= dt }
+      { Data= ValeurItem 1 1.e-3 }
+    }
+    { Champ=
+      { Type= P0C_Scalaire_Par }
+      { Nom= t }
+      { Data= ValeurItem 1 0. }
+    }
+    { Champ=
+      { Type= P0C_Scalaire_Par }
+      { Nom= tFin }
+      { Data= ValeurItem 1 1.e-1 }
+    }
+    { Champ=
+      { Type= P0C_Scalaire_Par }
+      { Nom= NbElements  }
+      { Data= ValeurItem 1 50000 }
+    }
+    { Champ=
+      { Type= P0C_Scalaire_Par }
+      { Nom= LaMarge }
+      { Data= ValeurItem 1 10 }
+    }
+    { Champ=
+      { Type= P0C_Scalaire_Par }
+      { Nom= FrequeceRemaillage  }
+      { Data= ValeurItem 1 50 }
+    }
+    { Champ= 
+      { Type= P0C_Scalaire_Par }
+      { Nom= NombreRemaillage }
+      { Data= ValeurItem 1 20 }
+    }
+    { Champ= 
+      { Type= P0C_Scalaire_Par }
+      { Nom= hMin }
+      { Data= ValeurItem 1 1.e-2 }
+    }
+    { Champ= 
+      { Type= P0C_Scalaire_Par }
+      { Nom= PrecisionTemps }
+      { Data= ValeurItem 1 1.e-3 }
+    }
+    { Champ= 
+      { Type= P0C_Scalaire_Par }
+      { Nom= KP }
+      { Data= ValeurItem 1 0.5 }
+    }
+    { Champ= 
+      { Type= P0C_Scalaire_Par }
+      { Nom= KI }
+      { Data= ValeurItem 1 0.1 }
+    }
+    { Champ= 
+      { Type= P0C_Scalaire_Par }
+      { Nom= KD }
+      { Data= ValeurItem 1 0.1 }
+    }
+
+    --------------------
+    Constantes physiques
+    --------------------
+
+    { Champ=
+      { Type= P1_Vecteur_Par }
+      { Nom= g }
+      { Data: ParametresNum/gravite.txt }
+    }
+    { Champ=
+      { Type= P0C_Scalaire_Par }
+      { Nom= SigSB }
+      { Data= ValeurItem 1 5.670374e-8 }
+    }
+
+    -------------------------
+    Initialisation des champs
+    -------------------------
+
+    { Champ= 
+      { Type= P1_Vecteur_Par }
+      { Nom= AX }
+      { Data: ParametresNum/vecteur.txt }
+    }
+    { Champ= 
+      { Type= P0C_Scalaire_Par }
+      { Nom= AUX }
+      { Data= ValeurItem 1 0. }
+    }
+    { Champ= 
+      { Type= P1_Tenseur_Par }
+      { Nom= XX }
+      { Data: ParametresNum/tenseur.txt }
+    }
+  }
+  { Dependance= 
+    { Maillage= MaillagePrincipal }
+  }
+}

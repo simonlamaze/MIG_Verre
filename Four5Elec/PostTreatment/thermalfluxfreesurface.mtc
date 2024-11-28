@@ -1,0 +1,229 @@
+-----------------------------------------------------------------
+Determination de l intensite thermique debitee sur Free surface
+-----------------------------------------------------------------
+
+{ IntensiteFlux=
+  { Type= ModeleDeModeles }
+  { Affichage= 1 }
+  { Dependance=
+    { Maillage= MaillagePrincipal }
+
+    Determination du gradient du Heat Flux
+    --------------------------------------
+    
+    { Modele= CalculGradT1 }
+    { Modele= CalculGradT2 }
+
+    Determination de la densite 
+    --------------------------------------
+
+    { Modele= DensiteThermique }
+    
+    Determination du flux de free surface
+    -------------------------------------
+
+    { Modele= FluxThermique }
+    
+    Determination de l'integrale du flux
+    ------------------------------------
+    
+    { Modele= IntegraleFluxThermique }
+	
+    Determination de l'integrale du flux as arithmetric model
+    -----------------------------------------------------------
+    
+    { Modele= IntegraleFluxThermiqueArith }
+  }
+}
+
+--------------------------------------
+Determination du gradient du Heat Flux
+--------------------------------------
+
+{ CalculGradT1=
+  { Type= ModeleFonctionnel }
+  { Affichage= 1 }
+  { Data=
+    { SimplexSolveurFonctionnel=
+      { Type= SsfMaTC }
+      { Passe= 1 }
+      { NbChampSolution= 2 }
+      { ChampSolution= AX XX }
+      { OperationsP1=
+      	{ NbChampsP1= 2 }
+      	{ Numero= 0 1 }
+      	{ Initialise= 0. 0. 0. }
+      	{ Operateur= += += }
+      	{ Moyenner= 0 0 }
+      }
+      { NbChampParametre= 1 }
+      { ChampParametre= T }
+    }
+  }
+  { DependanceModifiable=
+    { Champ= AX }
+    { Champ= XX }
+  }
+  { Dependance=
+    { Maillage= MaillagePrincipal }
+    { Champ= T }
+  }
+}
+
+{ CalculGradT2=
+  { Type= ModeleParticulaire }
+  { Affichage= 1 }
+  { Data=
+    { Champ= 
+      { Type= P1_Vecteur_Par }
+      { Nom= GradT }
+      { Data: ParametresNum/vecteur.txt }
+    }
+    { ItemSolveur=
+      { Type= ISMaTC } 
+      { Dimension: ParametresNum/dim.txt } 
+      { NbChampSolution= 2 }
+      { ChampSolution= GradT AUX }
+      { NbChampParametre= 2 }
+      { ChampParametre= XX AX } 
+    }
+  }
+  { Dependance=
+    { Maillage= MaillagePrincipal }
+    { Champ= XX }
+    { Champ= AX }
+  }
+  { DependanceModifiable=
+    { Champ= GradT }
+    { Champ= AUX }
+  }
+}
+
+---------------------------
+Determination de la densite 
+---------------------------
+
+{ DensiteThermique=
+  { Type= ModeleArithmetique }
+  { Affichage= 1 }
+  { Data=
+    { Champ=
+      { Type= P1_Vecteur_Par }
+      { Nom= jThermique }
+      { Data: ParametresNum/vecteur.txt }
+    }
+  }
+  { DependanceModifiable= 
+    { Champ= jThermique }
+  }
+  { Dependance=
+    { Maillage= MaillagePrincipal }
+    { Champ= GradT }
+    { Champ= Lambda }
+  }
+  { Operation= jThermique = GradT }
+  { Operation= jThermique *= Lambda }
+}
+    
+---------------------
+Determination du flux 
+---------------------
+
+{ FluxThermique=
+  { Type= ModeleFonctionnel }
+  { Affichage= 1 }
+  { Data=
+    { Champ=
+      { Type= P0_Scalaire_Par }
+      { Nom= FluxjThermique }
+      { Data= ValeurItem 1 0. }
+    }
+    { SimplexSolveurFonctionnel=
+      { Type= SsfDebit }
+      { NbChampSolution= 1 }
+      { ChampSolution= FluxjThermique }
+      { NbChampParametre= 2 }
+      { ChampParametre= PrecisionFrontieres jThermique }
+      { Dimension: ParametresNum/dim.txt }
+      { Geometre= FreeSurface }
+    }
+    { Boucle= Frontiere }
+  }
+  { DependanceModifiable=
+    { Champ=FluxjThermique }
+  }
+  { Dependance=
+    { Maillage= MaillagePrincipal }
+    { Champ= PrecisionFrontieres }
+    { Champ= jThermique }
+  }
+}
+    
+------------------------------------
+Determination de l'integrale du flux
+------------------------------------
+
+{ IntegraleFluxThermique=
+  { Type= ModeleParticulaire }
+  { Affichage= 1 }
+  { Data=
+    { Champ= 
+      { Type= P0C_Scalaire_Par }
+      { Nom= Ithermique }
+      { Data= ValeurItem 1 0. }
+    }
+    { Boucle= Frontiere }
+    { ItemSolveur=
+      { Type= ISSomme }
+      { NbChampSolution= 1 }
+      { ChampSolution= Ithermique }
+      { NbChampParametre= 1 }
+      { ChampParametre= FluxjThermique }
+      { Operations=
+      	{ NbChampsATraiter= 1 }
+	{ Numero= 0 }
+	{ Initialise= Zero }
+	{ Moyenner= 0 }
+      }
+    }
+  }
+  { DependanceModifiable=
+    { Champ= Ithermique }
+  }
+  { Dependance=
+    { Maillage= MaillagePrincipal }
+    { Champ= FluxjThermique }
+    { Champ= Zero }
+  }
+}
+
+Determination de l'integrale du flux as arithmetric model
+-----------------------------------------------------------
+    
+{ IntegraleFluxThermiqueArith=
+  { Type= ModeleArithmetique }
+  { Affichage= 1 }
+  { Data=
+    { Champ= 
+      { Type= P0C_Scalaire_Par }
+      { Nom= PhiFreeSurf }
+      { Data= ValeurItem 1 0. }
+    }
+  }
+  { DependanceModifiable= 
+    { Champ= PhiFreeSurf }
+    { Champ= Ithermique }
+  }
+  { Dependance=
+    { Maillage= MaillagePrincipal }
+    { Champ= SFreeSurf }
+  }
+
+  { Operation= Ithermique abs Ithermique }
+  
+  Calcul de flux 
+  --------------
+  
+  { Operation= PhiFreeSurf = Ithermique }
+  { Operation= PhiFreeSurf /= SFreeSurf }
+}

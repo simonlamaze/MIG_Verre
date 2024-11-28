@@ -1,0 +1,68 @@
+-------------------------------------
+Tabulation de la temperature de voute
+-------------------------------------
+
+{ TemperatureVoute=
+  { Type= ModeleArithmetique }
+  { Affichage= 1 }
+  { Data=
+    { Champ=
+      { Type= P1_Scalaire_Par }
+      { Nom= Tvoute }
+      { Data= ValeurItem 1 0. }
+    }
+    { Champ=
+      { Type= P1_Scalaire_Par }
+      { Nom= Xnorm }
+      { Data= ValeurItem 1 0. }
+    }
+    { Champ=
+      { Type= P1_Scalaire_Par }
+      { Nom= Ynorm }
+      { Data= ValeurItem 1 0. }
+    }
+  }
+  { Dependance= 
+    { Maillage= MaillagePrincipal }
+    { Champ= L }
+    { Champ= X }
+    { Champ= W }
+    { Champ= Y }
+    { Champ= 2 }
+    { Champ= 3 }
+    { Champ= -1 }
+    { Champ= DTvoute }
+    { Champ= T0 }
+    { Champ= Xnorm }
+    { Champ= Ynorm } 
+    { Champ= Tvoute }
+  }
+  { DependanceModifiable= 
+    { Champ= Tvoute }
+    { Champ= Xnorm }
+    { Champ= Ynorm }
+  }
+
+  Calcul du theta voute
+  ---------------------
+  
+  { Operation= Xnorm = X }
+  { Operation= Xnorm *= 2 }
+  { Operation= Xnorm /= L }
+  { Operation= Xnorm += -1 }
+  { Operation= Xnorm **= 2 }
+
+  { Operation= Ynorm = Y }
+  { Operation= Ynorm *= 2 }
+  { Operation= Ynorm /= W }
+  { Operation= Ynorm += -1 }
+  { Operation= Ynorm /= 3 }
+  { Operation= Ynorm **= 2 }
+
+  { Operation= Tvoute = Xnorm }
+  { Operation= Tvoute += Ynorm }
+  { Operation= Tvoute *= -1 }
+  { Operation= Tvoute EXP Tvoute }
+  { Operation= Tvoute *= DTvoute }
+  { Operation= Tvoute += T0 }
+ }

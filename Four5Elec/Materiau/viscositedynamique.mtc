@@ -1,0 +1,46 @@
+----------------------
+Calcul de la viscosite
+----------------------
+
+{ ViscositeDynamique=
+  { Type= ModeleArithmetique }
+  { Affichage= 1 }
+  { Data=
+    { Champ= 
+      { Type= P1_Scalaire_Par }
+      { Nom= Eta }
+      { Data= ValeurItem 1 0. }
+    }
+    { Champ= 
+      { Type= P1_Scalaire_Par }
+      { Nom= DeltaTmu }
+      { Data= ValeurItem 1 0. }
+    }
+  }
+  { Dependance= 
+    { Maillage= MaillagePrincipal }
+    { Champ= T }
+    { Champ= Tsoft }
+    { Champ= mu0 }
+    { Champ= Tmu }
+    { Champ= Bmu }
+  }
+  { DependanceModifiable= 
+    { Champ= DeltaTmu }
+    { Champ= Eta }
+  }
+
+  Calcul de DeltaTmu
+  ------------------
+  { Operation= DeltaTmu = Tsoft }
+  { Operation= DeltaTmu =max T }
+  { Operation= DeltaTmu -= Tmu }
+
+  Calcul de viscosité dynamique
+  -----------------------------
+  
+  { Operation= Eta = Bmu }
+  { Operation= Eta /= DeltaTmu }
+  { Operation= Eta EXP Eta }
+  { Operation= Eta *= mu0 }
+}

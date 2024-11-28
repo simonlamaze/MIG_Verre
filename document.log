@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2024.11.25)  27 NOV 2024 10:17
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2024.11.25)  28 NOV 2024 16:21
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -217,18 +217,6 @@ Package babel Info: Importing font and identification data for french
 (babel)             from babel-fr.ini. Reported on input line 11.
 )
 (C:\Users\lasma\AppData\Local\Programs\MiKTeX\tex/latex/carlisle\scalefnt.sty)
-(C:\Users\lasma\AppData\Local\Programs\MiKTeX\tex/latex/base\inputenc.sty
-Package: inputenc 2021/02/14 v1.3d Input encoding file
-\inpenc@prehook=\toks19
-\inpenc@posthook=\toks20
-)
-(C:\Users\lasma\AppData\Local\Programs\MiKTeX\tex/latex/base\fontenc.sty
-Package: fontenc 2021/04/29 v2.0v Standard LaTeX package
-)
-(C:\Users\lasma\AppData\Local\Programs\MiKTeX\tex/latex/bigints\bigints.sty
-Package: bigints 2010/02/15 Writing big integrals
-Package bigints Info: This is Bigints by Merciadri Luca. on input line 5.
-
 (C:\Users\lasma\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amsmath.sty
 Package: amsmath 2023/05/13 v2.17o AMS math features
 \@mathmargin=\skip64
@@ -239,7 +227,7 @@ Package: amstext 2021/08/26 v2.01 AMS text
 
 (C:\Users\lasma\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amsgen.sty
 File: amsgen.sty 1999/11/30 v2.0 generic functions
-\@emptytoks=\toks21
+\@emptytoks=\toks19
 \ex@=\dimen153
 ))
 (C:\Users\lasma\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amsbsy.sty
@@ -279,24 +267,36 @@ LaTeX Info: Redefining \Relbar on input line 971.
 \dotsspace@=\muskip16
 \c@parentequation=\count278
 \dspbrk@lvl=\count279
-\tag@help=\toks22
+\tag@help=\toks20
 \row@=\count280
 \column@=\count281
 \maxfields@=\count282
-\andhelp@=\toks23
+\andhelp@=\toks21
 \eqnshift@=\dimen156
 \alignsep@=\dimen157
 \tagshift@=\dimen158
 \tagwidth@=\dimen159
 \totwidth@=\dimen160
 \lineht@=\dimen161
-\@envbody=\toks24
+\@envbody=\toks22
 \multlinegap=\skip65
 \multlinetaggap=\skip66
-\mathdisplay@stack=\toks25
+\mathdisplay@stack=\toks23
 LaTeX Info: Redefining \[ on input line 2953.
 LaTeX Info: Redefining \] on input line 2954.
-))
+)
+(C:\Users\lasma\AppData\Local\Programs\MiKTeX\tex/latex/base\inputenc.sty
+Package: inputenc 2021/02/14 v1.3d Input encoding file
+\inpenc@prehook=\toks24
+\inpenc@posthook=\toks25
+)
+(C:\Users\lasma\AppData\Local\Programs\MiKTeX\tex/latex/base\fontenc.sty
+Package: fontenc 2021/04/29 v2.0v Standard LaTeX package
+)
+(C:\Users\lasma\AppData\Local\Programs\MiKTeX\tex/latex/bigints\bigints.sty
+Package: bigints 2010/02/15 Writing big integrals
+Package bigints Info: This is Bigints by Merciadri Luca. on input line 5.
+)
 (C:\Users\lasma\AppData\Local\Programs\MiKTeX\tex/latex/pxfonts\pxfonts.sty
 Package: pxfonts 2008/01/22 v1.1.1
 LaTeX Font Info:    Redeclaring symbol font `operators' on input line 21.
@@ -375,7 +375,7 @@ LaTeX Font Info:    Redeclaring math symbol \mathsterling on input line 164.
 LaTeX Font Info:    Redeclaring math symbol \hbar on input line 591.
 LaTeX Info: Redefining \not on input line 997.
 )
-LaTeX Font Info:    Trying to load font information for T1+pxr on input line 16
+LaTeX Font Info:    Trying to load font information for T1+pxr on input line 17
 .
 
 (C:\Users\lasma\AppData\Local\Programs\MiKTeX\tex/latex/pxfonts\t1pxr.fd
@@ -389,44 +389,44 @@ File: l3backend-pdftex.def 2024-01-04 L3 backend support: PDF output (pdfTeX)
 ) (document.aux)
 \openout1 = `document.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/pxmi/m/it on input line 16.
+LaTeX Font Info:    Checking defaults for OML/pxmi/m/it on input line 17.
 LaTeX Font Info:    Trying to load font information for OML+pxmi on input line 
-16.
+17.
 
 (C:\Users\lasma\AppData\Local\Programs\MiKTeX\tex/latex/pxfonts\omlpxmi.fd
 File: omlpxmi.fd 2000/12/14 v1.0
 )
-LaTeX Font Info:    ... okay on input line 16.
-LaTeX Font Info:    Checking defaults for OMS/pxsy/m/n on input line 16.
+LaTeX Font Info:    ... okay on input line 17.
+LaTeX Font Info:    Checking defaults for OMS/pxsy/m/n on input line 17.
 LaTeX Font Info:    Trying to load font information for OMS+pxsy on input line 
-16.
+17.
 
 (C:\Users\lasma\AppData\Local\Programs\MiKTeX\tex/latex/pxfonts\omspxsy.fd
 File: omspxsy.fd 2000/12/14 v1.0
 )
-LaTeX Font Info:    ... okay on input line 16.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 16.
-LaTeX Font Info:    ... okay on input line 16.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 16.
-LaTeX Font Info:    ... okay on input line 16.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 16.
-LaTeX Font Info:    ... okay on input line 16.
-LaTeX Font Info:    Checking defaults for OMX/pxex/m/n on input line 16.
+LaTeX Font Info:    ... okay on input line 17.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 17.
+LaTeX Font Info:    ... okay on input line 17.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 17.
+LaTeX Font Info:    ... okay on input line 17.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 17.
+LaTeX Font Info:    ... okay on input line 17.
+LaTeX Font Info:    Checking defaults for OMX/pxex/m/n on input line 17.
 LaTeX Font Info:    Trying to load font information for OMX+pxex on input line 
-16.
+17.
 
 (C:\Users\lasma\AppData\Local\Programs\MiKTeX\tex/latex/pxfonts\omxpxex.fd
 File: omxpxex.fd 2000/12/14 v1.0
 )
-LaTeX Font Info:    ... okay on input line 16.
-LaTeX Font Info:    Checking defaults for U/pxexa/m/n on input line 16.
+LaTeX Font Info:    ... okay on input line 17.
+LaTeX Font Info:    Checking defaults for U/pxexa/m/n on input line 17.
 LaTeX Font Info:    Trying to load font information for U+pxexa on input line 1
-6.
+7.
 
 (C:\Users\lasma\AppData\Local\Programs\MiKTeX\tex/latex/pxfonts\upxexa.fd
 File: upxexa.fd 2000/12/14 v1.0
 )
-LaTeX Font Info:    ... okay on input line 16.
+LaTeX Font Info:    ... okay on input line 17.
 
 (C:\Users\lasma\AppData\Local\Programs\MiKTeX\tex/context/base/mkii\supp-pdf.mk
 ii
@@ -453,48 +453,48 @@ Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
 fg
 File: epstopdf-sys.cfg 2021/03/18 v2.0 Configuration of epstopdf for MiKTeX
 ))
-LaTeX Info: Redefining \degres on input line 16.
-LaTeX Info: Redefining \up on input line 16.
-LaTeX Font Info:    Trying to load font information for T1+pxss on input line 1
-9.
+LaTeX Info: Redefining \degres on input line 17.
+LaTeX Info: Redefining \up on input line 17.
+LaTeX Font Info:    Trying to load font information for T1+pxss on input line 2
+0.
  (C:\Users\lasma\AppData\Local\Programs\MiKTeX\tex/latex/pxfonts\t1pxss.fd
 File: t1pxss.fd 2000/12/14 v1.0
 )
 LaTeX Font Info:    Font shape `T1/pxss/b/n' in size <12> not available
-(Font)              Font shape `T1/pxss/bx/n' tried instead on input line 19.
+(Font)              Font shape `T1/pxss/bx/n' tried instead on input line 20.
 LaTeX Font Info:    Font shape `T1/pxss/b/n' in size <24.88> not available
-(Font)              Font shape `T1/pxss/bx/n' tried instead on input line 19.
-LaTeX Font Info:    Trying to load font information for OT1+pxr on input line 1
-9.
+(Font)              Font shape `T1/pxss/bx/n' tried instead on input line 20.
+LaTeX Font Info:    Trying to load font information for OT1+pxr on input line 2
+0.
 (C:\Users\lasma\AppData\Local\Programs\MiKTeX\tex/latex/pxfonts\ot1pxr.fd
 File: ot1pxr.fd 2000/12/14 v1.0
 )
-LaTeX Font Info:    Trying to load font information for U+pxmia on input line 1
-9.
+LaTeX Font Info:    Trying to load font information for U+pxmia on input line 2
+0.
 
 (C:\Users\lasma\AppData\Local\Programs\MiKTeX\tex/latex/pxfonts\upxmia.fd
 File: upxmia.fd 2000/12/14 v1.0
 )
-LaTeX Font Info:    Trying to load font information for U+pxsya on input line 1
-9.
+LaTeX Font Info:    Trying to load font information for U+pxsya on input line 2
+0.
 
 (C:\Users\lasma\AppData\Local\Programs\MiKTeX\tex/latex/pxfonts\upxsya.fd
 File: upxsya.fd 2000/12/14 v1.0
 )
-LaTeX Font Info:    Trying to load font information for U+pxsyb on input line 1
-9.
+LaTeX Font Info:    Trying to load font information for U+pxsyb on input line 2
+0.
 
 (C:\Users\lasma\AppData\Local\Programs\MiKTeX\tex/latex/pxfonts\upxsyb.fd
 File: utxsyb.fd 2000/12/14 v1.0
 )
-LaTeX Font Info:    Trying to load font information for U+pxsyc on input line 1
-9.
+LaTeX Font Info:    Trying to load font information for U+pxsyc on input line 2
+0.
 
 (C:\Users\lasma\AppData\Local\Programs\MiKTeX\tex/latex/pxfonts\upxsyc.fd
 File: upxsyc.fd 2000/12/14 v1.0
 )
 LaTeX Font Info:    Font shape `T1/pxss/b/n' in size <17.28> not available
-(Font)              Font shape `T1/pxss/bx/n' tried instead on input line 20.
+(Font)              Font shape `T1/pxss/bx/n' tried instead on input line 21.
 
 [1
 
@@ -502,34 +502,120 @@ LaTeX Font Info:    Font shape `T1/pxss/b/n' in size <17.28> not available
 {C:/Users/lasma/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}{C:/Users/lasm
 a/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/base/8r.enc}]
 LaTeX Font Info:    Font shape `T1/pxss/b/n' in size <14.4> not available
-(Font)              Font shape `T1/pxss/bx/n' tried instead on input line 52.
+(Font)              Font shape `T1/pxss/bx/n' tried instead on input line 55.
 
 
-LaTeX Warning: Command \texttwosuperior invalid in math mode on input line 69.
+LaTeX Warning: Command \texttwosuperior invalid in math mode on input line 65.
 
 LaTeX Font Info:    Trying to load font information for TS1+pxr on input line 6
-9.
+5.
 (C:\Users\lasma\AppData\Local\Programs\MiKTeX\tex/latex/pxfonts\ts1pxr.fd
 File: ts1pxr.fd 2000/12/14 v1.0
 )
 
-LaTeX Warning: Command \texttwosuperior invalid in math mode on input line 69.
+LaTeX Warning: Command \texttwosuperior invalid in math mode on input line 65.
 
 Missing character: There is no � in font pxr!
-[2] [3] [4] (document.aux)
+[2] [3] [4]
+<./images/Géométrie fours.png, id=22, 787.743pt x 425.79076pt>
+File: ./images/Géométrie fours.png Graphic file (type png)
+<use ./images/Géométrie fours.png>
+Package pdftex.def Info: ./images/Géométrie fours.png  used on input line 178
+.
+(pdftex.def)             Requested size: 393.87053pt x 212.89485pt.
+ [5]
+! Missing } inserted.
+<inserted text> 
+                }
+l.188 	 \end{align}
+                   
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Double subscript.
+<argument>  $$P_{SurfL}= \iint _ h_
+                                   {SurfL} (T_{flamme}-T)~dS ~~~~~~~~~~ \lan...
+l.188 	 \end{align}
+                   
+I treat `x_1_2' essentially like `x_1{}_2'.
+
+! Missing { inserted.
+<inserted text> 
+                {
+l.188 	 \end{align}
+                   
+I've put in what seems to be necessary to fix
+the current column of the current alignment.
+Try to go on, since this might almost work.
+
+! Missing } inserted.
+<inserted text> 
+                }
+l.188 	 \end{align}
+                   
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Double subscript.
+<argument>  $$P_{SurfL}= \iint _ h_
+                                   {SurfL} (T_{flamme}-T)~dS ~~~~~~~~~~ \lan...
+l.188 	 \end{align}
+                   
+I treat `x_1_2' essentially like `x_1{}_2'.
+
+! Missing \endgroup inserted.
+<inserted text> 
+                \endgroup 
+l.188 	 \end{align}
+                   
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Misplaced \omit.
+\math@cr@@@ ...@ \@ne \add@amps \maxfields@ \omit 
+                                                  \kern -\alignsep@ \iftag@ ...
+l.188 	 \end{align}
+                   
+I expect to see \omit only after tab marks or the \cr of
+an alignment. Proceed, and I'll ignore this case.
+
+! Missing { inserted.
+<inserted text> 
+                {
+l.188 	 \end{align}
+                   
+I've put in what seems to be necessary to fix
+the current column of the current alignment.
+Try to go on, since this might almost work.
+
+
+Overfull \hbox (15.88019pt too wide) detected at line 188
+[]
+ []
+
+[6 <./images/Géométrie fours.png>] (document.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-01-04>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 8539 strings out of 474486
- 161039 string characters out of 5743754
- 1934542 words of memory out of 5000000
- 30721 multiletter control sequences out of 15000+600000
+ 8551 strings out of 474486
+ 161430 string characters out of 5743754
+ 1932542 words of memory out of 5000000
+ 30733 multiletter control sequences out of 15000+600000
  598257 words of font info for 121 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 108i,9n,107p,10958b,428s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 108i,8n,107p,10958b,428s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <C:/Users/lasma/AppData/Local/Programs/MiKTeX/fonts/type1/public/pxfonts/pxex
 .pfb><C:/Users/lasma/AppData/Local/Programs/MiKTeX/fonts/type1/public/pxfonts/p
 xexa.pfb><C:/Users/lasma/AppData/Local/Programs/MiKTeX/fonts/type1/public/pxfon
@@ -539,9 +625,9 @@ c/pxfonts/rpxr.pfb><C:/Users/lasma/AppData/Local/Programs/MiKTeX/fonts/type1/ur
 w/helvetic/uhvb8a.pfb><C:/Users/lasma/AppData/Local/Programs/MiKTeX/fonts/type1
 /urw/palatino/uplr8a.pfb><C:/Users/lasma/AppData/Local/Programs/MiKTeX/fonts/ty
 pe1/urw/palatino/uplri8a.pfb>
-Output written on document.pdf (4 pages, 78342 bytes).
+Output written on document.pdf (6 pages, 96900 bytes).
 PDF statistics:
- 56 PDF objects out of 1000 (max. 8388607)
+ 65 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
- 1 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 6 words of extra memory for PDF output out of 10000 (max. 10000000)
 

@@ -1,0 +1,119 @@
+------------------------------------------------
+Modele EF pour la resolution de l'equation sur T
+------------------------------------------------
+
+{ Thermique=
+  { Type= ModeleElementsFinis }
+  { Affichage= 1 }
+  
+  Declaration et initialisation des températures
+  ----------------------------------------------
+  { Data=
+    { Champ=
+      { Type= P1_Scalaire_Par }
+      { Nom= Tnm1 }
+      { Data= ValeurItem 1 1473.15 }
+    }
+    { Champ=
+      { Type= P1_Scalaire_Par }
+      { Nom= T }
+      { Data= ValeurItem 1 1473.15 }
+    }
+
+    Discretisation de l'équation d'advection/diffusion/réaction
+    -----------------------------------------------------------
+    
+    { SolveurLocal=
+      { Type= ConvectionDiffusionReactionP1 }
+      { Methode=
+        { Diffusion= RFB }
+	{ Convection= SUPG }
+        { Implicite= 1. }
+      }
+      { Resolution= 3 }
+      { Preconditionneur= 124 }
+      { NbChampParametre= 8 }
+      { ChampParametre= V Tnm1 dt SJoule Lambda RhoCpTotal Zero Tnm1 }
+      { NbChampSolution= 1 }
+      { ChampSolution= T }
+    }
+
+    Discretisation des conditions aux limtes de type Fourier
+    --------------------------------------------------------
+    
+    { SolveurFrontiereLocal=
+      { Type= SFLFourier }
+      { NbChampParametre= 6 }
+      { Enthalpie= 0 }
+      { MethodeAssemblage= 1 }
+      { Rayonnement= 1 }
+      { ChampParametre= Tvoute hSurfLibre Un T EpsilonVerre AppartientFreeSurface }
+    }
+    
+    { SolveurFrontiereLocal=
+      { Type= SFLFourier }
+      { NbChampParametre= 6 }
+      { Enthalpie= 0 }
+       MethodeAssemblage= 1 
+      { Rayonnement= 1 }
+      { ChampParametre= TInfExt hFour Un T ZeroP1 AppartientWall }
+    }
+
+    Resolution numérique du systeme
+    -------------------------------
+    
+    { Solveur= 
+      { Type= SolveurLineaire }
+      { Precision= 1e-7 }
+      { TypeDeNorme= 1 }
+    }
+  }
+
+  Champ inconnu
+  -------------
+  
+  { DependanceModifiable= 
+    { Champ= T }
+  }
+
+  Champs parametres
+  -----------------
+  
+  { Dependance=
+    { Maillage= MaillagePrincipal }
+    { ModeleCL= CLThermique }
+    { Champ= V }
+    { Champ= Tnm1 }
+    { Champ= dt }
+    { Champ= Lambda }
+    { Champ= RhoCpTotal }
+    { Champ= Un }
+    { Champ= Zero }
+    { Champ= ZeroP1 }
+    { Champ= T0 }
+    { Champ= Tvoute }
+    { Champ= TInfExt }
+    { Champ= hSurfLibre }
+    { Champ= hFour }
+    { Champ= EpsilonVerre }
+    { Champ= SJoule }
+    { Champ= AppartientFreeSurface }
+    { Champ= AppartientWall }
+  }
+}
+
+--------------------------------
+Save of the previous temperature
+--------------------------------
+
+{ UpdateT=
+  { Type= ModeleArithmetique }
+  { Dependance= 
+    { Maillage= MaillagePrincipal }
+    { Champ= T }
+  }
+  { DependanceModifiable= 
+    { Champ= Tnm1 }
+  }
+  { Operation= Tnm1 = T }
+}

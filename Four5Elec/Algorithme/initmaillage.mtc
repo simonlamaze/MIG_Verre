@@ -1,0 +1,61 @@
+------------------------------
+Modele initilisant la solution
+------------------------------
+
+{ InitMaillage=
+  { Type= ModeleIncremental }
+  { Data=
+    { Champ=
+      { Type= P0C_Scalaire_Par }
+      { Nom= CompteurRemaillage }
+      { Data= ValeurItem 1 0 }
+    }
+    { NomCompteur= CompteurRemaillage }
+  }
+  { Dependance=
+    { Maillage= MaillagePrincipal }
+    { Champ= CompteurRemaillage }
+    { ModeleAvantDebut= AvantRemaillage }
+    { ModeleIncrement= Remaillage }
+    { ModeleTerminaison= FinRemaillage }
+    { ModeleApresFin= ApresRemaillage }
+  }
+}
+
+{ AvantRemaillage=                                  
+  { Type= ModeleDeModeles }
+  { Dependance=      
+    { Maillage= MaillagePrincipal }  
+    { Modele= Interacteur }
+    { Modele= Geometres }
+  } 
+}
+
+{ Remaillage=
+  { Type= ModeleDeModeles }
+  { Dependance=
+    { Maillage= MaillagePrincipal }
+    { Modele= Adaptation }
+  }
+}
+
+{ ApresRemaillage=
+  { Type= ModeleDeModeles }
+  { Dependance=
+    { Maillage= MaillagePrincipal }
+     { Modele= SortieMaillage }
+  }
+}
+
+{ FinRemaillage=                                      
+  { Type= ModeleFinSurTemps }     
+  { Data=         
+    { NomTemps= CompteurRemaillage }         
+    { NomTempsFin= NombreRemaillage }     
+  }     
+  { Dependance=         
+    { Maillage= MaillagePrincipal }         
+    { Champ= CompteurRemaillage }         
+    { Champ= NombreRemaillage }     
+  } 
+} 

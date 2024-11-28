@@ -1,0 +1,105 @@
+------------------------------------
+Determination du degre de conversion
+------------------------------------
+
+{ DegreDeConversion=
+  { Type= ModeleArithmetique }
+  { Affichage= 1 }
+  { Data=
+    { Champ= 
+      { Type= P1_Scalaire_Par }
+      { Nom= factGauss }
+      { Data= ValeurItem 1 0. }
+    }
+    { Champ= 
+      { Type= P1_Scalaire_Par }
+      { Nom= dalphadT }
+      { Data= ValeurItem 1 0. }
+    }
+    { Champ= 
+      { Type= P1_Scalaire_Par }
+      { Nom= alpha1 }
+      { Data= ValeurItem 1 0. }
+    }
+    { Champ= 
+      { Type= P1_Scalaire_Par }
+      { Nom= alpha2 }
+      { Data= ValeurItem 1 0. }
+    }
+    { Champ= 
+      { Type= P1_Scalaire_Par }
+      { Nom= alpha }
+      { Data= ValeurItem 1 0. }
+    }
+    { Champ= 
+      { Type= P1_Scalaire_Par }
+      { Nom= UnmAlpha }
+      { Data= ValeurItem 1 0. }
+    }
+  }
+  { Dependance= 
+    { Maillage= MaillagePrincipal }
+    { Champ= 2 }
+    { Champ= Pi }
+    { Champ= 0.5 }
+    { Champ= -1 }
+    { Champ= T }
+    { Champ= Treac }
+    { Champ= sigmareac }
+    { Champ= sqrt2 }
+    { Champ= Un }
+  }
+  { DependanceModifiable= 
+    { Champ= factGauss }
+    { Champ= dalphadT }
+    { Champ= alpha1 }
+    { Champ= alpha2 }
+    { Champ= alpha }
+    { Champ= UnmAlpha }
+  }
+
+  Calcul du facteur multiplicatif de la loi de Gauss
+  --------------------------------------------------
+  
+  { Operation= factGauss = 2 }
+  { Operation= factGauss *= Pi }
+  { Operation= factGauss **= 0.5 }
+  { Operation= factGauss *= sigmareac }
+
+  Calcul de la derivee du degre de conversion
+  -------------------------------------------
+
+  { Operation= dalphadT = T }
+  { Operation= dalphadT -= Treac }
+  { Operation= dalphadT **= 2 }
+  { Operation= dalphadT *= -1 }
+  { Operation= dalphadT /= 2 }
+  { Operation= dalphadT /= sigmareac }
+  { Operation= dalphadT /= sigmareac }
+  { Operation= dalphadT EXP dalphadT }
+  { Operation= dalphadT /= factGauss }
+
+  Determination du degree de conversion
+  -------------------------------------
+
+  { Operation= alpha1 = T }
+  { Operation= alpha1 -= Treac }
+  { Operation= alpha1 /= sqrt2 }
+  { Operation= alpha1 /= sigmareac }
+  { Operation= alpha1 erf alpha1 }
+  
+  { Operation= alpha2 = Treac }
+  { Operation= alpha2 /= sqrt2 }
+  { Operation= alpha2 /= sigmareac }
+  { Operation= alpha2 erf alpha2 }
+
+  { Operation= alpha = alpha1 }
+  { Operation= alpha += alpha2 }
+  { Operation= alpha *= 0.5 }
+
+  Calcul de 1-alpha
+  -----------------
+  
+  { Operation= UnmAlpha = Un }
+  { Operation= UnmAlpha -= alpha }
+}

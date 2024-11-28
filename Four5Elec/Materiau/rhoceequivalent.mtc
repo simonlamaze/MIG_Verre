@@ -1,0 +1,33 @@
+---------------------------
+Determination du RhoCpTotal
+---------------------------
+
+{ RhoCpEquilavent=
+  { Type= ModeleArithmetique }
+  { Affichage= 1 }
+  { Data=
+    { Champ= 
+      { Type= P1_Scalaire_Par }
+      { Nom= RhoCpTotal }
+      { Data= ValeurItem 1 0. }
+    }
+  }
+  { Dependance= 
+    { Maillage= MaillagePrincipal }
+    { Champ= Rho }
+    { Champ= RhoCp }
+    { Champ= DHreac }
+    { Champ= dalphadT }
+  }
+  { DependanceModifiable= 
+    { Champ= RhoCpTotal }
+  }
+
+  Calcul du RhoCp tenant compte de la réaction
+  --------------------------------------------
+  
+  { Operation= RhoCpTotal = Rho }
+  { Operation= RhoCpTotal *= DHreac }
+  { Operation= RhoCpTotal *= dalphadT }
+  { Operation= RhoCpTotal += RhoCp }
+}

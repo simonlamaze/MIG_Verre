@@ -1,6 +1,7 @@
 \documentclass[12pt, a4paper, french, BCOR = 0pt, DIV = 10]{scrartcl}
 \usepackage{graphicx} % Required for inserting images
 \usepackage{babel}
+\usepackage{amsmath}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{graphicx}
@@ -118,9 +119,9 @@
 	
 	
 	
-	- Le calcul tu temps de résidence dans le four est particulièrement important car il conditionne la qualité de la fusion, en réduisant la quantité de bulles ou la présence d'infondus. Une première méthode consiste à étudier la réponse à un Dirac d'apport en matière dans le four en observant le flux de matière à la sortie au cours du temps. Le flux normalisé d'un scalaire C à travers la surface de sortie est donné par :\\[0.3 cm]
+	- Le calcul tu temps de résidence dans le four est particulièrement important car il conditionne la qualité de la fusion, en réduisant la quantité de bulles ou la présence d'infondus. Une première méthode consiste à étudier la réponse à un Dirac d'apport en matière dans le four en observant le flux de matière à la sortie au cours du temps. Le flux pondéré d'un scalaire C à travers la surface de sortie est donné par :\\[0.3 cm]
 	$$
-	\phi_{C} =  \oiint_S C\vec{u} \cdot \vec{n}~dS  ~~~~~~~~~~ \phi = \oiint_S \vec{u} \cdot \vec{n}~dS  ~~~~~~~~~~
+	\phi_{C} =  \iint_S C\vec{u} \cdot \vec{n}~dS  ~~~~~~~~~~ \phi = \iint_S \vec{u} \cdot \vec{n}~dS  ~~~~~~~~~~
 	\langle C \rangle = \frac{\phi_{C}}{\phi}
 	$$ 
 	\\ [0.5 cm]
@@ -170,7 +171,21 @@
 	 ls Geometrie/
 	 mv Geometrie/indicfrontieres.vtu /work/MINES-PARISTECH/slamaze/ => open avec PARAVIEW, vérifier les frontières
 	 nano ihm.mtc , modifier le temps
-	 sbatch job.sh
+	 sbatch job.sh// [1 cm]
+	 
+	 Voici la géométrie choisie du four :
+	 
+	 \includegraphics[scale=0.5]{Géométrie fours}
+	 
+	 Nous avons choisi dans un premier temps d'ajouter un mur à ce modèle, et nous avons modélisé ce four avec différents nombres d'électrodes : 15 sans mur, 3 avec mur . Les simulations se sont déroulées sur les périodes de temps que nous permettaient la puissance du cluster de calcul utilisé . \\
+	 
+	 Nous obtînmes alors l'évolution de différentes grandeurs , comme la puissance échangée sur la surface libre ou encore le flux pondéré de température en sortie  . \\
+	 
+	 \begin{align}
+	 	$$P_{SurfL}= \iint_ h_{SurfL} (T_{flamme}-T)~dS ~~~~~~~~~~
+	 	\langle T \rangle~~a~~\acute{e}t\acute{e}~~d\acute{e}fini~~dans~~un~~paragraphe~~pr\acute{e}c\acute{e}dent
+	 	$$
+	 \end{align}
 	 
  
 	

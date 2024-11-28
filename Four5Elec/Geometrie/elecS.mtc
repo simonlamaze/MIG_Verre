@@ -1,0 +1,473 @@
+------------------------------------------------------------------
+Electrode S
+-----------
+
+-----------
+Electrode S1
+-----------
+
+{ DefElecS1=
+  { Type= ModeleDeMouvements }
+  { Affichage= 1 }
+  { Data=
+    { Repere=
+      { Dimension: ParametresNum/dim.txt } 
+      { Nom= RepereElecS1 }
+      { Origine: Geometrie/elecS1origin.txt }
+      { Axes= 1 0 0 0 -1 0 0 0 -1 }
+    }
+  }
+  { Dependance= 
+    { Maillage= MaillagePrincipal }
+  }
+}
+
+{ GeoElecS1=
+  { Type= ModeleDeGeometres }
+  { Affichage= 1 }
+  { Data=
+    { Geometre= 
+      { Nom= ElecS1 }
+      { Type= GeometreAnalytique }
+      { Data=
+      	{ Forme= 
+	  { Dimension: ParametresNum/dim.txt } 
+	  { Type= Cylindre }
+	  { Data=
+	    { Rayon= 3.e-2 } : relec.txt
+	    { Longueur= 0.2 } : lelec.txt
+	    { Axe= Z }
+	  }
+	}
+	{ Repere= RepereElecS1 }
+      }
+    }
+  }
+  { Dependance=
+    { Maillage= MaillagePrincipal }
+    { Modele= DefElecS1 }
+  }
+}
+
+{ DistanceElecS1=
+  { Type= ModeleParticulaire }
+  { Affichage= 1 }
+  { Data=
+    { Champ= 
+      { Type= P1_Scalaire_Par }
+      { Nom= AppartientElecS1 }
+      { Data= ValeurItem 1 0. }
+    }
+    { Champ= 
+      { Type= P1_Scalaire_Par }
+      { Nom= LevelSetElecS1 }
+      { Data= ValeurItem 1 0. }
+    }
+    { ItemSolveur=
+      { Type= ISGeometre }
+      { NbChampSolution= 2 }
+      { ChampSolution= AppartientElecS1 LevelSetElecS1 }
+      { NbChampParametre= 2 }
+      { ChampParametre= Coordonnees PrecisionFrontieres }
+      { Geometre= ElecS1 }
+      { Distance= 1 }
+      { Appartient= 1 }
+    }
+  }
+  { Dependance=
+    { Maillage= MaillagePrincipal }
+    { Champ= Coordonnees }
+    { Champ= PrecisionFrontieres }
+  }
+}
+
+
+-----------
+Electrode S2
+-----------
+
+{ DefElecS2=
+  { Type= ModeleDeMouvements }
+  { Affichage= 1 }
+  { Data=
+    { Repere=
+      { Dimension: ParametresNum/dim.txt } 
+      { Nom= RepereElecS2 }
+      { Origine: Geometrie/elecS2origin.txt }
+      { Axes= 1 0 0 0 -1 0 0 0 -1 }
+    }
+  }
+  { Dependance= 
+    { Maillage= MaillagePrincipal }
+  }
+}
+
+{ GeoElecS2=
+  { Type= ModeleDeGeometres }
+  { Affichage= 1 }
+  { Data=
+    { Geometre= 
+      { Nom= ElecS2 }
+      { Type= GeometreAnalytique }
+      { Data=
+      	{ Forme= 
+	  { Dimension: ParametresNum/dim.txt } 
+	  { Type= Cylindre }
+	  { Data=
+	    { Rayon= 3.e-2 } : relec.txt
+	    { Longueur= 0.2 } : lelec.txt
+	    { Axe= Z }
+	  }
+	}
+	{ Repere= RepereElecS2 }
+      }
+    }
+  }
+  { Dependance=
+    { Maillage= MaillagePrincipal }
+    { Modele= DefElecS2 }
+  }
+}
+
+{ DistanceElecS2=
+  { Type= ModeleParticulaire }
+  { Affichage= 1 }
+  { Data=
+    { Champ= 
+      { Type= P1_Scalaire_Par }
+      { Nom= AppartientElecS2 }
+      { Data= ValeurItem 1 0. }
+    }
+    { Champ= 
+      { Type= P1_Scalaire_Par }
+      { Nom= LevelSetElecS2 }
+      { Data= ValeurItem 1 0. }
+    }
+    { ItemSolveur=
+      { Type= ISGeometre }
+      { NbChampSolution= 2 }
+      { ChampSolution= AppartientElecS2 LevelSetElecS2 }
+      { NbChampParametre= 2 }
+      { ChampParametre= Coordonnees PrecisionFrontieres }
+      { Geometre= ElecS2 }
+      { Distance= 1 }
+      { Appartient= 1 }
+    }
+  }
+  { Dependance=
+    { Maillage= MaillagePrincipal }
+    { Champ= Coordonnees }
+    { Champ= PrecisionFrontieres }
+  }
+}
+
+
+
+
+-----------
+Electrode S3
+-----------
+
+{ DefElecS3=
+  { Type= ModeleDeMouvements }
+  { Affichage= 1 }
+  { Data=
+    { Repere=
+      { Dimension: ParametresNum/dim.txt } 
+      { Nom= RepereElecS3 }
+      { Origine: Geometrie/elecS3origin.txt }
+      { Axes= 1 0 0 0 -1 0 0 0 -1 }
+    }
+  }
+  { Dependance= 
+    { Maillage= MaillagePrincipal }
+  }
+}
+
+{ GeoElecS3=
+  { Type= ModeleDeGeometres }
+  { Affichage= 1 }
+  { Data=
+    { Geometre= 
+      { Nom= ElecS3 }
+      { Type= GeometreAnalytique }
+      { Data=
+      	{ Forme= 
+	  { Dimension: ParametresNum/dim.txt } 
+	  { Type= Cylindre }
+	  { Data=
+	    { Rayon= 3.e-2 } : relec.txt
+	    { Longueur= 0.2 } : lelec.txt
+	    { Axe= Z }
+	  }
+	}
+	{ Repere= RepereElecS3 }
+      }
+    }
+  }
+  { Dependance=
+    { Maillage= MaillagePrincipal }
+    { Modele= DefElecS3 }
+  }
+}
+
+{ DistanceElecS3=
+  { Type= ModeleParticulaire }
+  { Affichage= 1 }
+  { Data=
+    { Champ= 
+      { Type= P1_Scalaire_Par }
+      { Nom= AppartientElecS3 }
+      { Data= ValeurItem 1 0. }
+    }
+    { Champ= 
+      { Type= P1_Scalaire_Par }
+      { Nom= LevelSetElecS3 }
+      { Data= ValeurItem 1 0. }
+    }
+    { ItemSolveur=
+      { Type= ISGeometre }
+      { NbChampSolution= 2 }
+      { ChampSolution= AppartientElecS3 LevelSetElecS3 }
+      { NbChampParametre= 2 }
+      { ChampParametre= Coordonnees PrecisionFrontieres }
+      { Geometre= ElecS3 }
+      { Distance= 1 }
+      { Appartient= 1 }
+    }
+  }
+  { Dependance=
+    { Maillage= MaillagePrincipal }
+    { Champ= Coordonnees }
+    { Champ= PrecisionFrontieres }
+  }
+}
+
+
+-----------
+Electrode S4
+-----------
+
+{ DefElecS4=
+  { Type= ModeleDeMouvements }
+  { Affichage= 1 }
+  { Data=
+    { Repere=
+      { Dimension: ParametresNum/dim.txt } 
+      { Nom= RepereElecS4 }
+      { Origine: Geometrie/elecS4origin.txt }
+      { Axes= 1 0 0 0 -1 0 0 0 -1 }
+    }
+  }
+  { Dependance= 
+    { Maillage= MaillagePrincipal }
+  }
+}
+
+{ GeoElecS4=
+  { Type= ModeleDeGeometres }
+  { Affichage= 1 }
+  { Data=
+    { Geometre= 
+      { Nom= ElecS4 }
+      { Type= GeometreAnalytique }
+      { Data=
+      	{ Forme= 
+	  { Dimension: ParametresNum/dim.txt } 
+	  { Type= Cylindre }
+	  { Data=
+	    { Rayon= 3.e-2 } : relec.txt
+	    { Longueur= 0.2 } : lelec.txt
+	    { Axe= Z }
+	  }
+	}
+	{ Repere= RepereElecS4 }
+      }
+    }
+  }
+  { Dependance=
+    { Maillage= MaillagePrincipal }
+    { Modele= DefElecS4 }
+  }
+}
+
+{ DistanceElecS4=
+  { Type= ModeleParticulaire }
+  { Affichage= 1 }
+  { Data=
+    { Champ= 
+      { Type= P1_Scalaire_Par }
+      { Nom= AppartientElecS4 }
+      { Data= ValeurItem 1 0. }
+    }
+    { Champ= 
+      { Type= P1_Scalaire_Par }
+      { Nom= LevelSetElecS4 }
+      { Data= ValeurItem 1 0. }
+    }
+    { ItemSolveur=
+      { Type= ISGeometre }
+      { NbChampSolution= 2 }
+      { ChampSolution= AppartientElecS4 LevelSetElecS4 }
+      { NbChampParametre= 2 }
+      { ChampParametre= Coordonnees PrecisionFrontieres }
+      { Geometre= ElecS4 }
+      { Distance= 1 }
+      { Appartient= 1 }
+    }
+  }
+  { Dependance=
+    { Maillage= MaillagePrincipal }
+    { Champ= Coordonnees }
+    { Champ= PrecisionFrontieres }
+  }
+}
+
+
+-----------
+Electrode S5
+-----------
+
+{ DefElecS5=
+  { Type= ModeleDeMouvements }
+  { Affichage= 1 }
+  { Data=
+    { Repere=
+      { Dimension: ParametresNum/dim.txt } 
+      { Nom= RepereElecS5 }
+      { Origine: Geometrie/elecS5origin.txt }
+      { Axes= 1 0 0 0 -1 0 0 0 -1 }
+    }
+  }
+  { Dependance= 
+    { Maillage= MaillagePrincipal }
+  }
+}
+
+{ GeoElecS5=
+  { Type= ModeleDeGeometres }
+  { Affichage= 1 }
+  { Data=
+    { Geometre= 
+      { Nom= ElecS5 }
+      { Type= GeometreAnalytique }
+      { Data=
+      	{ Forme= 
+	  { Dimension: ParametresNum/dim.txt } 
+	  { Type= Cylindre }
+	  { Data=
+	    { Rayon= 3.e-2 } : relec.txt
+	    { Longueur= 0.2 } : lelec.txt
+	    { Axe= Z }
+	  }
+	}
+	{ Repere= RepereElecS5 }
+      }
+    }
+  }
+  { Dependance=
+    { Maillage= MaillagePrincipal }
+    { Modele= DefElecS5 }
+  }
+}
+
+{ DistanceElecS5=
+  { Type= ModeleParticulaire }
+  { Affichage= 1 }
+  { Data=
+    { Champ= 
+      { Type= P1_Scalaire_Par }
+      { Nom= AppartientElecS5 }
+      { Data= ValeurItem 1 0. }
+    }
+    { Champ= 
+      { Type= P1_Scalaire_Par }
+      { Nom= LevelSetElecS5 }
+      { Data= ValeurItem 1 0. }
+    }
+    { ItemSolveur=
+      { Type= ISGeometre }
+      { NbChampSolution= 2 }
+      { ChampSolution= AppartientElecS5 LevelSetElecS5 }
+      { NbChampParametre= 2 }
+      { ChampParametre= Coordonnees PrecisionFrontieres }
+      { Geometre= ElecS5 }
+      { Distance= 1 }
+      { Appartient= 1 }
+    }
+  }
+  { Dependance=
+    { Maillage= MaillagePrincipal }
+    { Champ= Coordonnees }
+    { Champ= PrecisionFrontieres }
+  }
+}
+
+
+-----------
+Calcul du Geometre de S
+-----------
+
+{ GeoUnionElecS=
+  { Type= ModeleDeGeometres }
+  { Affichage= 1 }
+  { Data=
+    { Geometre= 
+      { Nom= ElecS }
+      { Type= GeometreConteneur }
+      { Intersection= 0 }
+      { Geometre= ElecS1 }
+      { Geometre= ElecS2 }
+      { Geometre= ElecS3 }
+      { Geometre= ElecS4 }
+      { Geometre= ElecS5 }
+    }
+  }
+  { Dependance=
+    { Maillage= MaillagePrincipal }
+    { Modele= DefElecS1 }
+    { Modele= DefElecS2 }
+    { Modele= DefElecS3 }
+    { Modele= DefElecS4 }
+    { Modele= DefElecS5 }
+  }
+}
+
+-----------
+Calcul de l'indicatrice de S
+-----------
+{ CalculAppartientElecS=
+  { Type= ModeleArithmetique }
+  { Affichage= 1 }
+  { Data= 
+    { Champ= 
+      { Type= P1_Scalaire_Par }
+      { Nom= AppartientElecS }
+      { Data= ValeurItem 1 0. }
+    }
+  }
+  { Dependance= 
+    { Maillage= MaillagePrincipal }
+    { Champ= AppartientElecS1 }
+    { Champ= AppartientElecS2 }
+    { Champ= AppartientElecS3 }
+    { Champ= AppartientElecS4 }
+    { Champ= AppartientElecS5 }
+  }
+  { DependanceModifiable=
+    { Champ= AppartientElecS1 }
+    { Champ= AppartientElecS2 }
+    { Champ= AppartientElecS3 }
+    { Champ= AppartientElecS4 }
+    { Champ= AppartientElecS5 }
+    { Champ= AppartientElecS }
+  }
+  
+  Détermination de l'indicatrice de l'émectrode S
+  -----------------------------------------------
+  { Operation= AppartientElecS = AppartientElecS1 }
+  { Operation= AppartientElecS += AppartientElecS2 }
+  { Operation= AppartientElecS += AppartientElecS3 }
+  { Operation= AppartientElecS += AppartientElecS4 }
+  { Operation= AppartientElecS += AppartientElecS5 }
+}
