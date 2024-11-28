@@ -171,8 +171,15 @@
 	 mv Geometrie/indicfrontieres.vtu /work/MINES-PARISTECH/slamaze/ => open avec PARAVIEW, vérifier les frontières
 	 nano ihm.mtc , modifier le temps
 	 sbatch job.sh
-	 
- 
-	
+
+     \subsection{Régulation en puissance à l'aide d'un PID}
+     \paragraph{Principe général et Besoin}
+     Le paramètre principal à maîtriser pour un four pour un industriel est sa température de sortie. La pilotabilité de l'énergie apportée par électrodes en fait un moyen de régulation particulièrement adapté. Dans ses recherches passées, notre encadrant Franck Pigeonneau a utilisé un régulateur PID agissant sur la puissance des électrode, pour contrôler la température de sortie. La difficulté à modéliser le système formé par le bain de verre réduit la détermination des coefficients du PID à des méthodes empiriques. Nous nous proposons de réaliser une modélisation simplifiée afin de déterminer une estimation plus précise de ces coefficients.
+
+     \paragraph{Modélisation simplifiée}
+     Nous avons basé nos calculs sur le modèle de four à 5 électrodes. Puisque les boucles de convections définissent deux "domaines", il est possible de ne considérer que la seconde moitié du four menant à la sortie. 
+
+     \paragraph{Simulation sur Simlab}
+     
 	
 \end{document}
