@@ -177,9 +177,11 @@
      Le paramètre principal à maîtriser pour un four pour un industriel est sa température de sortie. La pilotabilité de l'énergie apportée par électrodes en fait un moyen de régulation particulièrement adapté. Dans ses recherches passées, notre encadrant Franck Pigeonneau a utilisé un régulateur PID agissant sur la puissance des électrode, pour contrôler la température de sortie. La difficulté à modéliser le système formé par le bain de verre réduit la détermination des coefficients du PID à des méthodes empiriques. Nous nous proposons de réaliser une modélisation simplifiée afin de déterminer une estimation plus précise de ces coefficients.
 
      \paragraph{Modélisation simplifiée}
-     Nous avons basé nos calculs sur le modèle de four à 5 électrodes. Puisque les boucles de convections définissent deux "domaines", il est possible de ne considérer que la seconde moitié du four menant à la sortie. 
+     Nous avons basé nos calculs sur le modèle de four à 5 électrodes. Puisque les boucles de convections définissent deux "domaines", il est possible de ne considérer que la seconde moitié du four menant à la sortie. Cela mène à ne considérer qu'une seule boucle de convection, qui se modélise par un retard dans le transort de la température entre les différents points du cycle.
 
      \paragraph{Simulation sur Simlab}
-     
+     La boucle de convection est divisée en 2 sections, reliant les 2 zones principales que sont la zone de chauffage par électrodes et la zone de sortie, où le flux de matière est divisé en deux, l'un revenant dans la boucle, et l'un sortant du système. La vitesse de déplacement de la matière dans la boucle est déterminée grâce aux simulations. La zone de chauffage produit l'échauffement de température suivant :
+     $$\Delta T = \frac{P_{elec}}{\dot{m}\cdot C_p}$$
+     La simulation 
 	
 \end{document}
