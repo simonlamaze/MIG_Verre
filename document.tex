@@ -23,7 +23,12 @@
     Voici un four à fusion:
     
 
-    
+    \section{Objectifs}
+    \subsection{Contexte}
+    Le verre est un matériau produit à des températures très élevées, de l'ordre de 1300°C. Il feut utiliser des quantités d'énergies très importantes pour porter le matériau à cette températures, et le moyen utilisé aujourd'hui est principalement l'utilisation de bruleurs au gaz (les bruleur au fioul ne sont plus utilisés pour des raisons économiques) qui ont une consommation de l'ordre du $m^{3}.s^{-1}$. Pourtant, le verre liquide est conducteurs, ce qui signifie qu'une fois porté à suffisament haute température, il peut être chauffé par des électrodes qui créent un champ électrique dans le liquide et provoque un réchauffement par effet joule. Cependant, des contraintes de qualité du verre empêchent l'utilisation de cette méthode pour les verres de bonne qualité, car on observe alors une augmentation de la quantité de bulles dans le verre à cause de la modification de la dynamique du four. En effet, les flux de matières sont différents selon que la chaleur provienne du haut ou du fond du four, et les boucles de convection ne permettent plus d'évacuer convenablement les bulles.
+
+    \subsection{Objectifs}
+    Le but est de simule des verres alimentés principalement par source électrique, afin d'identifier les dynamiques de ces fours particuliers et permettre la conception de fours industriels fonctionnant à l'électricité qui ont donc une empreinte carbone plus faible (tant que l'électricité utlisée est verte). On s'intérresse d'abord à la compréhension des dynamiques des fours existant et connus, avant de proposer des modifications de ces outils pour utiliser plus d'électrcité. Pour ce faire, on dispose des outils du cemef et des connaissance de Franck Pigeonneau, qui maîtrise déjà les outils.
     
     
     
@@ -170,7 +175,7 @@
     Cette étape est longue et sujette à erreurs, notament à cause du nombre de champs à changer, de l'absence totale de documentation sur l'outil, et du manque de clareté des messages d'erreurs produit par l'outil lors d'un problème dans le sdéclarations.
 
     \subsection{Calculs de la simulation}
-    Pour réaliser les calculs, on utilse le cluster du cemef: un serveur disposant de 100 noeuds de calcul, chacun disposant de deux processeurs pour un total de 64 coeurs. Une fois la simulation lancée, les taches sont réparties de façon automatique entre les coeurs pour une vitesse de calcul maximale. On peut agir sur la simulation au moyen d'un fichier lu à chaque itération qui sert d'interface homme-machine (ihm), et ainsi changer différents paramètres: température d'entrée de la matière dans le four, paramètres de l'asservissement PID, ... De plus, la simulation produit un fichier qui recense la valeur de certains paramètres à chaque itération, comme la température de sortie, les puissances électriques et thermiques fournies et les pertes thermiques à travers les parois, et des fichiers qui enregistre complètement les champs toutes les 100 itérations. On peut alors surveiller l'avancement de la simulation, et agir sur les paramètres afin d'obtenit un résultat satisfaisant (les calculs étant très longs, on veut pouvoir mener à bien une simulation qui n'a pas bien commencer)
+    Pour réaliser les calculs, on utilse le cluster du cemef: un serveur disposant de 100 noeuds de calcul, chacun disposant de deux processeurs pour un total de 64 coeurs. Une fois la simulation lancée, les taches sont réparties de façon automatique entre les coeurs pour une vitesse de calcul maximale. On peut agir sur la simulation au moyen d'un fichier lu à chaque itération qui sert d'interface homme-machine (ihm), et ainsi changer différents paramètres: température d'entrée de la matière dans le four, paramètres de l'asservissement PID, ... De plus, la simulation produit un fichier qui recense la valeur de certains paramètres à chaque itération, comme la température de sortie, les puissances électriques et thermiques fournies et les pertes thermiques à travers les parois, et des fichiers qui enregistre complètement les champs toutes les 100 itérations. On peut alors surveiller l'avancement de la simulation, et agir sur les paramètres afin d'obtenit un résultat satisfaisant (les calculs étant très longs, on veut pouvoir mener à bien une simulation qui n'a pas bien commencer).
 
     
     \section{Simulations réalisées}
@@ -204,5 +209,5 @@
      La boucle de convection est divisée en 2 sections, reliant les 2 zones principales que sont la zone de chauffage par électrodes et la zone de sortie, où le flux de matière est divisé en deux, l'un revenant dans la boucle, et l'un sortant du système. La vitesse de déplacement de la matière dans la boucle est déterminée grâce aux simulations. La zone de chauffage produit l'échauffement de température suivant :
      $$\Delta T = \frac{P_{elec}}{\dot{m}\cdot C_p}$$
      La simulation 
-	
+
 \end{document}
