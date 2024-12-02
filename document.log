@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2024.11.25)  28 NOV 2024 16:21
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2024.11.25)  28 NOV 2024 16:25
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -523,96 +523,17 @@ File: ./images/Géométrie fours.png Graphic file (type png)
 Package pdftex.def Info: ./images/Géométrie fours.png  used on input line 178
 .
 (pdftex.def)             Requested size: 393.87053pt x 212.89485pt.
- [5]
-! Missing } inserted.
-<inserted text> 
-                }
-l.188 	 \end{align}
-                   
-I've inserted something that you may have forgotten.
-(See the <inserted text> above.)
-With luck, this will get me unwedged. But if you
-really didn't forget anything, try typing `2' now; then
-my insertion and my current dilemma will both disappear.
-
-! Double subscript.
-<argument>  $$P_{SurfL}= \iint _ h_
-                                   {SurfL} (T_{flamme}-T)~dS ~~~~~~~~~~ \lan...
-l.188 	 \end{align}
-                   
-I treat `x_1_2' essentially like `x_1{}_2'.
-
-! Missing { inserted.
-<inserted text> 
-                {
-l.188 	 \end{align}
-                   
-I've put in what seems to be necessary to fix
-the current column of the current alignment.
-Try to go on, since this might almost work.
-
-! Missing } inserted.
-<inserted text> 
-                }
-l.188 	 \end{align}
-                   
-I've inserted something that you may have forgotten.
-(See the <inserted text> above.)
-With luck, this will get me unwedged. But if you
-really didn't forget anything, try typing `2' now; then
-my insertion and my current dilemma will both disappear.
-
-! Double subscript.
-<argument>  $$P_{SurfL}= \iint _ h_
-                                   {SurfL} (T_{flamme}-T)~dS ~~~~~~~~~~ \lan...
-l.188 	 \end{align}
-                   
-I treat `x_1_2' essentially like `x_1{}_2'.
-
-! Missing \endgroup inserted.
-<inserted text> 
-                \endgroup 
-l.188 	 \end{align}
-                   
-I've inserted something that you may have forgotten.
-(See the <inserted text> above.)
-With luck, this will get me unwedged. But if you
-really didn't forget anything, try typing `2' now; then
-my insertion and my current dilemma will both disappear.
-
-! Misplaced \omit.
-\math@cr@@@ ...@ \@ne \add@amps \maxfields@ \omit 
-                                                  \kern -\alignsep@ \iftag@ ...
-l.188 	 \end{align}
-                   
-I expect to see \omit only after tab marks or the \cr of
-an alignment. Proceed, and I'll ignore this case.
-
-! Missing { inserted.
-<inserted text> 
-                {
-l.188 	 \end{align}
-                   
-I've put in what seems to be necessary to fix
-the current column of the current alignment.
-Try to go on, since this might almost work.
-
-
-Overfull \hbox (15.88019pt too wide) detected at line 188
-[]
- []
-
-[6 <./images/Géométrie fours.png>] (document.aux)
+ [5] [6 <./images/Géométrie fours.png>] (document.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-01-04>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 8551 strings out of 474486
- 161430 string characters out of 5743754
+ 8549 strings out of 474486
+ 161376 string characters out of 5743754
  1932542 words of memory out of 5000000
- 30733 multiletter control sequences out of 15000+600000
+ 30731 multiletter control sequences out of 15000+600000
  598257 words of font info for 121 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  108i,8n,107p,10958b,428s stack positions out of 10000i,1000n,20000p,200000b,200000s
@@ -625,7 +546,7 @@ c/pxfonts/rpxr.pfb><C:/Users/lasma/AppData/Local/Programs/MiKTeX/fonts/type1/ur
 w/helvetic/uhvb8a.pfb><C:/Users/lasma/AppData/Local/Programs/MiKTeX/fonts/type1
 /urw/palatino/uplr8a.pfb><C:/Users/lasma/AppData/Local/Programs/MiKTeX/fonts/ty
 pe1/urw/palatino/uplri8a.pfb>
-Output written on document.pdf (6 pages, 96900 bytes).
+Output written on document.pdf (6 pages, 95564 bytes).
 PDF statistics:
  65 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
