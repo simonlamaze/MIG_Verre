@@ -204,41 +204,42 @@
 	Disposant de 4 postes de calculs , nous avons commencé par chercher à simuler un four  d'une forme ressemblant à celle d'un four industriel .
 
 
-     \subsection{Régulation en puissance à l'aide d'un PID}
-     \paragraph{Principe général et Besoin}
+    \section{Régulation à l'aide d'un PID}
+    \subsection{Asservissement en puissance électrique}
+    \paragraph{Principe général et Besoin}
 
-     Le paramètre principal à maîtriser pour un four pour un industriel est sa température de sortie. La pilotabilité de l'énergie apportée par électrodes en fait un moyen de régulation particulièrement adapté. Dans ses recherches passées, notre encadrant Franck Pigeonneau a utilisé un régulateur PID agissant sur la puissance des électrode, pour contrôler la température de sortie. La difficulté à modéliser le système formé par le bain de verre réduit la détermination des coefficients du PID à des méthodes empiriques. Nous nous proposons de réaliser une modélisation simplifiée afin de déterminer une estimation plus précise de ces coefficients.
+    Le paramètre principal à maîtriser pour un four pour un industriel est sa température de sortie. La pilotabilité de l'énergie apportée par électrodes en fait un moyen de régulation particulièrement adapté. Dans ses recherches passées, notre encadrant Franck Pigeonneau a utilisé un régulateur PID agissant sur la puissance des électrode, pour contrôler la température de sortie. La difficulté à modéliser le système formé par le bain de verre réduit la détermination des coefficients du PID à des méthodes empiriques. Nous nous proposons de réaliser une modélisation simplifiée afin de déterminer une estimation plus précise de ces coefficients.
 
-     \paragraph{Modélisation simplifiée}
-     Nous avons basé nos calculs sur le modèle de four à 5 électrodes. Puisque les boucles de convections définissent deux "domaines", il est possible de ne considérer que la seconde moitié du four menant à la sortie. Cela mène à ne considérer qu'une seule boucle de convection, qui se modélise par un retard dans le transort de la température entre les différents points du cycle.
+    \paragraph{Modélisation simplifiée}
+    Nous avons basé nos calculs sur le modèle de four à 5 électrodes. Puisque les boucles de convections définissent deux "domaines", il est possible de ne considérer que la seconde moitié du four menant à la sortie. Cela mène à ne considérer qu'une seule boucle de convection, qui se modélise par un retard dans le transort de la température entre les différents points du cycle.
 
-     \paragraph{Simulation sur Simlab}
-     La boucle de convection est divisée en 2 sections, reliant les 2 zones principales que sont la zone de chauffage par électrodes et la zone de sortie, où le flux de matière est divisé en deux, l'un revenant dans la boucle, et l'un sortant du système. La vitesse de déplacement de la matière dans la boucle est déterminée grâce aux simulations. La zone de chauffage produit l'échauffement de température suivant :
-     
-     $$\Delta T = \frac{P_{elec}}{\dot{m}\cdot C_p}$$
-     
-     Reste à modéliser la propagation de la chaleur aux différents points du cycle de convection. Nous pouvons comparer les temps caractéristiques de propagation de la chaleur par convection et par conduction :
+    \paragraph{Simulation sur Simlab}
+    La boucle de convection est divisée en 2 sections, reliant les 2 zones principales que sont la zone de chauffage par électrodes et la zone de sortie, où le flux de matière est divisé en deux, l'un revenant dans la boucle, et l'un sortant du système. La vitesse de déplacement de la matière dans la boucle est déterminée grâce aux simulations. La zone de chauffage produit l'échauffement de température suivant :
+    
+    $$\Delta T = \frac{P_{elec}}{\dot{m}\cdot C_p}$$
+    
+    Reste à modéliser la propagation de la chaleur aux différents points du cycle de convection. Nous pouvons comparer les temps caractéristiques de propagation de la chaleur par convection et par conduction :
 
-     $$\tau_{Conduction} = \frac{a^2\rho C_p}{K} \approx 134 \; h$$
-     $$\tau_{Convection} = \frac{d_{parcours}}{u_{moy}} \approx 133 \; s$$
+    $$\tau_{Conduction} = \frac{a^2\rho C_p}{K} \approx 134 \; h$$
+    $$\tau_{Convection} = \frac{d_{parcours}}{u_{moy}} \approx 133 \; s$$
 
-     Cela invite à négliger le terme de conduction thermique, et à modéliser le transport de la température par un retard de valeur $\Delta t=d_{parcours}/u_{moy}$. Néanmoins, la conduction thermique n'étant pas totalement absente, la température n'est pas discontinue, et il convient donc de rajouter un terme pour l'étape du transport, que nous considérerons d'ordre 1 pour plus de simplicité.\\
+    Cela invite à négliger le terme de conduction thermique, et à modéliser le transport de la température par un retard de valeur $\Delta t=d_{parcours}/u_{moy}$. Néanmoins, la conduction thermique n'étant pas totalement absente, la température n'est pas discontinue, et il convient donc de rajouter un terme pour l'étape du transport, que nous considérerons d'ordre 1 pour plus de simplicité.\\
 
-     \paragraph{Résultats de la simulation}
-     La simulation permet d'obtenir une bonne approximation de la valeur des coefficients du régulateur PID. Il apparaît à première vue que le terme le plus important est le terme proportionnel, et qu'il est possible de se passer des corrections intégrale et dérivée. On observe que le système ainsi réglé semble se comporter comme un système d'ordre 1. Theoriquement, il suffirait d'augmenter le terme proportionnel jusqu'à obtenir un dépassement pour diminuer le temps de réponse. Le système réel d'électrode étant limité en puissance, le gain $K_P$ doit lui aussi être limité.     
-     Cette première simulation permet de définir les coefficients suivants :
-     $$K_P=1000$$
-     $$K_I=0.001$$
-     $$K_D=0$$
-     Le choix de ne pas prendre un terme $K_I$ nul vient du fait que nous n'avons pas pris en compte les pertes thermiques, qui engendrent un besoin en apport de puissance supérieur, compromettant la précision de la régulation limitée au terme proportionnel.
+    \paragraph{Résultats de la simulation}
+    La simulation permet d'obtenir une bonne approximation de la valeur des coefficients du régulateur PID. Il apparaît à première vue que le terme le plus important est le terme proportionnel, et qu'il est possible de se passer des corrections intégrale et dérivée. On observe que le système ainsi réglé semble se comporter comme un système d'ordre 1. Theoriquement, il suffirait d'augmenter le terme proportionnel jusqu'à obtenir un dépassement pour diminuer le temps de réponse. Le système réel d'électrode étant limité en puissance, le gain $K_P$ doit lui aussi être limité.     
+    Cette première simulation permet de définir les coefficients suivants :
+    $$K_P=1000$$
+    $$K_I=0.001$$
+    $$K_D=0$$
+    Le choix de ne pas prendre un terme $K_I$ nul vient du fait que nous n'avons pas pris en compte les pertes thermiques, qui engendrent un besoin en apport de puissance supérieur, compromettant la précision de la régulation limitée au terme proportionnel.
 
-     \paragraph{Simulation du four}
-     Afin d'améliorer la précision des coefficients, nous avons simulé un four avec une régulation PID utilisant les coefficients précédemment définis. On observe que la température de sortie $T_{outlet}$ sur laquelle est réalisée l'asservissement converge avec un temps de réponse à 95\% de $2.0\cdot10^4 \; s$. Ce qui est convenable. Néanmoins, comme attendu, la températude de consigne n'est pas atteinte :
-     $$T_{finale}=1569.9 \;^{\circ}K ~~~~~~~~~~ T_{Cons}=1593.15 \;^{\circ}K$$
-     L'anayse de l'évolution des termes du régulateur permet d'obtenir une nouvelle estimation du coefficient $K_I$
+    \paragraph{Simulation du four}
+    Afin d'améliorer la précision des coefficients, nous avons simulé un four avec une régulation PID utilisant les coefficients précédemment définis. On observe que la température de sortie $T_{outlet}$ sur laquelle est réalisée l'asservissement converge avec un temps de réponse à 95\% de $2.0\cdot10^4 \; s$. Ce qui est convenable. Néanmoins, comme attendu, la températude de consigne n'est pas atteinte :
+    $$T_{finale}=1569.9 \;^{\circ}K ~~~~~~~~~~ T_{Cons}=1593.15 \;^{\circ}K$$
+    L'anayse de l'évolution des termes du régulateur permet d'obtenir une nouvelle estimation du coefficient $K_I$
 
-     \paragraph{Nouvelle estimation de $K_I$}
-     Une vision du régulateur PID est d'utiliser le terme Intégral pour compenser toutes les pertes énergétiques en régime stationnaire, et le terme proportionnel pour réagir aux fortes variations. En effet, lorsque la température de consigne est atteinte, le terme proportionnel est alors nul. En régime stationnaire, la puissance à apporter au milieu est donnée par : 
+    \paragraph{Nouvelle estimation de $K_I$}
+    Une vision du régulateur PID est d'utiliser le terme Intégral pour compenser toutes les pertes énergétiques en régime stationnaire, et le terme proportionnel pour réagir aux fortes variations. En effet, lorsque la température de consigne est atteinte, le terme proportionnel est alors nul. En régime stationnaire, la puissance à apporter au milieu est donnée par : 
     
     $$P_{apport}=\dot{m}C_P(T_{Cons}-T_{Inlet}) + P_{pertes} - P_{gaz}$$
      
@@ -248,7 +249,17 @@
     Grâce à la simulation Cimlib, on calcule la valeur du terme intégral $S_{Int}$ à $t=t_{95\%}$. On obtient alors :
     $$K_I = \frac{P_{apport}}{S_{Int}} \approx 0.039$$
 
-    \subsection{Annexe}
+    \subsection{Asservissement en température de voute}
+    \paragraph{Principe général}
+    Une autre manière de réguler la température de sortie est par le changement de la température de voute. En effet, dans notre simulation, la voute du four est considérée comme la partie chauffée au gaz, et réduire sa température tout en compensant la perte de puissance thermique avec plus de chauffage électrique est un bon moyen de réduire les émissions en $CO_{2}$ du four.
+
+    \paragraph{Modélisation}
+    Pour simplifier le système, on considère cette fois que la puissance fournie par les électrodes est constante, de valeur égale à la puissance thermique fournie en régime permanent dans la simulation avec apport principlament themrique. La température de voute est calculée selon la formule:
+    $$
+        T_{voute} = T_{base} + DT exp(Cons)
+    $$
+    avec $T_{base} = 1373,15K$, et 
+    \section{Annexe}
     \paragraph{Liste des instructions:}
     cd /work/MINES-PARISTECH/slamaze
     sf
