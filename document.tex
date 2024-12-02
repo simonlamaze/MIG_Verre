@@ -4,6 +4,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{graphicx}
+\usepackage{listings}
 \graphicspath{ {./images/} }
 
 \usepackage{bigints}
@@ -156,13 +157,6 @@
 
 	
 	\section{Réalisation des simulations}
- 	\raggedright
-	Apprentissage du logiciel gmsh pour définir la géométrie d'un four et calculer la maillage qui servira à appliquer la méthode aux éléments finis . Ensuite traduction en format .t , convenant au langage mtc , des fichier gmsh . 
-	Connexion au cluster de calcul, prise en main du logiciel Paraview pour visualiser les résultats .
-	
-	Pour le script, nous avons utilisé un squelette de code fourni par F.Pigeonneau .
-
-    L'objectif est d'utiliser un outil du cemef afin de simuler entièrement un four verrier, et optimiser la forme et l'apport d'énergie pour minimiser la consommation énergétique, les émissions de $CO_{2}$ et maximiser la qualité du verre produit.
 
     \subsection{Création du four}
     On commence par créer un maillage représentant le four à partir de ses dimensions, qui ont été déterminées préalablement. On utilise l'outil gmesh, qui génère un ensemble de points et de segments les reliants. Tous les champs, scalaires et vectoriels, seront calculés en ces points lors de la simulation. Il est donc nécessaire qu'il y en ait assez pour garantir la précision de la simulation, mais la quantité de calcul augmente avec le nombre de point. Il faut donc trouver la bonne finesse, qui peut être variable dans le maillage. On augmente la densité dans la gorge (tunnel d'évacuation du verre) et à proximité des zones de forte variation dans les champs.\\
@@ -170,12 +164,36 @@
     Une fois le maillage crée, on converti le fichier produit en un format particulier utilisé par la bibliothèque de calcul au moyen d'un script pyhton.
 
     \subsection{Définition du four pour le calcul}
-    Une fois que l'on dispose du maillage du four, et que l'on a décidé des paramètres de la simulation (durée, pas de temps, conditions aux limites, ...) on peut rentrer ces paramètres de façon à ce qu'ils puissent être lus par le logiciel de simulation. Pour cela, on utilise un langage de déclaration créé sur mesure pour l'outil. Tous les champs doivent être initialisés, et la façon dont ils sont calculé à chque pas de temps est défini, au moyen de solveurs d'équations aux dérivées partielles prédéfinis.\\
-    TODO: Ajouter extrait de code .mtc\\
+    Une fois que l'on dispose du maillage du four, et que l'on a décidé des paramètres de la simulation (durée, pas de temps, conditions aux limites, ...) on peut rentrer ces paramètres de façon à ce qu'ils puissent être lus par le logiciel de simulation. Pour cela, on utilise un langage de déclaration créé sur mesure pour l'outil. Tous les champs doivent être initialisés, et la façon dont ils sont calculés à chaque pas de temps est défini, au moyen de solveurs d'équations aux dérivées partielles prédéfinis.\\
+    \begin{figure}
+        \caption{Exemple de code pour le calcul d'une température de voute à profil gaussien}
+        \label{code.1}
+        \begin{lstlisting}[frame=single]
+            { Operation= Xnorm = X }
+            { Operation= Xnorm *= 2 }
+            { Operation= Xnorm /= L }
+            { Operation= Xnorm += -1 }
+            { Operation= Xnorm **= 2 }
+          
+            { Operation= Ynorm = Y }
+            { Operation= Ynorm *= 2 }
+            { Operation= Ynorm /= W }
+            { Operation= Ynorm += -1 }
+            { Operation= Ynorm /= 3 }
+            { Operation= Ynorm **= 2 }
+          
+            { Operation= Tvoute = Xnorm }
+            { Operation= Tvoute += Ynorm }
+            { Operation= Tvoute *= -1 }
+            { Operation= Tvoute EXP Tvoute }
+            { Operation= Tvoute *= TvouteCons }
+            { Operation= Tvoute += Tbase }
+        \end{lstlisting}
+    \end{figure}
     Cette étape est longue et sujette à erreurs, notament à cause du nombre de champs à changer, de l'absence totale de documentation sur l'outil, et du manque de clareté des messages d'erreurs produit par l'outil lors d'un problème dans le sdéclarations.
 
     \subsection{Calculs de la simulation}
-    Pour réaliser les calculs, on utilse le cluster du cemef: un serveur disposant de 100 noeuds de calcul, chacun disposant de deux processeurs pour un total de 64 coeurs. Une fois la simulation lancée, les taches sont réparties de façon automatique entre les coeurs pour une vitesse de calcul maximale. On peut agir sur la simulation au moyen d'un fichier lu à chaque itération qui sert d'interface homme-machine (ihm), et ainsi changer différents paramètres: température d'entrée de la matière dans le four, paramètres de l'asservissement PID, ... De plus, la simulation produit un fichier qui recense la valeur de certains paramètres à chaque itération, comme la température de sortie, les puissances électriques et thermiques fournies et les pertes thermiques à travers les parois, et des fichiers qui enregistre complètement les champs toutes les 100 itérations. On peut alors surveiller l'avancement de la simulation, et agir sur les paramètres afin d'obtenit un résultat satisfaisant (les calculs étant très longs, on veut pouvoir mener à bien une simulation qui n'a pas bien commencer).
+    Pour réaliser les calculs, on utilse le cluster du cemef: un serveur disposant de 100 noeuds de calcul, chacun disposant de deux processeurs pour un total de 64 coeurs. Une fois la simulation lancée, les taches sont réparties de façon automatique entre les coeurs pour une vitesse de calcul maximale. On peut agir sur la simulation au moyen d'un fichier lu à chaque itération qui sert d'interface homme-machine (ihm), et ainsi changer différents paramètres: température d'entrée de la matière dans le four, paramètres de l'asservissement PID, ... De plus, la simulation produit un fichier qui recense la valeur de certains paramètres à chaque itération, comme la température de sortie, les puissances électriques et thermiques fournies et les pertes thermiques à travers les parois, et des fichiers qui enregistre complètement les champs toutes les 100 itérations. On peut alors surveiller l'avancement de la simulation, et agir sur les paramètres afin d'obtenit un résultat satisfaisant (les calculs étant très longs, on veut pouvoir mener à bien une simulation qui n'a pas bien commencé).
 
     
     \section{Simulations réalisées}
@@ -183,19 +201,8 @@
 	
 	\subsection{Première série de calculs}
 	\paragraph{}
-	 Disposant de 4 postes de calculs , nous avons commencé par chercher à simuler un four  d'une forme ressemblant à celle d'un four industriel .
-	 
-	 \paragraph{Liste des instructions:}
-	 cd /work/MINES-PARISTECH/slamaze
-	 sf
-	 nano ihm.mtc => changer le temps à 0
-	 cd GlassFurnace3D/
-	 cimlib CFD driver glassfurnace3d.mtc
-	 
-	 ls Geometrie/
-	 mv Geometrie/indicfrontieres.vtu /work/MINES-PARISTECH/slamaze/ => open avec PARAVIEW, vérifier les frontières
-	 nano ihm.mtc , modifier le temps
-	 sbatch job.sh
+	Disposant de 4 postes de calculs , nous avons commencé par chercher à simuler un four  d'une forme ressemblant à celle d'un four industriel .
+
 
      \subsection{Régulation en puissance à l'aide d'un PID}
      \paragraph{Principe général et Besoin}
@@ -233,13 +240,25 @@
      \paragraph{Nouvelle estimation de $K_I$}
      Une vision du régulateur PID est d'utiliser le terme Intégral pour compenser toutes les pertes énergétiques en régime stationnaire, et le terme proportionnel pour réagir aux fortes variations. En effet, lorsque la température de consigne est atteinte, le terme proportionnel est alors nul. En régime stationnaire, la puissance à apporter au milieu est donnée par : 
     
-     $$P_{apport}=\dot{m}C_P(T_{Cons}-T_{Inlet}) + P_{pertes} - P_{gaz}$$
+    $$P_{apport}=\dot{m}C_P(T_{Cons}-T_{Inlet}) + P_{pertes} - P_{gaz}$$
      
-     d'où
-     $$P_{apport} \approx 25.394\;kW$$
+    d'où
+    $$P_{apport} \approx 25.394\;kW$$
 
-     Grâce à la simulation Cimlib, on calcule la valeur du terme intégral $S_{Int}$ à $t=t_{95\%}$. On obtient alors :
-     $$K_I = \frac{P_{apport}}{S_{Int}} \approx 0.039$$
-     
+    Grâce à la simulation Cimlib, on calcule la valeur du terme intégral $S_{Int}$ à $t=t_{95\%}$. On obtient alors :
+    $$K_I = \frac{P_{apport}}{S_{Int}} \approx 0.039$$
+
+    \subsection{Annexe}
+    \paragraph{Liste des instructions:}
+    cd /work/MINES-PARISTECH/slamaze
+    sf
+    nano ihm.mtc => changer le temps à 0
+    cd GlassFurnace3D/
+    cimlib CFD driver glassfurnace3d.mtc
+    
+    ls Geometrie/
+    mv Geometrie/indicfrontieres.vtu /work/MINES-PARISTECH/slamaze/ => open avec PARAVIEW, vérifier les frontières
+    nano ihm.mtc , modifier le temps
+    sbatch job.sh
 	
 \end{document}
