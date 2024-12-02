@@ -5,6 +5,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{graphicx}
+\usepackage{listings}
 \graphicspath{ {./images/} }
 
 \usepackage{bigints}
@@ -24,7 +25,12 @@
     Voici un four à fusion:
     
 
-    
+    \section{Objectifs}
+    \subsection{Contexte}
+    Le verre est un matériau produit à des températures très élevées, de l'ordre de 1300°C. Il feut utiliser des quantités d'énergies très importantes pour porter le matériau à cette températures, et le moyen utilisé aujourd'hui est principalement l'utilisation de bruleurs au gaz (les bruleur au fioul ne sont plus utilisés pour des raisons économiques) qui ont une consommation de l'ordre du $m^{3}.s^{-1}$. Pourtant, le verre liquide est conducteurs, ce qui signifie qu'une fois porté à suffisament haute température, il peut être chauffé par des électrodes qui créent un champ électrique dans le liquide et provoque un réchauffement par effet joule. Cependant, des contraintes de qualité du verre empêchent l'utilisation de cette méthode pour les verres de bonne qualité, car on observe alors une augmentation de la quantité de bulles dans le verre à cause de la modification de la dynamique du four. En effet, les flux de matières sont différents selon que la chaleur provienne du haut ou du fond du four, et les boucles de convection ne permettent plus d'évacuer convenablement les bulles.
+
+    \subsection{Objectifs}
+    Le but est de simule des verres alimentés principalement par source électrique, afin d'identifier les dynamiques de ces fours particuliers et permettre la conception de fours industriels fonctionnant à l'électricité qui ont donc une empreinte carbone plus faible (tant que l'électricité utlisée est verte). On s'intérresse d'abord à la compréhension des dynamiques des fours existant et connus, avant de proposer des modifications de ces outils pour utiliser plus d'électrcité. Pour ce faire, on dispose des outils du cemef et des connaissance de Franck Pigeonneau, qui maîtrise déjà les outils.
     
     
     
@@ -152,13 +158,6 @@
 
 	
 	\section{Réalisation des simulations}
- 	\raggedright
-	Apprentissage du logiciel gmsh pour définir la géométrie d'un four et calculer la maillage qui servira à appliquer la méthode aux éléments finis . Ensuite traduction en format .t , convenant au langage mtc , des fichier gmsh . 
-	Connexion au cluster de calcul, prise en main du logiciel Paraview pour visualiser les résultats .
-	
-	Pour le script, nous avons utilisé un squelette de code fourni par F.Pigeonneau .
-
-    L'objectif est d'utiliser un outil du cemef afin de simuler entièrement un four verrier, et optimiser la forme et l'apport d'énergie pour minimiser la consommation énergétique, les émissions de $CO_{2}$ et maximiser la qualité du verre produit.
 
     \subsection{Création du four}
     On commence par créer un maillage représentant le four à partir de ses dimensions, qui ont été déterminées préalablement. On utilise l'outil gmesh, qui génère un ensemble de points et de segments les reliants. Tous les champs, scalaires et vectoriels, seront calculés en ces points lors de la simulation. Il est donc nécessaire qu'il y en ait assez pour garantir la précision de la simulation, mais la quantité de calcul augmente avec le nombre de point. Il faut donc trouver la bonne finesse, qui peut être variable dans le maillage. On augmente la densité dans la gorge (tunnel d'évacuation du verre) et à proximité des zones de forte variation dans les champs.\\
@@ -166,12 +165,36 @@
     Une fois le maillage crée, on converti le fichier produit en un format particulier utilisé par la bibliothèque de calcul au moyen d'un script pyhton.
 
     \subsection{Définition du four pour le calcul}
-    Une fois que l'on dispose du maillage du four, et que l'on a décidé des paramètres de la simulation (durée, pas de temps, conditions aux limites, ...) on peut rentrer ces paramètres de façon à ce qu'ils puissent être lus par le logiciel de simulation. Pour cela, on utilise un langage de déclaration créé sur mesure pour l'outil. Tous les champs doivent être initialisés, et la façon dont ils sont calculé à chque pas de temps est défini, au moyen de solveurs d'équations aux dérivées partielles prédéfinis.\\
-    TODO: Ajouter extrait de code .mtc\\
+    Une fois que l'on dispose du maillage du four, et que l'on a décidé des paramètres de la simulation (durée, pas de temps, conditions aux limites, ...) on peut rentrer ces paramètres de façon à ce qu'ils puissent être lus par le logiciel de simulation. Pour cela, on utilise un langage de déclaration créé sur mesure pour l'outil. Tous les champs doivent être initialisés, et la façon dont ils sont calculés à chaque pas de temps est défini, au moyen de solveurs d'équations aux dérivées partielles prédéfinis.\\
+    \begin{figure}
+        \caption{Exemple de code pour le calcul d'une température de voute à profil gaussien}
+        \label{code.1}
+        \begin{lstlisting}[frame=single]
+            { Operation= Xnorm = X }
+            { Operation= Xnorm *= 2 }
+            { Operation= Xnorm /= L }
+            { Operation= Xnorm += -1 }
+            { Operation= Xnorm **= 2 }
+          
+            { Operation= Ynorm = Y }
+            { Operation= Ynorm *= 2 }
+            { Operation= Ynorm /= W }
+            { Operation= Ynorm += -1 }
+            { Operation= Ynorm /= 3 }
+            { Operation= Ynorm **= 2 }
+          
+            { Operation= Tvoute = Xnorm }
+            { Operation= Tvoute += Ynorm }
+            { Operation= Tvoute *= -1 }
+            { Operation= Tvoute EXP Tvoute }
+            { Operation= Tvoute *= TvouteCons }
+            { Operation= Tvoute += Tbase }
+        \end{lstlisting}
+    \end{figure}
     Cette étape est longue et sujette à erreurs, notament à cause du nombre de champs à changer, de l'absence totale de documentation sur l'outil, et du manque de clareté des messages d'erreurs produit par l'outil lors d'un problème dans le sdéclarations.
 
     \subsection{Calculs de la simulation}
-    Pour réaliser les calculs, on utilse le cluster du cemef: un serveur disposant de 100 noeuds de calcul, chacun disposant de deux processeurs pour un total de 64 coeurs. Une fois la simulation lancée, les taches sont réparties de façon automatique entre les coeurs pour une vitesse de calcul maximale. On peut agir sur la simulation au moyen d'un fichier lu à chaque itération qui sert d'interface homme-machine (ihm), et ainsi changer différents paramètres: température d'entrée de la matière dans le four, paramètres de l'asservissement PID, ... De plus, la simulation produit un fichier qui recense la valeur de certains paramètres à chaque itération, comme la température de sortie, les puissances électriques et thermiques fournies et les pertes thermiques à travers les parois, et des fichiers qui enregistre complètement les champs toutes les 100 itérations. On peut alors surveiller l'avancement de la simulation, et agir sur les paramètres afin d'obtenit un résultat satisfaisant (les calculs étant très longs, on veut pouvoir mener à bien une simulation qui n'a pas bien commencer)
+    Pour réaliser les calculs, on utilse le cluster du cemef: un serveur disposant de 100 noeuds de calcul, chacun disposant de deux processeurs pour un total de 64 coeurs. Une fois la simulation lancée, les taches sont réparties de façon automatique entre les coeurs pour une vitesse de calcul maximale. On peut agir sur la simulation au moyen d'un fichier lu à chaque itération qui sert d'interface homme-machine (ihm), et ainsi changer différents paramètres: température d'entrée de la matière dans le four, paramètres de l'asservissement PID, ... De plus, la simulation produit un fichier qui recense la valeur de certains paramètres à chaque itération, comme la température de sortie, les puissances électriques et thermiques fournies et les pertes thermiques à travers les parois, et des fichiers qui enregistre complètement les champs toutes les 100 itérations. On peut alors surveiller l'avancement de la simulation, et agir sur les paramètres afin d'obtenit un résultat satisfaisant (les calculs étant très longs, on veut pouvoir mener à bien une simulation qui n'a pas bien commencé).
 
     
     \section{Simulations réalisées}
@@ -179,63 +202,75 @@
 	
 	\subsection{Première série de calculs}
 	\paragraph{}
-	 Disposant de 4 postes de calculs , nous avons commencé par chercher à simuler un four  d'une forme ressemblant à celle d'un four industriel .
-	 
-	 \paragraph{Liste des instructions:}
-	 cd /work/MINES-PARISTECH/slamaze
-	 sf
-	 nano ihm.mtc => changer le temps à 0
-	 cd GlassFurnace3D/
-	 cimlib CFD driver glassfurnace3d.mtc
-	 
-	 ls Geometrie/
-	 mv Geometrie/indicfrontieres.vtu /work/MINES-PARISTECH/slamaze/ => open avec PARAVIEW, vérifier les frontières
-	 nano ihm.mtc , modifier le temps
-	 sbatch job.sh
+	Disposant de 4 postes de calculs , nous avons commencé par chercher à simuler un four  d'une forme ressemblant à celle d'un four industriel .
 
-     \subsection{Régulation en puissance à l'aide d'un PID}
-     \paragraph{Principe général et Besoin}
 
-     Le paramètre principal à maîtriser pour un four pour un industriel est sa température de sortie. La pilotabilité de l'énergie apportée par électrodes en fait un moyen de régulation particulièrement adapté. Dans ses recherches passées, notre encadrant Franck Pigeonneau a utilisé un régulateur PID agissant sur la puissance des électrode, pour contrôler la température de sortie. La difficulté à modéliser le système formé par le bain de verre réduit la détermination des coefficients du PID à des méthodes empiriques. Nous nous proposons de réaliser une modélisation simplifiée afin de déterminer une estimation plus précise de ces coefficients.
+    \section{Régulation à l'aide d'un PID}
+    \subsection{Asservissement en puissance électrique}
+    \paragraph{Principe général et Besoin}
 
-     \paragraph{Modélisation simplifiée}
-     Nous avons basé nos calculs sur le modèle de four à 5 électrodes. Puisque les boucles de convections définissent deux "domaines", il est possible de ne considérer que la seconde moitié du four menant à la sortie. Cela mène à ne considérer qu'une seule boucle de convection, qui se modélise par un retard dans le transort de la température entre les différents points du cycle.
+    Le paramètre principal à maîtriser pour un four pour un industriel est sa température de sortie. La pilotabilité de l'énergie apportée par électrodes en fait un moyen de régulation particulièrement adapté. Dans ses recherches passées, notre encadrant Franck Pigeonneau a utilisé un régulateur PID agissant sur la puissance des électrode, pour contrôler la température de sortie. La difficulté à modéliser le système formé par le bain de verre réduit la détermination des coefficients du PID à des méthodes empiriques. Nous nous proposons de réaliser une modélisation simplifiée afin de déterminer une estimation plus précise de ces coefficients.
 
-     \paragraph{Simulation sur Simlab}
-     La boucle de convection est divisée en 2 sections, reliant les 2 zones principales que sont la zone de chauffage par électrodes et la zone de sortie, où le flux de matière est divisé en deux, l'un revenant dans la boucle, et l'un sortant du système. La vitesse de déplacement de la matière dans la boucle est déterminée grâce aux simulations. La zone de chauffage produit l'échauffement de température suivant :
-     
-     $$\Delta T = \frac{P_{elec}}{\dot{m}\cdot C_p}$$
-     
-     Reste à modéliser la propagation de la chaleur aux différents points du cycle de convection. Nous pouvons comparer les temps caractéristiques de propagation de la chaleur par convection et par conduction :
+    \paragraph{Modélisation simplifiée}
+    Nous avons basé nos calculs sur le modèle de four à 5 électrodes. Puisque les boucles de convections définissent deux "domaines", il est possible de ne considérer que la seconde moitié du four menant à la sortie. Cela mène à ne considérer qu'une seule boucle de convection, qui se modélise par un retard dans le transort de la température entre les différents points du cycle.
 
-     $$\tau_{Conduction} = \frac{a^2\rho C_p}{K} \approx 134 \; h$$
-     $$\tau_{Convection} = \frac{d_{parcours}}{u_{moy}} \approx 133 \; s$$
-
-     Cela invite à négliger le terme de conduction thermique, et à modéliser le transport de la température par un retard de valeur $\Delta t=d_{parcours}/u_{moy}$. Néanmoins, la conduction thermique n'étant pas totalement absente, la température n'est pas discontinue, et il convient donc de rajouter un terme pour l'étape du transport, que nous considérerons d'ordre 1 pour plus de simplicité.\\
-
-     \paragraph{Résultats de la simulation}
-     La simulation permet d'obtenir une bonne approximation de la valeur des coefficients du régulateur PID. Il apparaît à première vue que le terme le plus important est le terme proportionnel, et qu'il est possible de se passer des corrections intégrale et dérivée. On observe que le système ainsi réglé semble se comporter comme un système d'ordre 1. Theoriquement, il suffirait d'augmenter le terme proportionnel jusqu'à obtenir un dépassement pour diminuer le temps de réponse. Le système réel d'électrode étant limité en puissance, le gain $K_P$ doit lui aussi être limité.     
-     Cette première simulation permet de définir les coefficients suivants :
-     $$K_P=1000$$
-     $$K_I=0.001$$
-     $$K_D=0$$
-     Le choix de ne pas prendre un terme $K_I$ nul vient du fait que nous n'avons pas pris en compte les pertes thermiques, qui engendrent un besoin en apport de puissance supérieur, compromettant la précision de la régulation limitée au terme proportionnel.
-
-     \paragraph{Simulation du four}
-     Afin d'améliorer la précision des coefficients, nous avons simulé un four avec une régulation PID utilisant les coefficients précédemment définis. On observe que la température de sortie $T_{outlet}$ sur laquelle est réalisée l'asservissement converge avec un temps de réponse à 95\% de $2.0\cdot10^4 \; s$. Ce qui est convenable. Néanmoins, comme attendu, la températude de consigne n'est pas atteinte :
-     $$T_{finale}=1569.9 \;^{\circ}K ~~~~~~~~~~ T_{Cons}=1593.15 \;^{\circ}K$$
-     L'anayse de l'évolution des termes du régulateur permet d'obtenir une nouvelle estimation du coefficient $K_I$
-
-     \paragraph{Nouvelle estimation de $K_I$}
-     Une vision du régulateur PID est d'utiliser le terme Intégral pour compenser toutes les pertes énergétiques en régime stationnaire, et le terme proportionnel pour réagir aux fortes variations. En effet, lorsque la température de consigne est atteinte, le terme proportionnel est alors nul. En régime stationnaire, la puissance à apporter au milieu est donnée par : 
+    \paragraph{Simulation sur Simlab}
+    La boucle de convection est divisée en 2 sections, reliant les 2 zones principales que sont la zone de chauffage par électrodes et la zone de sortie, où le flux de matière est divisé en deux, l'un revenant dans la boucle, et l'un sortant du système. La vitesse de déplacement de la matière dans la boucle est déterminée grâce aux simulations. La zone de chauffage produit l'échauffement de température suivant :
     
-     $$P_{apport}=\dot{m}C_P(T_{Cons}-T_{Inlet}) + P_{pertes} - P_{gaz}$$
-     
-     d'où
-     $$P_{apport} \approx 25.394\;kW$$
+    $$\Delta T = \frac{P_{elec}}{\dot{m}\cdot C_p}$$
+    
+    Reste à modéliser la propagation de la chaleur aux différents points du cycle de convection. Nous pouvons comparer les temps caractéristiques de propagation de la chaleur par convection et par conduction :
 
-     Grâce à la simulation Cimlib, on calcule la valeur du terme intégral $S_{Int}$ à $t=t_{95\%}$. On obtient alors :
-     $$K_I = \frac{P_{apport}}{S_{Int}} \approx 0.039$$
+    $$\tau_{Conduction} = \frac{a^2\rho C_p}{K} \approx 134 \; h$$
+    $$\tau_{Convection} = \frac{d_{parcours}}{u_{moy}} \approx 133 \; s$$
+
+    Cela invite à négliger le terme de conduction thermique, et à modéliser le transport de la température par un retard de valeur $\Delta t=d_{parcours}/u_{moy}$. Néanmoins, la conduction thermique n'étant pas totalement absente, la température n'est pas discontinue, et il convient donc de rajouter un terme pour l'étape du transport, que nous considérerons d'ordre 1 pour plus de simplicité.\\
+
+    \paragraph{Résultats de la simulation}
+    La simulation permet d'obtenir une bonne approximation de la valeur des coefficients du régulateur PID. Il apparaît à première vue que le terme le plus important est le terme proportionnel, et qu'il est possible de se passer des corrections intégrale et dérivée. On observe que le système ainsi réglé semble se comporter comme un système d'ordre 1. Theoriquement, il suffirait d'augmenter le terme proportionnel jusqu'à obtenir un dépassement pour diminuer le temps de réponse. Le système réel d'électrode étant limité en puissance, le gain $K_P$ doit lui aussi être limité.     
+    Cette première simulation permet de définir les coefficients suivants :
+    $$K_P=1000$$
+    $$K_I=0.001$$
+    $$K_D=0$$
+    Le choix de ne pas prendre un terme $K_I$ nul vient du fait que nous n'avons pas pris en compte les pertes thermiques, qui engendrent un besoin en apport de puissance supérieur, compromettant la précision de la régulation limitée au terme proportionnel.
+
+    \paragraph{Simulation du four}
+    Afin d'améliorer la précision des coefficients, nous avons simulé un four avec une régulation PID utilisant les coefficients précédemment définis. On observe que la température de sortie $T_{outlet}$ sur laquelle est réalisée l'asservissement converge avec un temps de réponse à 95\% de $2.0\cdot10^4 \; s$. Ce qui est convenable. Néanmoins, comme attendu, la températude de consigne n'est pas atteinte :
+    $$T_{finale}=1569.9 \;^{\circ}K ~~~~~~~~~~ T_{Cons}=1593.15 \;^{\circ}K$$
+    L'anayse de l'évolution des termes du régulateur permet d'obtenir une nouvelle estimation du coefficient $K_I$
+
+    \paragraph{Nouvelle estimation de $K_I$}
+    Une vision du régulateur PID est d'utiliser le terme Intégral pour compenser toutes les pertes énergétiques en régime stationnaire, et le terme proportionnel pour réagir aux fortes variations. En effet, lorsque la température de consigne est atteinte, le terme proportionnel est alors nul. En régime stationnaire, la puissance à apporter au milieu est donnée par : 
+    
+    $$P_{apport}=\dot{m}C_P(T_{Cons}-T_{Inlet}) + P_{pertes} - P_{gaz}$$
      
+    d'où
+    $$P_{apport} \approx 25.394\;kW$$
+
+    Grâce à la simulation Cimlib, on calcule la valeur du terme intégral $S_{Int}$ à $t=t_{95\%}$. On obtient alors :
+    $$K_I = \frac{P_{apport}}{S_{Int}} \approx 0.039$$
+
+    \subsection{Asservissement en température de voute}
+    \paragraph{Principe général}
+    Une autre manière de réguler la température de sortie est par le changement de la température de voute. En effet, dans notre simulation, la voute du four est considérée comme la partie chauffée au gaz, et réduire sa température tout en compensant la perte de puissance thermique avec plus de chauffage électrique est un bon moyen de réduire les émissions en $CO_{2}$ du four.
+
+    \paragraph{Modélisation}
+    Pour simplifier le système, on considère cette fois que la puissance fournie par les électrodes est constante, de valeur égale à la puissance thermique fournie en régime permanent dans la simulation avec apport principlament themrique. La température de voute est calculée selon la formule:
+    $$
+        T_{voute} = T_{base} + DT exp(Cons)
+    $$
+    avec $T_{base} = 1373,15K$, et 
+    \section{Annexe}
+    \paragraph{Liste des instructions:}
+    cd /work/MINES-PARISTECH/slamaze
+    sf
+    nano ihm.mtc => changer le temps à 0
+    cd GlassFurnace3D/
+    cimlib CFD driver glassfurnace3d.mtc
+    
+    ls Geometrie/
+    mv Geometrie/indicfrontieres.vtu /work/MINES-PARISTECH/slamaze/ => open avec PARAVIEW, vérifier les frontières
+    nano ihm.mtc , modifier le temps
+    sbatch job.sh
 	
 \end{document}
