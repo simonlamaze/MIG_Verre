@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2024.11.25)  28 NOV 2024 16:25
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2024.11.25)  2 DEC 2024 16:17
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -293,6 +293,30 @@ Package: inputenc 2021/02/14 v1.3d Input encoding file
 (C:\Users\lasma\AppData\Local\Programs\MiKTeX\tex/latex/base\fontenc.sty
 Package: fontenc 2021/04/29 v2.0v Standard LaTeX package
 )
+(C:\Users\lasma\AppData\Local\Programs\MiKTeX\tex/latex/listings\listings.sty
+\lst@mode=\count283
+\lst@gtempboxa=\box55
+\lst@token=\toks26
+\lst@length=\count284
+\lst@currlwidth=\dimen162
+\lst@column=\count285
+\lst@pos=\count286
+\lst@lostspace=\dimen163
+\lst@width=\dimen164
+\lst@newlines=\count287
+\lst@lineno=\count288
+\lst@maxwidth=\dimen165
+
+(C:\Users\lasma\AppData\Local\Programs\MiKTeX\tex/latex/listings\lstmisc.sty
+File: lstmisc.sty 2023/02/27 1.9 (Carsten Heinz)
+\c@lstnumber=\count289
+\lst@skipnumbers=\count290
+\lst@framebox=\box56
+)
+(C:\Users\lasma\AppData\Local\Programs\MiKTeX\tex/latex/listings\listings.cfg
+File: listings.cfg 2023/02/27 1.9 listings configuration
+))
+Package: listings 2023/02/27 1.9 (Carsten Heinz)
 (C:\Users\lasma\AppData\Local\Programs\MiKTeX\tex/latex/bigints\bigints.sty
 Package: bigints 2010/02/15 Writing big integrals
 Package bigints Info: This is Bigints by Merciadri Luca. on input line 5.
@@ -375,7 +399,7 @@ LaTeX Font Info:    Redeclaring math symbol \mathsterling on input line 164.
 LaTeX Font Info:    Redeclaring math symbol \hbar on input line 591.
 LaTeX Info: Redefining \not on input line 997.
 )
-LaTeX Font Info:    Trying to load font information for T1+pxr on input line 17
+LaTeX Font Info:    Trying to load font information for T1+pxr on input line 18
 .
 
 (C:\Users\lasma\AppData\Local\Programs\MiKTeX\tex/latex/pxfonts\t1pxr.fd
@@ -384,64 +408,64 @@ File: t1pxr.fd 2000/12/14 v1.0
 (C:\Users\lasma\AppData\Local\Programs\MiKTeX\tex/latex/l3backend\l3backend-pdf
 tex.def
 File: l3backend-pdftex.def 2024-01-04 L3 backend support: PDF output (pdfTeX)
-\l__color_backend_stack_int=\count283
-\l__pdf_internal_box=\box55
+\l__color_backend_stack_int=\count291
+\l__pdf_internal_box=\box57
 ) (document.aux)
 \openout1 = `document.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/pxmi/m/it on input line 17.
+LaTeX Font Info:    Checking defaults for OML/pxmi/m/it on input line 18.
 LaTeX Font Info:    Trying to load font information for OML+pxmi on input line 
-17.
+18.
 
 (C:\Users\lasma\AppData\Local\Programs\MiKTeX\tex/latex/pxfonts\omlpxmi.fd
 File: omlpxmi.fd 2000/12/14 v1.0
 )
-LaTeX Font Info:    ... okay on input line 17.
-LaTeX Font Info:    Checking defaults for OMS/pxsy/m/n on input line 17.
+LaTeX Font Info:    ... okay on input line 18.
+LaTeX Font Info:    Checking defaults for OMS/pxsy/m/n on input line 18.
 LaTeX Font Info:    Trying to load font information for OMS+pxsy on input line 
-17.
+18.
 
 (C:\Users\lasma\AppData\Local\Programs\MiKTeX\tex/latex/pxfonts\omspxsy.fd
 File: omspxsy.fd 2000/12/14 v1.0
 )
-LaTeX Font Info:    ... okay on input line 17.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 17.
-LaTeX Font Info:    ... okay on input line 17.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 17.
-LaTeX Font Info:    ... okay on input line 17.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 17.
-LaTeX Font Info:    ... okay on input line 17.
-LaTeX Font Info:    Checking defaults for OMX/pxex/m/n on input line 17.
+LaTeX Font Info:    ... okay on input line 18.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 18.
+LaTeX Font Info:    ... okay on input line 18.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 18.
+LaTeX Font Info:    ... okay on input line 18.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 18.
+LaTeX Font Info:    ... okay on input line 18.
+LaTeX Font Info:    Checking defaults for OMX/pxex/m/n on input line 18.
 LaTeX Font Info:    Trying to load font information for OMX+pxex on input line 
-17.
+18.
 
 (C:\Users\lasma\AppData\Local\Programs\MiKTeX\tex/latex/pxfonts\omxpxex.fd
 File: omxpxex.fd 2000/12/14 v1.0
 )
-LaTeX Font Info:    ... okay on input line 17.
-LaTeX Font Info:    Checking defaults for U/pxexa/m/n on input line 17.
+LaTeX Font Info:    ... okay on input line 18.
+LaTeX Font Info:    Checking defaults for U/pxexa/m/n on input line 18.
 LaTeX Font Info:    Trying to load font information for U+pxexa on input line 1
-7.
+8.
 
 (C:\Users\lasma\AppData\Local\Programs\MiKTeX\tex/latex/pxfonts\upxexa.fd
 File: upxexa.fd 2000/12/14 v1.0
 )
-LaTeX Font Info:    ... okay on input line 17.
+LaTeX Font Info:    ... okay on input line 18.
 
 (C:\Users\lasma\AppData\Local\Programs\MiKTeX\tex/context/base/mkii\supp-pdf.mk
 ii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count284
-\scratchdimen=\dimen162
-\scratchbox=\box56
-\nofMPsegments=\count285
-\nofMParguments=\count286
-\everyMPshowfont=\toks26
-\MPscratchCnt=\count287
-\MPscratchDim=\dimen163
-\MPnumerator=\count288
-\makeMPintoPDFobject=\count289
-\everyMPtoPDFconversion=\toks27
+\scratchcounter=\count292
+\scratchdimen=\dimen166
+\scratchbox=\box58
+\nofMPsegments=\count293
+\nofMParguments=\count294
+\everyMPshowfont=\toks27
+\MPscratchCnt=\count295
+\MPscratchDim=\dimen167
+\MPnumerator=\count296
+\makeMPintoPDFobject=\count297
+\everyMPtoPDFconversion=\toks28
 )
 (C:\Users\lasma\AppData\Local\Programs\MiKTeX\tex/latex/epstopdf-pkg\epstopdf-b
 ase.sty
@@ -453,102 +477,90 @@ Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
 fg
 File: epstopdf-sys.cfg 2021/03/18 v2.0 Configuration of epstopdf for MiKTeX
 ))
-LaTeX Info: Redefining \degres on input line 17.
-LaTeX Info: Redefining \up on input line 17.
+LaTeX Info: Redefining \degres on input line 18.
+LaTeX Info: Redefining \up on input line 18.
+\c@lstlisting=\count298
 LaTeX Font Info:    Trying to load font information for T1+pxss on input line 2
-0.
+1.
  (C:\Users\lasma\AppData\Local\Programs\MiKTeX\tex/latex/pxfonts\t1pxss.fd
 File: t1pxss.fd 2000/12/14 v1.0
 )
 LaTeX Font Info:    Font shape `T1/pxss/b/n' in size <12> not available
-(Font)              Font shape `T1/pxss/bx/n' tried instead on input line 20.
+(Font)              Font shape `T1/pxss/bx/n' tried instead on input line 21.
 LaTeX Font Info:    Font shape `T1/pxss/b/n' in size <24.88> not available
-(Font)              Font shape `T1/pxss/bx/n' tried instead on input line 20.
+(Font)              Font shape `T1/pxss/bx/n' tried instead on input line 21.
 LaTeX Font Info:    Trying to load font information for OT1+pxr on input line 2
-0.
+1.
 (C:\Users\lasma\AppData\Local\Programs\MiKTeX\tex/latex/pxfonts\ot1pxr.fd
 File: ot1pxr.fd 2000/12/14 v1.0
 )
 LaTeX Font Info:    Trying to load font information for U+pxmia on input line 2
-0.
+1.
 
 (C:\Users\lasma\AppData\Local\Programs\MiKTeX\tex/latex/pxfonts\upxmia.fd
 File: upxmia.fd 2000/12/14 v1.0
 )
 LaTeX Font Info:    Trying to load font information for U+pxsya on input line 2
-0.
+1.
 
 (C:\Users\lasma\AppData\Local\Programs\MiKTeX\tex/latex/pxfonts\upxsya.fd
 File: upxsya.fd 2000/12/14 v1.0
 )
 LaTeX Font Info:    Trying to load font information for U+pxsyb on input line 2
-0.
+1.
 
 (C:\Users\lasma\AppData\Local\Programs\MiKTeX\tex/latex/pxfonts\upxsyb.fd
 File: utxsyb.fd 2000/12/14 v1.0
 )
 LaTeX Font Info:    Trying to load font information for U+pxsyc on input line 2
-0.
+1.
 
 (C:\Users\lasma\AppData\Local\Programs\MiKTeX\tex/latex/pxfonts\upxsyc.fd
 File: upxsyc.fd 2000/12/14 v1.0
 )
 LaTeX Font Info:    Font shape `T1/pxss/b/n' in size <17.28> not available
-(Font)              Font shape `T1/pxss/bx/n' tried instead on input line 21.
+(Font)              Font shape `T1/pxss/bx/n' tried instead on input line 22.
+LaTeX Font Info:    Font shape `T1/pxss/b/n' in size <14.4> not available
+(Font)              Font shape `T1/pxss/bx/n' tried instead on input line 29.
+LaTeX Font Info:    Trying to load font information for TS1+pxr on input line 3
+0.
 
+(C:\Users\lasma\AppData\Local\Programs\MiKTeX\tex/latex/pxfonts\ts1pxr.fd
+File: ts1pxr.fd 2000/12/14 v1.0
+)
 [1
 
 
 {C:/Users/lasma/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}{C:/Users/lasm
-a/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/base/8r.enc}]
-LaTeX Font Info:    Font shape `T1/pxss/b/n' in size <14.4> not available
-(Font)              Font shape `T1/pxss/bx/n' tried instead on input line 55.
-
-
-LaTeX Warning: Command \texttwosuperior invalid in math mode on input line 65.
-
-LaTeX Font Info:    Trying to load font information for TS1+pxr on input line 6
-5.
-(C:\Users\lasma\AppData\Local\Programs\MiKTeX\tex/latex/pxfonts\ts1pxr.fd
-File: ts1pxr.fd 2000/12/14 v1.0
-)
-
-LaTeX Warning: Command \texttwosuperior invalid in math mode on input line 65.
-
-Missing character: There is no � in font pxr!
-[2] [3] [4]
-<./images/Géométrie fours.png, id=22, 787.743pt x 425.79076pt>
-File: ./images/Géométrie fours.png Graphic file (type png)
-<use ./images/Géométrie fours.png>
-Package pdftex.def Info: ./images/Géométrie fours.png  used on input line 178
-.
-(pdftex.def)             Requested size: 393.87053pt x 212.89485pt.
- [5] [6 <./images/Géométrie fours.png>] (document.aux)
+a/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/base/8r.enc}] [2] [3]
+[4] [5] [6] [7] [8] [9] [10] (document.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-01-04>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 8549 strings out of 474486
- 161376 string characters out of 5743754
- 1932542 words of memory out of 5000000
- 30731 multiletter control sequences out of 15000+600000
- 598257 words of font info for 121 fonts, out of 8000000 for 9000
+ 10174 strings out of 474486
+ 182949 string characters out of 5743754
+ 1953542 words of memory out of 5000000
+ 32344 multiletter control sequences out of 15000+600000
+ 600483 words of font info for 124 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 108i,8n,107p,10958b,428s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 108i,9n,107p,10958b,1133s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <C:/Users/lasma/AppData/Local/Programs/MiKTeX/fonts/type1/public/pxfonts/pxex
 .pfb><C:/Users/lasma/AppData/Local/Programs/MiKTeX/fonts/type1/public/pxfonts/p
 xexa.pfb><C:/Users/lasma/AppData/Local/Programs/MiKTeX/fonts/type1/public/pxfon
 ts/pxsy.pfb><C:/Users/lasma/AppData/Local/Programs/MiKTeX/fonts/type1/public/px
-fonts/rpxmi.pfb><C:/Users/lasma/AppData/Local/Programs/MiKTeX/fonts/type1/publi
-c/pxfonts/rpxr.pfb><C:/Users/lasma/AppData/Local/Programs/MiKTeX/fonts/type1/ur
-w/helvetic/uhvb8a.pfb><C:/Users/lasma/AppData/Local/Programs/MiKTeX/fonts/type1
-/urw/palatino/uplr8a.pfb><C:/Users/lasma/AppData/Local/Programs/MiKTeX/fonts/ty
-pe1/urw/palatino/uplri8a.pfb>
-Output written on document.pdf (6 pages, 95564 bytes).
+fonts/rpcxr.pfb><C:/Users/lasma/AppData/Local/Programs/MiKTeX/fonts/type1/publi
+c/pxfonts/rpxmi.pfb><C:/Users/lasma/AppData/Local/Programs/MiKTeX/fonts/type1/p
+ublic/pxfonts/rpxr.pfb><C:/Users/lasma/AppData/Local/Programs/MiKTeX/fonts/type
+1/public/pxfonts/rpxsc.pfb><C:/Users/lasma/AppData/Local/Programs/MiKTeX/fonts/
+type1/urw/helvetic/uhvb8a.pfb><C:/Users/lasma/AppData/Local/Programs/MiKTeX/fon
+ts/type1/urw/palatino/uplr8a.pfb><C:/Users/lasma/AppData/Local/Programs/MiKTeX/
+fonts/type1/urw/palatino/uplri8a.pfb>
+Output written on document.pdf (10 pages, 104726 bytes).
 PDF statistics:
- 65 PDF objects out of 1000 (max. 8388607)
+ 86 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
- 6 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 1 words of extra memory for PDF output out of 10000 (max. 10000000)
 

@@ -162,7 +162,7 @@
     \subsection{Création du four}
     On commence par créer un maillage représentant le four à partir de ses dimensions, qui ont été déterminées préalablement. On utilise l'outil gmesh, qui génère un ensemble de points et de segments les reliants. Tous les champs, scalaires et vectoriels, seront calculés en ces points lors de la simulation. Il est donc nécessaire qu'il y en ait assez pour garantir la précision de la simulation, mais la quantité de calcul augmente avec le nombre de point. Il faut donc trouver la bonne finesse, qui peut être variable dans le maillage. On augmente la densité dans la gorge (tunnel d'évacuation du verre) et à proximité des zones de forte variation dans les champs.\\
     TODO: ajouter images du four (mesh, geométrie)\\
-    Une fois le maillage crée, on converti le fichier produit en un format particulier utilisé par la bibliothèque de calcul au moyen d'un script pyhton.
+    Une fois le maillage crée, on converti le fichier produit en un format particulier utilisé par la bibliothèque de calcul au moyen d'un script python.
 
     \subsection{Définition du four pour le calcul}
     Une fois que l'on dispose du maillage du four, et que l'on a décidé des paramètres de la simulation (durée, pas de temps, conditions aux limites, ...) on peut rentrer ces paramètres de façon à ce qu'ils puissent être lus par le logiciel de simulation. Pour cela, on utilise un langage de déclaration créé sur mesure pour l'outil. Tous les champs doivent être initialisés, et la façon dont ils sont calculés à chaque pas de temps est défini, au moyen de solveurs d'équations aux dérivées partielles prédéfinis.\\
@@ -194,16 +194,13 @@
     Cette étape est longue et sujette à erreurs, notament à cause du nombre de champs à changer, de l'absence totale de documentation sur l'outil, et du manque de clareté des messages d'erreurs produit par l'outil lors d'un problème dans le sdéclarations.
 
     \subsection{Calculs de la simulation}
-    Pour réaliser les calculs, on utilse le cluster du cemef: un serveur disposant de 100 noeuds de calcul, chacun disposant de deux processeurs pour un total de 64 coeurs. Une fois la simulation lancée, les taches sont réparties de façon automatique entre les coeurs pour une vitesse de calcul maximale. On peut agir sur la simulation au moyen d'un fichier lu à chaque itération qui sert d'interface homme-machine (ihm), et ainsi changer différents paramètres: température d'entrée de la matière dans le four, paramètres de l'asservissement PID, ... De plus, la simulation produit un fichier qui recense la valeur de certains paramètres à chaque itération, comme la température de sortie, les puissances électriques et thermiques fournies et les pertes thermiques à travers les parois, et des fichiers qui enregistre complètement les champs toutes les 100 itérations. On peut alors surveiller l'avancement de la simulation, et agir sur les paramètres afin d'obtenit un résultat satisfaisant (les calculs étant très longs, on veut pouvoir mener à bien une simulation qui n'a pas bien commencé).
-
+    Pour réaliser les calculs, on utilse le cluster du cemef: un serveur disposant de 100 noeuds de calcul, chacun disposant de deux processeurs pour un total de 64 coeurs. Une fois la simulation lancée, les taches sont réparties de façon automatique entre les coeurs pour une vitesse de calcul maximale. On peut agir sur la simulation au moyen d'un fichier lu à chaque itération qui sert d'interface homme-machine (ihm), et ainsi changer différents paramètres: température d'entrée de la matière dans le four, paramètres de l'asservissement PID, ... De plus, la simulation produit un fichier qui recense la valeur de certains paramètres à chaque itération, comme la température de sortie, les puissances électriques et thermiques fournies et les pertes thermiques à travers les parois, et des fichiers qui enregistre complètement les champs toutes les 100 itérations. On peut alors surveiller l'avancement de la simulation, et agir sur les paramètres afin d'obtenir un résultat satisfaisant (les calculs étant très longs, on veut pouvoir mener à bien une simulation qui n'a pas bien commencé). 
     
-    \section{Simulations réalisées}
+    \subsection{Calculs avec une nouvelle composition de verre}
     
-	
-	\subsection{Première série de calculs}
-	\paragraph{}
-	Disposant de 4 postes de calculs , nous avons commencé par chercher à simuler un four  d'une forme ressemblant à celle d'un four industriel .
 
+    Le verre utilisé comprend \(65 \%\) de \(SiO_{2}\) , \(13 \% \) de CaO  et \(Na_{2}O\) à 25 \( \%\) . Pour relancer une simulation de four avec cette composition nous avons implémenté les nouveaux paramètres et calculé la température cible à iso-viscosité . La température cible est 173 degrés inférieure à celle précédente  (1420 K ) . On a ensuite cherché à comparer les rendements énergétiques et l'efficacité du four par rapport au verre précédent; cette diminution de la température cible diminue nettement l'énergie à apporter .     
+ 
 
     \section{Régulation à l'aide d'un PID}
     \subsection{Asservissement en puissance électrique}
