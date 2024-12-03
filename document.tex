@@ -5,6 +5,7 @@
 \usepackage[T1]{fontenc}
 \usepackage{graphicx}
 \usepackage{listings}
+\usepackage[toc,page]{appendix}
 \graphicspath{ {./images/} }
 
 \usepackage{bigints}
@@ -15,18 +16,17 @@
 \author{\small{Simon Lamaze - Corto Beck - Girardet Grégoire - Fraenkel Paul}}
 
 \begin{document}
-    
+    \raggedright
     \maketitle
     
     \section{Introduction}
-    \raggedright
     Ce mini-projet traite de la modélisation et de l'optimisation énergétique des fours à verre.  La compréhension des phénomènes physiques qui prennt place dans un four est essentielle à l'optimisation des procédés. \\ [0.5 cm]
     Voici un four à fusion:
     
 
     \section{Objectifs}
     \subsection{Contexte}
-    Le verre est un matériau produit à des températures très élevées, de l'ordre de 1300°C. Il feut utiliser des quantités d'énergies très importantes pour porter le matériau à cette températures, et le moyen utilisé aujourd'hui est principalement l'utilisation de bruleurs au gaz (les bruleur au fioul ne sont plus utilisés pour des raisons économiques) qui ont une consommation de l'ordre du $m^{3}.s^{-1}$. Pourtant, le verre liquide est conducteurs, ce qui signifie qu'une fois porté à suffisament haute température, il peut être chauffé par des électrodes qui créent un champ électrique dans le liquide et provoque un réchauffement par effet joule. Cependant, des contraintes de qualité du verre empêchent l'utilisation de cette méthode pour les verres de bonne qualité, car on observe alors une augmentation de la quantité de bulles dans le verre à cause de la modification de la dynamique du four. En effet, les flux de matières sont différents selon que la chaleur provienne du haut ou du fond du four, et les boucles de convection ne permettent plus d'évacuer convenablement les bulles.
+    Le verre est un matériau produit à des températures très élevées, de l'ordre de 1300°C. Il feut utiliser des quantités d'énergies très importantes pour porter le matériau à cette températures, et le moyen utilisé aujourd'hui est principalement l'utilisation de bruleurs au gaz (les bruleur au fioul ne sont plus utilisés pour des raisons économiques) qui ont une consommation de l'ordre du $m^{3}.s^{-1}$. Malgré des moyens mis en place pour augmenter l'éfficacité du chauffage, comme l'utilisation de préchauffage de l'air qui sert pour la combustion par un système d'alimentation alternée, cela reste particulièrement polluant. Pourtant, le verre liquide est conducteurs, ce qui signifie qu'une fois porté à suffisament haute température, il peut être chauffé par des électrodes qui créent un champ électrique dans le liquide et provoque un réchauffement par effet joule. Ce système permet de parvenir à des fours superboosté à partir de 25\% d'alimentation électrique, et à des fours hybrides à partir de 50\% d'alimentation électrique, voire à des fours complètement électriques. Cependant, des contraintes de qualité du verre empêchent l'utilisation de cette méthode pour les verres de bonne qualité, car on observe alors une augmentation de la quantité de bulles dans le verre à cause de la modification de la dynamique du four. En effet, les flux de matières sont différents selon que la chaleur provienne du haut ou du fond du four, et les boucles de convection ne permettent plus d'évacuer convenablement les bulles en faisant résider le verre dans le fours pour une durée assez longue.
 
     \subsection{Objectifs}
     Le but est de simule des verres alimentés principalement par source électrique, afin d'identifier les dynamiques de ces fours particuliers et permettre la conception de fours industriels fonctionnant à l'électricité qui ont donc une empreinte carbone plus faible (tant que l'électricité utlisée est verte). On s'intérresse d'abord à la compréhension des dynamiques des fours existant et connus, avant de proposer des modifications de ces outils pour utiliser plus d'électrcité. Pour ce faire, on dispose des outils du cemef et des connaissance de Franck Pigeonneau, qui maîtrise déjà les outils.
@@ -34,7 +34,6 @@
     
     
     \section{ Déroulement de la simulation}
-    \raggedright
     Tâche 1 : positionnement du problème : \\
     Conditions limites, conditions initiales, mise en équations \\[0.3 cm]
     Tâche 2: prise en main des outils de calcul\\
@@ -57,7 +56,6 @@
     - Les équations que nous nous appliquerons à résoudre seront les suivantes : \\
     \subsection{ Equations de Navier-Stokes et thermique}
     - Les équations que nous nous appliquerons à résoudre seront les suivantes : \\
-    \centering
     $$
     \left\{
     \begin{array} {ll} 
@@ -79,11 +77,11 @@
     
     
     \subsection{Puissance électrique}
-    \raggedright
+    Pour déterminer la puissance fournie au fluide par le sélectrodes, on calcul en chaque point le flux 
     On se place dans le cas uniphasé, en réalité, dans l'industrie le régime est triphasé, plus de calculs en annexes. \\ [0.2 cm ]
-    \centering
-    \[ P_{eq}=\int_\Omega \sigma_{e}(T)(\vec \nabla\phi)^2~dV  = \int_\Omega \vec \nabla[\sigma_{e}(T)\vec \nabla\phi]~dV \]\\
-    \raggedright
+    $$
+    [ P_{eq}=\int_\Omega \sigma_{e}(T)(\vec \nabla\phi)^2~dV  = \int_\Omega \vec \nabla[\sigma_{e}(T)\vec \nabla\phi]~dV
+    $$
     par intégration par partie et loi de conservation du potentiel ($ \vec{\nabla}^2 \phi = 0 $). Le théorème de Green-Ostrogradski donne: 
     
     \[ P_{eq}=\phi_{elec} \int_{\partial elec} \sigma_{e}(T)\vec \nabla\phi \cdot \vec{n}~dS\]
@@ -93,14 +91,10 @@
     Le taux de conversion $\alpha$ est une sigmoïde : fonction d'erreur de Gauss\\ [0.3cm]
     
     - On modélise la dépendance de la viscosité à la température par une loi de type VFT ( Vogel-Fulcher-Tamman) \\ [0.5 cm]
-    
-    \centering
     $$
     \eta (T)  = 10^{A_{\eta}} e^{\frac{ln(10) B}{T-T_{\eta}}} ~~~~~~~~~ log(\eta) = A_{\eta} + \frac{B}{T-T_{\eta}}
     $$
-    
-    
-    \raggedright
+
     - La dépendance de la masse volumique est : \\ [0.5 cm]
     \begin{center}
         
@@ -193,7 +187,7 @@
     Cette étape est longue et sujette à erreurs, notament à cause du nombre de champs à changer, de l'absence totale de documentation sur l'outil, et du manque de clareté des messages d'erreurs produit par l'outil lors d'un problème dans le sdéclarations.
 
     \subsection{Calculs de la simulation}
-    Pour réaliser les calculs, on utilse le cluster du cemef: un serveur disposant de 100 noeuds de calcul, chacun disposant de deux processeurs pour un total de 64 coeurs. Une fois la simulation lancée, les taches sont réparties de façon automatique entre les coeurs pour une vitesse de calcul maximale. On peut agir sur la simulation au moyen d'un fichier lu à chaque itération qui sert d'interface homme-machine (ihm), et ainsi changer différents paramètres: température d'entrée de la matière dans le four, paramètres de l'asservissement PID, ... De plus, la simulation produit un fichier qui recense la valeur de certains paramètres à chaque itération, comme la température de sortie, les puissances électriques et thermiques fournies et les pertes thermiques à travers les parois, et des fichiers qui enregistre complètement les champs toutes les 100 itérations. On peut alors surveiller l'avancement de la simulation, et agir sur les paramètres afin d'obtenit un résultat satisfaisant (les calculs étant très longs, on veut pouvoir mener à bien une simulation qui n'a pas bien commencé).
+    Pour réaliser les calculs, on utilse le cluster du cemef: un serveur disposant de 100 noeuds de calcul, chacun disposant de deux processeurs pour un total de 64 coeurs. Une fois la simulation lancée, les taches sont réparties de façon automatique entre les coeurs pour une vitesse de calcul maximale. On peut agir sur la simulation au moyen d'un fichier lu à chaque itération qui sert d'interface homme-machine (ihm), et ainsi changer différents paramètres: température d'entrée de la matière dans le four, paramètres de l'asservissement PID, ... De plus, la simulation produit un fichier qui recense la valeur de certains paramètres à chaque itération, comme la température de sortie, les puissances électriques et thermiques fournies et les pertes thermiques à travers les parois, et des fichiers qui enregistre complètement les champs régulièrement. On peut alors surveiller l'avancement de la simulation, et agir sur les paramètres afin d'obtenit un résultat satisfaisant (les calculs étant très longs, on veut pouvoir mener à bien une simulation qui n'a pas bien commencé).
 
     
     \section{Simulations réalisées}
@@ -256,11 +250,15 @@
     \paragraph{Modélisation}
     Pour simplifier le système, on considère cette fois que la puissance fournie par les électrodes est constante, de valeur égale à la puissance thermique fournie en régime permanent dans la simulation avec apport principlament themrique. La température de voute est calculée selon la formule:
     $$
-        T_{voute} = T_{base} + DT exp(Cons)
+        T_{voute} = T_{base} + DT e^{-\vec{r}^{2}}
     $$
-    avec $T_{base} = 1373,15K$, et 
-    \section{Annexe}
-    \paragraph{Liste des instructions:}
+    avec $T_{base} = 1373,15K$ la température minimale sur la surface, qui est une température froide pour un four à verre, et DT calculé par PID. De cette manière, on obtient un profil gaussien à la surface du verre.
+
+    \paragraph{Détermination de DT}
+    On cherche à calculer DT de sorte que la température maximale à la surface du four ne dépasse pas la température maximale possible à la voute d'un four à verre, qui est d'environ 1800°C. On doit donc toujours avoir $DT < 500K$. Comme on s'attend à avoir une erreur la plus faible au début de la simulation avec $\epsilon_{0} \approx 100K$, ce qui nous donne $K_p = 2,5$ pour un temps de réponse maximal en température. On utilise cette fois $K_{i} = 10^{-5}$.
+
+    \begin{appendices}
+    \section{Commandes}
     cd /work/MINES-PARISTECH/slamaze
     sf
     nano ihm.mtc => changer le temps à 0
@@ -271,5 +269,6 @@
     mv Geometrie/indicfrontieres.vtu /work/MINES-PARISTECH/slamaze/ => open avec PARAVIEW, vérifier les frontières
     nano ihm.mtc , modifier le temps
     sbatch job.sh
+    \end{appendices}
 	
 \end{document}
