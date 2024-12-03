@@ -1,0 +1,326 @@
+----------------------------------------------------------------------------
+Contruction du vecteur associant tous les champs utilises pour le remaillage
+----------------------------------------------------------------------------
+
+{ Associateur=
+  { Type= ModeleDeModeles }
+  { Affichage= 1 }
+  { Data=
+    { Champ= 
+      { Type= P0C_Scalaire_Par }
+      { Nom= MinNorme }
+      { Data= ValeurItem 1 1.e-7 }
+    }
+    { Champ= 
+      { Type= P1_Scalaire_Par }
+      { Nom= UneFonction }
+      { Data= ValeurItem 1 0 }
+    }
+    { Champ= 
+      { Type= P1_Vecteur_Par }
+      { Nom= UnVecteur }
+      { Data: ParametresNum/vecteur.txt }
+    }
+    { Champ= 
+      { Type= P0C_Scalaire_Par }
+      { Nom= nbC }
+      { Data= ValeurItem 1 0 }
+    }
+  }
+  { Dependance=
+    { Maillage= MaillagePrincipal }
+
+    Initialisation du compteur NbComposantes
+    ----------------------------------------
+
+    { Modele= InitNbComposantes }
+
+    Ajout de la temperature fonction de remaillage
+    --------------------------------------------------
+
+    { Modele= UpLoadT }
+    { Modele= AssociationScalaire }
+    { Modele= IncrementNbcomposantes }
+
+    Ajout de l'indicatrice de l'entree gauche
+    -----------------------------------------
+
+    { Modele= UpLoadLeftInlet }
+    { Modele= AssociationScalaire }
+    { Modele= IncrementNbcomposantes }
+
+    Ajout de l'indicatrice de l'entree gauche
+    -----------------------------------------
+
+    { Modele= UpLoadRightInlet }
+    { Modele= AssociationScalaire }
+    { Modele= IncrementNbcomposantes }
+    
+    Ajout de l'indicatrice de la surface libre
+    -----------------------------------------
+
+    { Modele= UpLoadFreeSurface }
+    { Modele= AssociationScalaire }
+    { Modele= IncrementNbcomposantes }
+    
+    Ajout de l'indicatrice de la sortie
+    -----------------------------------------
+
+    { Modele= UpLoadOutlet }
+    { Modele= AssociationScalaire }
+    { Modele= IncrementNbcomposantes }
+    
+  }
+}
+
+-----------------------------------------------------------
+Initialisation du nombres de composantes du vecteur général
+-----------------------------------------------------------
+
+{ InitNbComposantes=
+  { Type= ModeleArithmetique }
+  { Affichage= 1 }
+  { Data=
+    { Champ= 
+      { Type= P0C_Scalaire_Par }
+      { Nom= NbComposantes }
+      { Data= ValeurItem 1 0 }
+    }
+  }
+  { DependanceModifiable=
+    { Champ= NbComposantes }
+  }
+  { Dependance= 
+    { Maillage= MaillagePrincipal }
+    { Champ= Zero }
+  }
+  { Operation= NbComposantes = Zero }
+}
+
+---------------------------------------------------------
+Chargement de la temperature comme fonction de remaillage
+---------------------------------------------------------
+
+{ UpLoadT=
+  { Type= ModeleArithmetique }
+  { Affichage= 1 }
+  { DependanceModifiable=
+    { Champ= UneFonction }
+  }
+  { Dependance= 
+    { Maillage= MaillagePrincipal }
+    { Champ= T }
+  }
+  { Operation= UneFonction = T }
+}
+
+---------------------------------------------------------------------------
+Chargement de l'indicatrice de l'entree gauche comme fonction de remaillage
+---------------------------------------------------------------------------
+
+{ UpLoadLeftInlet=
+  { Type= ModeleArithmetique }
+  { Affichage= 1 }
+  { DependanceModifiable=
+    { Champ= UneFonction }
+  }
+  { Dependance= 
+    { Maillage= MaillagePrincipal }
+    { Champ= AppartientLeftInlet }
+  }
+  { Operation= UneFonction = AppartientLeftInlet }
+}
+
+
+---------------------------------------------------------------------------
+Chargement de l'indicatrice de l'entree droite comme fonction de remaillage
+---------------------------------------------------------------------------
+
+{ UpLoadRightInlet=
+  { Type= ModeleArithmetique }
+  { Affichage= 1 }
+  { DependanceModifiable=
+    { Champ= UneFonction }
+  }
+  { Dependance= 
+    { Maillage= MaillagePrincipal }
+    { Champ= AppartientRightInlet }
+  }
+  { Operation= UneFonction = AppartientRightInlet }
+}
+
+---------------------------------------------------------------------------
+Chargement de l'indicatrice de l'entree droite comme fonction de remaillage
+---------------------------------------------------------------------------
+
+{ UpLoadFreeSurface=
+  { Type= ModeleArithmetique }
+  { Affichage= 1 }
+  { DependanceModifiable=
+    { Champ= UneFonction }
+  }
+  { Dependance= 
+    { Maillage= MaillagePrincipal }
+    { Champ= AppartientFreeSurface }
+  }
+  { Operation= UneFonction = AppartientFreeSurface }
+}
+
+---------------------------------------------------------------------------
+Chargement de l'indicatrice de l'entree droite comme fonction de remaillage
+---------------------------------------------------------------------------
+
+{ UpLoadOutlet=
+  { Type= ModeleArithmetique }
+  { Affichage= 1 }
+  { DependanceModifiable=
+    { Champ= UneFonction }
+  }
+  { Dependance= 
+    { Maillage= MaillagePrincipal }
+    { Champ= AppartientOutlet }
+  }
+  { Operation= UneFonction = AppartientOutlet }
+}
+
+----------------------------------------------------
+Ajout d'un scalaire UneFonction au vecteur LeVecteur
+----------------------------------------------------
+
+{ AssociationScalaire=
+  { Type= ModeleParticulaire }
+  { Affichage= 1 }
+  { Data=
+    { ItemSolveur=
+      { Type= ISfonctionTC }
+      { Passe= 100 } 
+      { NbChampSolution= 2 }
+      { ChampSolution= LeVecteur nbC }
+      { NbChampParametre= 2 }
+      { ChampParametre= UneFonction NbComposantes }
+    }
+  }
+  { DependanceModifiable=
+    { Champ= LeVecteur }
+    { Champ= nbC }
+  }
+  { Dependance= 
+    { Maillage= MaillagePrincipal }
+    { Champ= UneFonction }
+    { Champ= NbComposantes }
+  }
+}
+
+-------------------------------------------------------------
+Incrementation du nombre des composantes du vecteur LeVecteur
+-------------------------------------------------------------
+
+{ IncrementNbcomposantes=
+  { Type= ModeleArithmetique }
+  { Affichage= 1 }
+  { DependanceModifiable=
+    { Champ= NbComposantes }
+  }
+  { Dependance=
+    { Maillage= MaillagePrincipal }
+    { Champ= nbC }
+  }
+  { Operation= NbComposantes += nbC }
+}
+
+-----------------------------------------------
+Normalisation du champ vecteur par sa norme max
+-----------------------------------------------
+
+{ normaliseVecteur=
+  { Type= ModeleDeModeles }
+  { Affichage= 1 }
+  { Dependance=      
+    { Maillage= MaillagePrincipal } 
+    { Modele= LaNorme } 
+    { Modele= normalisation } 
+  }
+}
+
+{ LaNorme=
+  { Type= ModeleParticulaire }
+  { Affichage= 1 }
+  { Data=
+    { Champ= 
+      { Type= P1_Scalaire_Par }
+      { Nom= normeUnVecteur }
+      { Data= ValeurItem 1 0 }
+    }
+    { ItemSolveur=
+      { Type= ISNorme }
+      { NbChampSolution= 1 }
+      { ChampSolution= normeUnVecteur }
+      { NbChampParametre= 1 }
+      { ChampParametre= UnVecteur }
+    }
+  }
+  { Dependance=
+    { Maillage= MaillagePrincipal }
+    { Champ= UnVecteur }
+  }
+}
+
+{ normalisation=
+  { Type= ModeleArithmetique }
+  { Affichage= 1 }
+  { Data=
+    { Champ= 
+      { Type= P0C_Scalaire_Par }
+      { Nom= Nscaling }
+      { Data= ValeurItem 1 5 }
+    }
+    { Champ= 
+      { Type= P0C_Scalaire_Par }
+      { Nom= ScaleNorme }
+      { Data= ValeurItem 1 1 }
+    }
+    { Champ= 
+      { Type= P1_Scalaire_Par }
+      { Nom= axx }
+      { Data= ValeurItem 1 0.00001 }
+    }
+  }
+  { DependanceModifiable=
+    { Champ= normeUnVecteur }
+    { Champ= UnVecteur }
+  }
+  { Dependance= 
+    { Maillage= MaillagePrincipal }
+    { Champ= MinNorme }
+    { Champ= Nscaling }
+    { Champ= ScaleNorme }
+    { Champ= axx }
+  }
+  { Operation= normeUnVecteur > axx }
+  { Operation= UnVecteur /= normeUnVecteur }
+  { Operation= UnVecteur *= Nscaling }	
+}
+
+{ AssociationVecteur=
+  { Type= ModeleParticulaire }
+  { Affichage= 1 }
+  { Data=
+    { ItemSolveur=
+      { Type= ISfonctionTC }
+      { Passe= 100 } 
+      { NbChampSolution= 2 }
+      { ChampSolution=  LeVecteur nbC }
+      { NbChampParametre= 2 }
+      { ChampParametre= UnVecteur NbComposantes }
+    }
+  }
+  { DependanceModifiable=
+    { Champ= LeVecteur }
+    { Champ= nbC }
+  }
+  { Dependance= 
+    { Maillage= MaillagePrincipal }
+    { Champ= UnVecteur }
+    { Champ= NbComposantes }
+  }
+}

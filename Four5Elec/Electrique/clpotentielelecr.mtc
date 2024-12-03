@@ -1,0 +1,76 @@
+-------------------------------------------------------------------------------------------
+Conditions aux limites pour la resolution de l'equation portant sur le potentiel electrique
+-------------------------------------------------------------------------------------------
+
+{ CLPotentielElecR= 
+  { Type= ModeleCLSurGeometres }
+  { Data=
+   { Entite= NOEUDS }
+
+    Condition de Neumann par defaut sur toutes les frontieres
+    ---------------------------------------------------------
+    { ConditionLimite=
+      { Nom= CLPotentielBordNoeud }
+      { Type= CLDirichlet }
+      { Appartient= BordNoeud }
+      { NbChamps= 1 }
+      { Degres= Zero }
+      { Valeurs= Zero }
+      { Priorite= 1 }
+    }
+
+    ----------------------------------------
+    Condition de Dirichlet sur l'electrode S
+    ----------------------------------------
+    
+    { ConditionLimite=
+      { Nom= CLPotentielElecS }
+      { Type= CLDirichlet }
+      { Appartient= AppartientElecS }
+      { NbChamps= 1 }
+      { Degres= Un }
+      { Valeurs= Un }
+      { Priorite= 2 }
+    }
+
+    ----------------------------------------
+    Condition de Dirichlet sur l'electrode T
+    ----------------------------------------
+    
+    { ConditionLimite=
+      { Nom= CLPotentielElecT }
+      { Type= CLDirichlet }
+      { Appartient= AppartientElecT }
+      { NbChamps= 1 }
+      { Degres= Un }
+      { Valeurs= -0.5 }
+      { Priorite= 2 }
+    }
+    
+    ----------------------------------------
+    Condition de Dirichlet sur l'electrode R
+    ----------------------------------------
+    
+    { ConditionLimite=
+      { Nom= CLPotentielElecR }
+      { Type= CLDirichlet }
+      { Appartient= AppartientElecR }
+      { NbChamps= 1 }
+      { Degres= Un }
+      { Valeurs= -0.5 }
+      { Priorite= 2 }
+    }
+  }
+  { Precision= PrecisionFrontieres }
+  { Dependance= 
+    { Maillage= MaillagePrincipal }
+    { Champ= PrecisionFrontieres }
+    { Champ= Un }
+    { Champ= Zero }
+    { Champ= -0.5 }
+    { Champ= BordNoeud }
+    { Champ= AppartientElecS }
+    { Champ= AppartientElecT }
+    { Champ= AppartientElecR }
+  }
+}

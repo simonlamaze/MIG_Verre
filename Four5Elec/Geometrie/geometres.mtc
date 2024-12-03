@@ -1,0 +1,665 @@
+-------------------------------------------
+Script defining the frontiers geometrically
+-------------------------------------------
+
+{ Geometres=
+  { Type= ModeleDeModeles }
+  { Affichage= 1 }
+  { Dependance= 
+    { Maillage= MaillagePrincipal }
+    
+    Full boundary
+    -------------
+    
+    { Modele= GeoBord }
+
+    Free surface
+    ------------
+    
+    { Modele= DefFreeSurface }
+    { Modele= GeoFreeSurface }
+    { Modele= IndicatriceFreeSurfaceP0 }
+    { Modele= IndicatriceFreeSurfaceP1step1 }
+    { Modele= IndicatriceFreeSurfaceP1step2 }
+
+    Left inlet
+    ----------
+
+    { Modele= DefLeftInlet }
+    { Modele= GeoLeftInlet }
+    { Modele= DistanceLeftInlet }
+    
+    Right inlet
+    -----------
+
+    { Modele= DefRightInlet }
+    { Modele= GeoRightInlet }
+    { Modele= DistanceRightInlet }
+    
+    Outlet
+    ------
+
+    { Modele= DefOutlet }
+    { Modele= GeoOutlet }
+    { Modele= IndicatriceOutletP0 }
+    { Modele= IndicatriceOutletP1step1 }
+    { Modele= IndicatriceOutletP1step2 }
+
+
+    Electrode S
+    -----------
+
+    { Modele= DefElecS1 }
+    { Modele= GeoElecS1 }
+    { Modele= DistanceElecS1 }
+	{ Modele= DefElecS2 }
+    { Modele= GeoElecS2 }
+    { Modele= DistanceElecS2 }
+	{ Modele= DefElecS3 }
+    { Modele= GeoElecS3 }
+    { Modele= DistanceElecS3 }
+	{ Modele= DefElecS4 }
+    { Modele= GeoElecS4 }
+    { Modele= DistanceElecS4 }
+	{ Modele= DefElecS5 }
+    { Modele= GeoElecS5 }
+    { Modele= DistanceElecS5 }
+	{ Modele= GeoUnionElecS }
+	{ Modele= CalculAppartientElecS }
+
+    Electrode T
+    -----------
+
+    { Modele= DefElecT1 }
+    { Modele= GeoElecT1 }
+    { Modele= DistanceElecT1 }
+	{ Modele= DefElecT2 }
+    { Modele= GeoElecT2 }
+    { Modele= DistanceElecT2 }
+	{ Modele= DefElecT3 }
+    { Modele= GeoElecT3 }
+    { Modele= DistanceElecT3 }
+	{ Modele= DefElecT4 }
+    { Modele= GeoElecT4 }
+    { Modele= DistanceElecT4 }
+	{ Modele= DefElecT5 }
+    { Modele= GeoElecT5 }
+    { Modele= DistanceElecT5 }
+	{ Modele= GeoUnionElecT }
+	{ Modele= CalculAppartientElecT }
+
+    Electrode R
+    -----------
+
+    { Modele= DefElecR1 }
+    { Modele= GeoElecR1 }
+    { Modele= DistanceElecR1 }
+	{ Modele= DefElecR2 }
+    { Modele= GeoElecR2 }
+    { Modele= DistanceElecR2 }
+	{ Modele= DefElecR3 }
+    { Modele= GeoElecR3 }
+    { Modele= DistanceElecR3 }
+	{ Modele= DefElecR4 }
+    { Modele= GeoElecR4 }
+    { Modele= DistanceElecR4 }
+	{ Modele= DefElecR5 }
+    { Modele= GeoElecR5 }
+    { Modele= DistanceElecR5 }
+	{ Modele= GeoUnionElecR }
+	{ Modele= CalculAppartientElecR }
+
+    Walls
+    -----
+
+    { Modele= CalculAppartientWall }
+
+    Extraction of the three Cartesian coordinates
+    ---------------------------------------------
+    
+    { Modele= ExtractionXYZ }
+
+    Saving of the geometry in vtu file
+    ----------------------------------
+
+    { Modele= SortiesGeometres }
+  }
+}
+
+-------------
+Full boundary
+-------------
+
+{ GeoBord=
+  { Type= ModeleDeGeometres }
+  { Affichage= 1 }
+  { Data=
+    { Geometre= 
+      { Type= GeometreChamp }
+      { Data=
+      	{ Champ= BordNoeud }
+        { ValeurSeuilMin= 0.999999 }
+        { ValeurSeuilMax= 1.000001 }
+      }
+    }
+  }
+  { Dependance=
+    { Maillage= MaillagePrincipal }
+  }
+}
+
+----------------------------------------
+Definition du repere de la surface libre
+----------------------------------------
+
+{ DefFreeSurface=
+  { Type= ModeleDeMouvements }
+  { Affichage= 1 }
+  { Data=
+    { Repere=
+      { Dimension: ParametresNum/dim.txt } 
+      { Nom= RepereFreeSurface }
+      { Origine: Geometrie/freesurforigin.txt } 
+      { Normale= 0. 0. -1. } 
+    }
+  }
+  { Dependance= 
+    { Maillage= MaillagePrincipal }
+  }
+}
+
+{ GeoFreeSurface=
+  { Type= ModeleDeGeometres }
+  { Affichage= 1 }
+  { Data=
+    { Geometre= 
+      { Nom= FreeSurface }
+      { Type= GeometreAnalytique }
+      { Data=
+      	{ Forme= 
+	  { Dimension: ParametresNum/dim.txt } 
+	  { Type= DemiPlan }
+	}
+	{ Repere= RepereFreeSurface }
+      }
+    }
+  }
+  { Dependance=
+    { Maillage= MaillagePrincipal }
+    { Modele= DefFreeSurface }
+  }
+}
+
+Determination de l'indicatrice de la surface libre sans les arêtes
+------------------------------------------------------------------
+
+{ IndicatriceFreeSurfaceP0=
+  { Type= ModeleFonctionnel }
+  { Affichage= 1 }
+  { Data=
+    { Champ=
+      { Type= P0_Scalaire_Par }
+      { Nom= AppartientFreeSurfaceP0 }
+      { Data= ValeurItem 1 0 }
+    }
+    { Boucle= Frontiere }
+    { SimplexSolveurFonctionnel=
+      { Type= SsfGeometreParFace }
+      { NbChampSolution= 1 }
+      { ChampSolution=AppartientFreeSurfaceP0  }
+      { NbChampParametre= 1 }
+      { ChampParametre= PrecisionFrontieres } 
+      { Geometre= FreeSurface }
+    }
+  }
+  { DependanceModifiable=
+    { Champ= AppartientFreeSurfaceP0 }
+  }
+  { Dependance=
+    { Maillage= MaillagePrincipal }
+    { Champ= PrecisionFrontieres }
+  }
+}
+
+{ IndicatriceFreeSurfaceP1step1=
+  { Type= ModeleFonctionnel }
+  { Affichage= 1 }
+  { Data=
+    { Champ= 
+      { Type= P1_Scalaire_Par } 
+      { Nom= AppartientFreeSurface } 
+      { Data= ValeurItem 1 0 } 
+    }
+    { Boucle= Frontiere }
+    { SimplexSolveurFonctionnel=
+      { Type= SsfTest }
+      { NbChampSolution= 1 }
+      { ChampSolution= AppartientFreeSurface }
+      { OperationsP1=
+      	{ NbChampsP1= 1 }
+      	{ Numero= 0 }
+      	{ Initialise= 1 }
+      	{ Operateur= min= }
+      }
+      { NbChampParametre= 1 }
+      { ChampParametre= AppartientFreeSurfaceP0 }
+    }
+  }
+  { DependanceModifiable=
+    { Champ= AppartientFreeSurface }
+  }
+  { Dependance=
+    { Maillage= MaillagePrincipal }
+    { Champ= AppartientFreeSurfaceP0 }
+  }
+}
+
+{ IndicatriceFreeSurfaceP1step2=
+  { Type= ModeleArithmetique }
+  { Affichage= 1 }
+  { DependanceModifiable=
+    { Champ= AppartientFreeSurface }
+  }
+  { Dependance=
+    { Maillage= MaillagePrincipal }
+    { Champ= BordNoeud }
+  }
+  { Operation= AppartientFreeSurface *= BordNoeud }
+}
+
+----------
+Left inlet
+----------
+
+{ DefLeftInlet=
+  { Type= ModeleDeMouvements }
+  { Affichage= 1 }
+  { Data=
+    { Repere=
+      { Dimension: ParametresNum/dim.txt } 
+      { Nom= RepereLeftInlet }
+      { Origine: Geometrie/leftinletorigin.txt }
+      { Normale= 0. -1. 0. } 
+    }
+  }
+  { Dependance= 
+    { Maillage= MaillagePrincipal }
+  }
+}
+
+{ GeoLeftInlet=
+  { Type= ModeleDeGeometres }
+  { Affichage= 1 }
+  { Data=
+    { Geometre= 
+      { Nom= LeftInlet }
+      { Type= GeometreAnalytique }
+      { Data=
+      	{ Forme= 
+	  { Dimension: ParametresNum/dim.txt } 
+	  { Type= DemiPlan }
+	}
+	{ Repere= RepereLeftInlet }
+      }
+    }
+  }
+  { Dependance=
+    { Maillage= MaillagePrincipal }
+    { Modele= DefLeftInlet }
+  }
+}
+
+{ DistanceLeftInlet=
+  { Type= ModeleParticulaire }
+  { Affichage= 1 }
+  { Data=
+    { Champ= 
+      { Type= P1_Scalaire_Par }
+      { Nom= AppartientLeftInlet }
+      { Data= ValeurItem 1 0. }
+    }
+    { Champ= 
+      { Type= P1_Scalaire_Par }
+      { Nom= LevelSetLeftInlet }
+      { Data= ValeurItem 1 0. }
+    }
+    { ItemSolveur=
+      { Type= ISGeometre }
+      { NbChampSolution= 2 }
+      { ChampSolution= AppartientLeftInlet LevelSetLeftInlet }
+      { NbChampParametre= 2 }
+      { ChampParametre= Coordonnees PrecisionFrontieres }
+      { Geometre= LeftInlet }
+      { Distance= 1 }
+      { Appartient= 1 }
+    }
+  }
+  { Dependance=
+    { Maillage= MaillagePrincipal }
+    { Champ= Coordonnees }
+    { Champ= PrecisionFrontieres }
+  }
+}
+
+
+-----------
+Right inlet
+-----------
+
+{ DefRightInlet=
+  { Type= ModeleDeMouvements }
+  { Affichage= 1 }
+  { Data=
+    { Repere=
+      { Dimension: ParametresNum/dim.txt } 
+      { Nom= RepereRightInlet }
+      { Origine: Geometrie/rightinletorigin.txt }
+      { Normale= 0. 1. 0. }
+    }
+  }
+  { Dependance= 
+    { Maillage= MaillagePrincipal }
+  }
+}
+
+{ GeoRightInlet=
+  { Type= ModeleDeGeometres }
+  { Affichage= 1 }
+  { Data=
+    { Geometre= 
+      { Nom= RightInlet }
+      { Type= GeometreAnalytique }
+      { Data=
+      	{ Forme= 
+	  { Dimension: ParametresNum/dim.txt } 
+	  { Type= DemiPlan }
+	}
+	{ Repere= RepereRightInlet }
+      }
+    }
+  }
+  { Dependance=
+    { Maillage= MaillagePrincipal }
+    { Modele= DefRightInlet }
+  }
+}
+
+{ DistanceRightInlet=
+  { Type= ModeleParticulaire }
+  { Affichage= 1 }
+  { Data=
+    { Champ= 
+      { Type= P1_Scalaire_Par }
+      { Nom= AppartientRightInlet }
+      { Data= ValeurItem 1 0. }
+    }
+    { Champ= 
+      { Type= P1_Scalaire_Par }
+      { Nom= LevelSetRightInlet }
+      { Data= ValeurItem 1 0. }
+    }
+    { ItemSolveur=
+      { Type= ISGeometre }
+      { NbChampSolution= 2 }
+      { ChampSolution= AppartientRightInlet LevelSetRightInlet }
+      { NbChampParametre= 2 }
+      { ChampParametre= Coordonnees PrecisionFrontieres }
+      { Geometre= RightInlet }
+      { Distance= 1 }
+      { Appartient= 1 }
+    }
+  }
+  { Dependance=
+    { Maillage= MaillagePrincipal }
+    { Champ= Coordonnees }
+    { Champ= PrecisionFrontieres }
+  }
+}
+
+------
+Outlet
+------
+
+{ DefOutlet=
+  { Type= ModeleDeMouvements }
+  { Affichage= 1 }
+  { Data=
+    { Repere=
+      { Dimension: ParametresNum/dim.txt } 
+      { Nom= RepereOutlet }
+      { Origine: Geometrie/outletorigin.txt } 
+      { Normale= -1. 0. 0. } 
+    }
+  }
+  { Dependance= 
+    { Maillage= MaillagePrincipal }
+  }
+}
+
+{ GeoOutlet=
+  { Type= ModeleDeGeometres }
+  { Affichage= 1 }
+  { Data=
+    { Geometre= 
+      { Nom= Outlet }
+      { Type= GeometreAnalytique }
+      { Data=
+      	{ Forme= 
+	  { Dimension: ParametresNum/dim.txt } 
+	  { Type= DemiPlan }
+	}
+	{ Repere= RepereOutlet }
+      }
+    }
+  }
+  { Dependance=
+    { Maillage= MaillagePrincipal }
+    { Modele= DefOutlet }
+  }
+}
+
+Determination de l'indicatrice de la sortie sans les arêtes
+-----------------------------------------------------------
+
+{ IndicatriceOutletP0=
+  { Type= ModeleFonctionnel }
+  { Affichage= 1 }
+  { Data=
+    { Champ=
+      { Type= P0_Scalaire_Par }
+      { Nom= AppartientOutletP0 }
+      { Data= ValeurItem 1 0 }
+    }
+    { Boucle= Frontiere }
+    { SimplexSolveurFonctionnel=
+      { Type= SsfGeometreParFace }
+      { NbChampSolution= 1 }
+      { ChampSolution=AppartientOutletP0  }
+      { NbChampParametre= 1 }
+      { ChampParametre= PrecisionFrontieres } 
+      { Geometre= Outlet }
+    }
+  }
+  { DependanceModifiable=
+    { Champ= AppartientOutletP0 }
+  }
+  { Dependance=
+    { Maillage= MaillagePrincipal }
+    { Champ= PrecisionFrontieres }
+  }
+}
+
+{ IndicatriceOutletP1step1=
+  { Type= ModeleFonctionnel }
+  { Affichage= 1 }
+  { Data=
+    { Champ= 
+      { Type= P1_Scalaire_Par } 
+      { Nom= AppartientOutlet } 
+      { Data= ValeurItem 1 0 } 
+    }
+    { Boucle= Frontiere }
+    { SimplexSolveurFonctionnel=
+      { Type= SsfTest }
+      { NbChampSolution= 1 }
+      { ChampSolution= AppartientOutlet }
+      { OperationsP1=
+      	{ NbChampsP1= 1 }
+      	{ Numero= 0 }
+      	{ Initialise= 1 }
+      	{ Operateur= min= }
+      }
+      { NbChampParametre= 1 }
+      { ChampParametre= AppartientOutletP0 }
+    }
+  }
+  { DependanceModifiable=
+    { Champ= AppartientOutlet }
+  }
+  { Dependance=
+    { Maillage= MaillagePrincipal }
+    { Champ= AppartientOutletP0 }
+  }
+}
+
+{ IndicatriceOutletP1step2=
+  { Type= ModeleArithmetique }
+  { Affichage= 1 }
+  { DependanceModifiable=
+    { Champ= AppartientOutlet }
+  }
+  { Dependance=
+    { Maillage= MaillagePrincipal }
+    { Champ= BordNoeud }
+  }
+  { Operation= AppartientOutlet *= BordNoeud }
+}
+
+
+{ Include: Geometrie/elecS.mtc }
+{ Include: Geometrie/elecT.mtc }
+{ Include: Geometrie/elecR.mtc }
+
+
+-------------------------------------------------
+Determination de l'indicatrice des parois du four
+-------------------------------------------------
+
+{ CalculAppartientWall=
+  { Type= ModeleArithmetique }
+  { Affichage= 1 }
+  { Data= 
+    { Champ= 
+      { Type= P1_Scalaire_Par }
+      { Nom= AppartientWall }
+      { Data= ValeurItem 1 0. }
+    }
+  }
+  { Dependance= 
+    { Maillage= MaillagePrincipal }
+    { Champ= BordNoeud }
+    { Champ= AppartientFreeSurface }
+    { Champ= AppartientLeftInlet }
+    { Champ= AppartientRightInlet }
+    { Champ= AppartientOutlet }
+    { Champ= AppartientElecS }
+    { Champ= AppartientElecT }
+    { Champ= AppartientElecR }
+    { Champ= 0.5 }
+  }
+  { DependanceModifiable=
+    { Champ= AppartientElecS }
+    { Champ= AppartientElecT }
+    { Champ= AppartientElecR }
+    { Champ= AppartientWall }
+  }
+
+  Modification des electrodes
+  ---------------------------
+  
+  { Operation= AppartientElecS *= BordNoeud }
+  { Operation= AppartientElecT *= BordNoeud }
+  { Operation= AppartientElecR *= BordNoeud }
+  
+  Détermination de l'indicatrice de la paroi four
+  -----------------------------------------------
+  { Operation= AppartientWall = BordNoeud }
+  { Operation= AppartientWall -= AppartientFreeSurface }
+  { Operation= AppartientWall -= AppartientLeftInlet }
+  { Operation= AppartientWall -= AppartientRightInlet }
+  { Operation= AppartientWall -= AppartientOutlet }
+  { Operation= AppartientWall -= AppartientElecS }
+  { Operation= AppartientWall -= AppartientElecT }
+  { Operation= AppartientWall -= AppartientElecR }
+  { Operation= AppartientWall >? 0.5  }
+}
+
+--------------------------
+Extraction des coordonnees
+--------------------------
+
+{ ExtractionXYZ=
+  { Type= ModeleParticulaire }
+  { Affichage= 1 }
+  { Data=
+    { Champ=
+      { Type= P1_Scalaire_Par }
+      { Nom= X }
+      { Data= ValeurItem 1 0. }
+    }
+    { Champ=
+      { Type= P1_Scalaire_Par }
+      { Nom= Y }
+      { Data= ValeurItem 1 0. }
+    }
+    { Champ=
+      { Type= P1_Scalaire_Par }
+      { Nom= Z }
+      { Data= ValeurItem 1 0. }
+    }
+    { ItemSolveur=
+      { Type= ISExtraire }
+      { Demultiplexage= 1 }
+      { NbChampSolution= 3 }
+      { ChampSolution= X Y Z }
+      { NbChampParametre= 1 }
+      { ChampParametre= Coordonnees }
+    }
+  }
+  { DependanceModifiable=
+    { Champ= X }
+    { Champ= Y }
+    { Champ= Z }
+  }
+  { Dependance=
+    { Maillage= MaillagePrincipal }
+    { Champ= Coordonnees }
+  }
+}
+
+--------------------------------------------------------
+Sauvegarde des indicatrices de frontières et de polymere
+--------------------------------------------------------
+
+{ SortiesGeometres=
+  { Type= ModeleSortie }
+  { Affichage= 1 }
+  { Data= 
+    { NomFichier= Geometrie/indicfrontieres } 
+    { TypeFichier= SortieVtu }
+  }
+  { Dependance= 
+    { Maillage= MaillagePrincipal }
+  }
+  { DependanceAEcrire= 
+    { Maillage= MaillagePrincipal }
+    { Champ= AppartientFreeSurface }
+    { Champ= AppartientLeftInlet }
+    { Champ= AppartientRightInlet }
+    { Champ= AppartientOutlet }
+    { Champ= AppartientElecS }
+    { Champ= AppartientElecT }
+    { Champ= AppartientElecR }
+    { Champ= AppartientWall }
+  }
+}

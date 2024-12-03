@@ -1,0 +1,47 @@
+Nombre de remaillage
+--------------------
+
+{ Target= NombreRemaillage 30 }
+{ Target= NbElements 600000 }
+{ Target= hMin 2.5e-3 }
+
+pas de temps
+------------
+
+{ Target= dt 5.e-1 }
+
+Temps final
+-----------
+
+{ Target= tFin 0 }
+
+Precision sur la convergence en T
+---------------------------------
+
+{ Target= PrecisionTemps 1.e-3 }
+
+Frequence de sauvegarde des résultats vtu
+-----------------------------------------
+
+{ Target= FrequenceStockage_vtk 10 }
+
+Donnees lies aux conditions d'entree
+------------------------------------
+
+{ Target= Tinlet 473.15 }
+{ Target= Sinlet 2.e-2 }
+{ Target= SFreeSurf 6. }
+{ Target= dotms 0.023148148148148147 }
+
+Propriete d'absorption du verre
+-------------------------------
+
+{ Target= betaR 50. }
+
+Parametres du PID
+-----------------
+
+{ Target= Toutcons 1593.15 }
+{ Target= KP 0.5 }
+{ Target= KI 0.1 }
+{ Target= KD 0.1 }

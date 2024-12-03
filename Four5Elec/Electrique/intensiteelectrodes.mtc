@@ -1,0 +1,530 @@
+----------------------------------------------------------------
+Determination des intensites electriques debitees aux electrodes 
+----------------------------------------------------------------
+
+{ IntensiteElectrodes=
+  { Type= ModeleDeModeles }
+  { Affichage= 1 }
+  { Dependance=
+    { Maillage= MaillagePrincipal }
+
+    Determination de la densite de courant de la partie reelle du potentiel
+    -----------------------------------------------------------------------
+
+    { Modele= DensiteElecR }
+
+    Determination de la densite de courant de la partie imaginaire du potentiel
+    ---------------------------------------------------------------------------
+    
+    { Modele= DensiteElecI }
+    
+    Determination des flux de courant sur l'electrode S
+    ---------------------------------------------------
+
+    { Modele= FluxElecSR }
+    { Modele= FluxElecSI }
+
+    Determination des flux de courant sur l'electrode T
+    ---------------------------------------------------
+
+    { Modele= FluxElecTR }
+    { Modele= FluxElecTI }
+
+    Determination des flux de courant sur l'electrode R
+    ---------------------------------------------------
+
+    { Modele= FluxElecRR }
+    { Modele= FluxElecRI }
+
+    Determination des intensites électrique sur l'electrode S
+    ---------------------------------------------------------
+    
+    { Modele= IntensiteElecSR }
+    { Modele= IntensiteElecSI }
+
+    Determination des intensites électrique sur l'electrode T
+    ---------------------------------------------------------
+    
+    { Modele= IntensiteElecTR }
+    { Modele= IntensiteElecTI }
+    
+    Determination des intensites électrique sur l'electrode R
+    ---------------------------------------------------------
+    
+    { Modele= IntensiteElecRR }
+    { Modele= IntensiteElecRI }
+
+  }
+}
+
+-----------------------------------------------------------------------
+Determination de la densite de courant de la partie reelle du potentiel
+-----------------------------------------------------------------------
+
+{ DensiteElecR=
+  { Type= ModeleArithmetique }
+  { Affichage= 1 }
+  { Data=
+    { Champ=
+      { Type= P1_Vecteur_Par }
+      { Nom= jElecR }
+      { Data: ParametresNum/vecteur.txt }
+    }
+  }
+  { DependanceModifiable= 
+    { Champ= jElecR }
+  }
+  { Dependance=
+    { Maillage= MaillagePrincipal }
+    { Champ= GradPhiR }
+    { Champ= SigmaElec }
+  }
+  { Operation= jElecR = GradPhiR }
+  { Operation= jElecR *= SigmaElec }
+}
+
+---------------------------------------------------------------------------
+Determination de la densite de courant de la partie imaginaire du potentiel
+---------------------------------------------------------------------------
+
+{ DensiteElecI=
+  { Type= ModeleArithmetique }
+  { Affichage= 1 }
+  { Data=
+    { Champ=
+      { Type= P1_Vecteur_Par }
+      { Nom= jElecI }
+      { Data: ParametresNum/vecteur.txt }
+    }
+  }
+  { DependanceModifiable= 
+    { Champ= jElecI }
+  }
+  { Dependance=
+    { Maillage= MaillagePrincipal }
+    { Champ= GradPhiI }
+    { Champ= SigmaElec } 
+  }
+  { Operation= jElecI = GradPhiI }
+  { Operation= jElecI *= SigmaElec }
+}
+
+--------------------------------------------------
+Determination du flux de courant sur l'electrode S
+--------------------------------------------------
+
+{ FluxElecSR=
+  { Type= ModeleFonctionnel }
+  { Affichage= 1 }
+  { Data=
+    { Champ=
+      { Type= P0_Scalaire_Par }
+      { Nom= FluxjElecSR }
+      { Data= ValeurItem 1 0. }
+    }
+    { SimplexSolveurFonctionnel=
+      { Type= SsfDebit }
+      { NbChampSolution= 1 }
+      { ChampSolution= FluxjElecSR }
+      { NbChampParametre= 2 }
+      { ChampParametre= PrecisionFrontieres jElecR }
+      { Dimension: ParametresNum/dim.txt }
+      { Geometre= ElecS }
+    }
+    { Boucle= Frontiere }
+  }
+  { DependanceModifiable=
+    { Champ= FluxjElecSR }
+  }
+  { Dependance=
+    { Maillage= MaillagePrincipal }
+    { Champ= PrecisionFrontieres }
+    { Champ= jElecR }
+  }
+}
+
+{ FluxElecSI=
+  { Type= ModeleFonctionnel }
+  { Affichage= 1 }
+  { Data=
+    { Champ=
+      { Type= P0_Scalaire_Par }
+      { Nom= FluxjElecSI }
+      { Data= ValeurItem 1 0. }
+    }
+    { SimplexSolveurFonctionnel=
+      { Type= SsfDebit }
+      { NbChampSolution= 1 }
+      { ChampSolution= FluxjElecSI }
+      { NbChampParametre= 2 }
+      { ChampParametre= PrecisionFrontieres jElecI }
+      { Dimension: ParametresNum/dim.txt }
+      { Geometre= ElecS }
+    }
+    { Boucle= Frontiere }
+  }
+  { DependanceModifiable=
+    { Champ= FluxjElecSI }
+  }
+  { Dependance=
+    { Maillage= MaillagePrincipal }
+    { Champ= PrecisionFrontieres }
+    { Champ= jElecI }
+  }
+}
+
+--------------------------------------------------
+Determination du flux de courant sur l'electrode T
+--------------------------------------------------
+
+{ FluxElecTR=
+  { Type= ModeleFonctionnel }
+  { Affichage= 1 }
+  { Data=
+    { Champ=
+      { Type= P0_Scalaire_Par }
+      { Nom= FluxjElecTR }
+      { Data= ValeurItem 1 0. }
+    }
+    { SimplexSolveurFonctionnel=
+      { Type= SsfDebit }
+      { NbChampSolution= 1 }
+      { ChampSolution= FluxjElecTR }
+      { NbChampParametre= 2 }
+      { ChampParametre= PrecisionFrontieres jElecR }
+      { Dimension: ParametresNum/dim.txt }
+      { Geometre= ElecT }
+    }
+    { Boucle= Frontiere }
+  }
+  { DependanceModifiable=
+    { Champ= FluxjElecTR }
+  }
+  { Dependance=
+    { Maillage= MaillagePrincipal }
+    { Champ= PrecisionFrontieres }
+    { Champ= jElecR }
+  }
+}
+
+{ FluxElecTI=
+  { Type= ModeleFonctionnel }
+  { Affichage= 1 }
+  { Data=
+    { Champ=
+      { Type= P0_Scalaire_Par }
+      { Nom= FluxjElecTI }
+      { Data= ValeurItem 1 0. }
+    }
+    { SimplexSolveurFonctionnel=
+      { Type= SsfDebit }
+      { NbChampSolution= 1 }
+      { ChampSolution= FluxjElecTI }
+      { NbChampParametre= 2 }
+      { ChampParametre= PrecisionFrontieres jElecI }
+      { Dimension: ParametresNum/dim.txt }
+      { Geometre= ElecT }
+    }
+    { Boucle= Frontiere }
+  }
+  { DependanceModifiable=
+    { Champ= FluxjElecTI }
+  }
+  { Dependance=
+    { Maillage= MaillagePrincipal }
+    { Champ= PrecisionFrontieres }
+    { Champ= jElecI }
+  }
+}
+
+--------------------------------------------------
+Determination du flux de courant sur l'electrode R
+--------------------------------------------------
+
+{ FluxElecRR=
+  { Type= ModeleFonctionnel }
+  { Affichage= 1 }
+  { Data=
+    { Champ=
+      { Type= P0_Scalaire_Par }
+      { Nom= FluxjElecRR }
+      { Data= ValeurItem 1 0. }
+    }
+    { SimplexSolveurFonctionnel=
+      { Type= SsfDebit }
+      { NbChampSolution= 1 }
+      { ChampSolution= FluxjElecRR }
+      { NbChampParametre= 2 }
+      { ChampParametre= PrecisionFrontieres jElecR }
+      { Dimension: ParametresNum/dim.txt }
+      { Geometre= ElecR }
+    }
+    { Boucle= Frontiere }
+  }
+  { DependanceModifiable=
+    { Champ= FluxjElecRR }
+  }
+  { Dependance=
+    { Maillage= MaillagePrincipal }
+    { Champ= PrecisionFrontieres }
+    { Champ= jElecR }
+  }
+}
+
+{ FluxElecRI=
+  { Type= ModeleFonctionnel }
+  { Affichage= 1 }
+  { Data=
+    { Champ=
+      { Type= P0_Scalaire_Par }
+      { Nom= FluxjElecRI }
+      { Data= ValeurItem 1 0. }
+    }
+    { SimplexSolveurFonctionnel=
+      { Type= SsfDebit }
+      { NbChampSolution= 1 }
+      { ChampSolution= FluxjElecRI }
+      { NbChampParametre= 2 }
+      { ChampParametre= PrecisionFrontieres jElecI }
+      { Dimension: ParametresNum/dim.txt }
+      { Geometre= ElecR }
+    }
+    { Boucle= Frontiere }
+  }
+  { DependanceModifiable=
+    { Champ= FluxjElecRI }
+  }
+  { Dependance=
+    { Maillage= MaillagePrincipal }
+    { Champ= PrecisionFrontieres }
+    { Champ= jElecI }
+  }
+}
+
+-----------------------------------------------------
+Determination de l'intensite reelle sur l'electrode S
+-----------------------------------------------------
+
+{ IntensiteElecSR=
+  { Type= ModeleParticulaire }
+  { Affichage= 1 }
+  { Data=
+    { Champ= 
+      { Type= P0C_Scalaire_Par }
+      { Nom= IElecSR }
+      { Data= ValeurItem 1 0. }
+    }
+    { Boucle= Frontiere }
+    { ItemSolveur=
+      { Type= ISSomme }
+      { NbChampSolution= 1 }
+      { ChampSolution= IElecSR }
+      { NbChampParametre= 1 }
+      { ChampParametre= FluxjElecSR }
+      { Operations=
+      	{ NbChampsATraiter= 1 }
+	{ Numero= 0 }
+	{ Initialise= Zero }
+	{ Moyenner= 0 }
+      }
+    }
+  }
+  { DependanceModifiable=
+    { Champ= IElecSR }
+  }
+  { Dependance=
+    { Maillage= MaillagePrincipal }
+    { Champ= FluxjElecSR }
+    { Champ= Zero }
+  }
+}
+
+---------------------------------------------------------
+Determination de l'intensite imaginaire sur l'electrode S
+---------------------------------------------------------
+
+{ IntensiteElecSI=
+  { Type= ModeleParticulaire }
+  { Affichage= 1 }
+  { Data=
+    { Champ= 
+      { Type= P0C_Scalaire_Par }
+      { Nom= IElecSI }
+      { Data= ValeurItem 1 0. }
+    }
+    { Boucle= Frontiere }
+    { ItemSolveur=
+      { Type= ISSomme }
+      { NbChampSolution= 1 }
+      { ChampSolution= IElecSI }
+      { NbChampParametre= 1 }
+      { ChampParametre= FluxjElecSI }
+      { Operations=
+      	{ NbChampsATraiter= 1 }
+	{ Numero= 0 }
+	{ Initialise= Zero }
+	{ Moyenner= 0 }
+      }
+    }
+  }
+  { DependanceModifiable=
+    { Champ= IElecSI }
+  }
+  { Dependance=
+    { Maillage= MaillagePrincipal }
+    { Champ= FluxjElecSI }
+    { Champ= Zero }
+  }
+}
+
+-----------------------------------------------------
+Determination de l'intensite reelle sur l'electrode T
+-----------------------------------------------------
+
+{ IntensiteElecTR=
+  { Type= ModeleParticulaire }
+  { Affichage= 1 }
+  { Data=
+    { Champ= 
+      { Type= P0C_Scalaire_Par }
+      { Nom= IElecTR }
+      { Data= ValeurItem 1 0. }
+    }
+    { Boucle= Frontiere }
+    { ItemSolveur=
+      { Type= ISSomme }
+      { NbChampSolution= 1 }
+      { ChampSolution= IElecTR }
+      { NbChampParametre= 1 }
+      { ChampParametre= FluxjElecTR }
+      { Operations=
+      	{ NbChampsATraiter= 1 }
+	{ Numero= 0 }
+	{ Initialise= Zero }
+	{ Moyenner= 0 }
+      }
+    }
+  }
+  { DependanceModifiable=
+    { Champ= IElecTR }
+  }
+  { Dependance=
+    { Maillage= MaillagePrincipal }
+    { Champ= FluxjElecTR }
+    { Champ= Zero }
+  }
+}
+
+---------------------------------------------------------
+Determination de l'intensite imaginaire sur l'electrode T
+---------------------------------------------------------
+
+{ IntensiteElecTI=
+  { Type= ModeleParticulaire }
+  { Affichage= 1 }
+  { Data=
+    { Champ= 
+      { Type= P0C_Scalaire_Par }
+      { Nom= IElecTI }
+      { Data= ValeurItem 1 0. }
+    }
+    { Boucle= Frontiere }
+    { ItemSolveur=
+      { Type= ISSomme }
+      { NbChampSolution= 1 }
+      { ChampSolution= IElecTI }
+      { NbChampParametre= 1 }
+      { ChampParametre= FluxjElecTI }
+      { Operations=
+      	{ NbChampsATraiter= 1 }
+	{ Numero= 0 }
+	{ Initialise= Zero }
+	{ Moyenner= 0 }
+      }
+    }
+  }
+  { DependanceModifiable=
+    { Champ= IElecTI }
+  }
+  { Dependance=
+    { Maillage= MaillagePrincipal }
+    { Champ= FluxjElecTI }
+    { Champ= Zero }
+  }
+}
+
+-----------------------------------------------------
+Determination de l'intensite reelle sur l'electrode R
+-----------------------------------------------------
+
+{ IntensiteElecRR=
+  { Type= ModeleParticulaire }
+  { Affichage= 1 }
+  { Data=
+    { Champ= 
+      { Type= P0C_Scalaire_Par }
+      { Nom= IElecRR }
+      { Data= ValeurItem 1 0. }
+    }
+    { Boucle= Frontiere }
+    { ItemSolveur=
+      { Type= ISSomme }
+      { NbChampSolution= 1 }
+      { ChampSolution= IElecRR }
+      { NbChampParametre= 1 }
+      { ChampParametre= FluxjElecRR }
+      { Operations=
+      	{ NbChampsATraiter= 1 }
+	{ Numero= 0 }
+	{ Initialise= Zero }
+	{ Moyenner= 0 }
+      }
+    }
+  }
+  { DependanceModifiable=
+    { Champ= IElecRR }
+  }
+  { Dependance=
+    { Maillage= MaillagePrincipal }
+    { Champ= FluxjElecRR }
+    { Champ= Zero }
+  }
+}
+
+---------------------------------------------------------
+Determination de l'intensite imaginaire sur l'electrode R
+---------------------------------------------------------
+
+{ IntensiteElecRI=
+  { Type= ModeleParticulaire }
+  { Affichage= 1 }
+  { Data=
+    { Champ= 
+      { Type= P0C_Scalaire_Par }
+      { Nom= IElecRI }
+      { Data= ValeurItem 1 0. }
+    }
+    { Boucle= Frontiere }
+    { ItemSolveur=
+      { Type= ISSomme }
+      { NbChampSolution= 1 }
+      { ChampSolution= IElecRI }
+      { NbChampParametre= 1 }
+      { ChampParametre= FluxjElecRI }
+      { Operations=
+      	{ NbChampsATraiter= 1 }
+	{ Numero= 0 }
+	{ Initialise= Zero }
+	{ Moyenner= 0 }
+      }
+    }
+  }
+  { DependanceModifiable=
+    { Champ= IElecRI }
+  }
+  { Dependance=
+    { Maillage= MaillagePrincipal }
+    { Champ= FluxjElecRI }
+    { Champ= Zero }
+  }
+}

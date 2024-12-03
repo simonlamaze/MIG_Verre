@@ -1,0 +1,58 @@
+----------------------------------------
+Calcul du terme de quantite de mouvement
+----------------------------------------
+
+{ Sourcequantitemvt=
+  { Type= ModeleArithmetique }
+  { Affichage= 1 }
+  { Data=
+    { Champ= 
+      { Type= P1_Vecteur_Par }
+      { Nom= F }
+      { Data: ParametresNum/vecteur.txt }
+    }
+    { Champ=
+      { Type= P1_Scalaire_Par }
+      { Nom= DeltaT }
+      { Data= ValeurItem 1 0. }
+    }
+    { Champ= 
+      { Type= P1_Scalaire_Par }
+      { Nom= DeltaRho }
+      { Data= ValeurItem 1 0. }
+    }
+  }
+  { Dependance= 
+    { Maillage= MaillagePrincipal }
+    { Champ= T }
+    { Champ= T0 }
+    { Champ= g }
+    { Champ= beta }
+    { Champ= DeltaRhosRho }
+    { Champ= UnmAlpha }
+  }
+  { DependanceModifiable= 
+    { Champ= DeltaT }
+    { Champ= DeltaRho }
+    { Champ= F }
+  }
+  
+  Calcul de DeltaT
+  ----------------
+  { Operation= DeltaT = T0 }
+  { Operation= DeltaT -= T }
+  { Operation= DeltaT *= beta }
+
+  Calcul de Deltarho
+  ------------------
+
+  { Operation= DeltaRho = DeltaRhosRho }
+  { Operation= DeltaRho *= UnmAlpha }
+  { Operation= DeltaRho += DeltaT }
+
+  Calcul du terme de flotabilité
+  ------------------------------
+  { Operation= F = g }
+  { Operation= F *= DeltaRho }
+}
+

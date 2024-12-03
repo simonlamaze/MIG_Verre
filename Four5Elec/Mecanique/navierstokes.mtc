@@ -1,0 +1,85 @@
+---------------------------------------------------
+Modele de resolution des equations de Navier-Stokes
+---------------------------------------------------
+
+{ NavierStokes=
+  { Type= ModeleElementsFinis }
+  { Affichage= 1 }
+  { Data=
+
+    Déclaration et initialisation de la vitesse et de la pression
+    -------------------------------------------------------------
+    
+    { Champ=
+      { Type= P1_Vecteur_Par }
+      { Nom= V }
+      { Data: ParametresNum/vecteur.txt }
+    }
+    { Champ= 
+      { Type= P1_Vecteur_Par }
+      { Nom= Vnm1 }
+      { Data: ParametresNum/vecteur.txt }
+    }
+    { Champ=
+      { Type= P1_Scalaire_Par }
+      { Nom= P }
+      { Data= ValeurItem 1 0 }
+    }
+
+    Résolution des équations de Navier-Stokes
+    -----------------------------------------
+    
+    { SolveurLocal=
+      { Type= NavierStokesVMS }
+      { Resolution= 4 }
+      { Preconditionneur= 124 }
+      { NbChampParametre= 6 }
+      { ChampParametre= Eta F V Vnm1 Rho dt }
+      { NbChampSolution= 2 }
+      { ChampSolution= V P }
+      { Newton= 1. }
+    }
+
+    Solveur de la résolution du système discrétisé
+    ----------------------------------------------
+
+    { Solveur= 
+      { Type= SolveurLineaire }
+      { Precision= 1e-7 }
+      { NbIterMaxLineaire= 500 }
+    }
+  }
+
+  Champs inconnus
+  ---------------
+  { DependanceModifiable= 
+    { Champ= V }
+    { Champ= P }
+  }
+
+  { Dependance=
+    { Maillage= MaillagePrincipal }
+    { ModeleCL= CLNavierStokes }
+    { Champ= Eta }
+    { Champ= F }
+    { Champ= Rho }
+    { Champ= dt }
+    { Champ= Vnm1 }
+  }
+}
+
+---------------------------------------------
+Sauvegarde de la vitesse pour prochain calcul
+---------------------------------------------
+
+{ UpdateV=
+  { Type= ModeleArithmetique }
+  { Dependance= 
+    { Maillage= MaillagePrincipal }
+    { Champ= V }
+  }
+  { DependanceModifiable=
+    { Champ= Vnm1 }
+  }
+  { Operation= Vnm1 = V }
+}
