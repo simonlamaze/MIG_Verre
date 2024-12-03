@@ -6,6 +6,8 @@
 \usepackage[T1]{fontenc}
 \usepackage{graphicx}
 \usepackage{listings}
+\usepackage{float}
+\usepackage{subcaption}
 \usepackage[toc,page]{appendix}
 \graphicspath{ {./images/} }
 
@@ -17,12 +19,14 @@
 \author{\small{Simon Lamaze - Corto Beck - Girardet Grégoire - Fraenkel Paul}}
 
 \begin{document}
-    \raggedright
     \maketitle
+    \tableofcontents
     
     \section{Introduction}
-    Ce mini-projet traite de la modélisation et de l'optimisation énergétique des fours à verre.  La compréhension des phénomènes physiques qui prennt place dans un four est essentielle à l'optimisation des procédés. \\ [0.5 cm]
-    Voici un four à fusion:
+    Ce mini-projet traite de la modélisation et de l'optimisation énergétique des fours à verre.  La compréhension des phénomènes physiques qui prennt place dans un four est essentielle à l'optimisation des procédés.
+    \begin{center}
+        \includegraphics[width=\linewidth]{ImageIllustration.jpeg}
+    \end{center}
     
 
     \section{Objectifs}
@@ -30,23 +34,78 @@
     Le verre est un matériau produit à des températures très élevées, de l'ordre de 1300°C. Il feut utiliser des quantités d'énergies très importantes pour porter le matériau à cette températures, et le moyen utilisé aujourd'hui est principalement l'utilisation de bruleurs au gaz (les bruleur au fioul ne sont plus utilisés pour des raisons économiques) qui ont une consommation de l'ordre du $m^{3}.s^{-1}$. Malgré des moyens mis en place pour augmenter l'éfficacité du chauffage, comme l'utilisation de préchauffage de l'air qui sert pour la combustion par un système d'alimentation alternée, cela reste particulièrement polluant. Pourtant, le verre liquide est conducteurs, ce qui signifie qu'une fois porté à suffisament haute température, il peut être chauffé par des électrodes qui créent un champ électrique dans le liquide et provoque un réchauffement par effet joule. Ce système permet de parvenir à des fours superboosté à partir de 25\% d'alimentation électrique, et à des fours hybrides à partir de 50\% d'alimentation électrique, voire à des fours complètement électriques. Cependant, des contraintes de qualité du verre empêchent l'utilisation de cette méthode pour les verres de bonne qualité, car on observe alors une augmentation de la quantité de bulles dans le verre à cause de la modification de la dynamique du four. En effet, les flux de matières sont différents selon que la chaleur provienne du haut ou du fond du four, et les boucles de convection ne permettent plus d'évacuer convenablement les bulles en faisant résider le verre dans le fours pour une durée assez longue.
 
     \subsection{Objectifs}
-    Le but est de simule des verres alimentés principalement par source électrique, afin d'identifier les dynamiques de ces fours particuliers et permettre la conception de fours industriels fonctionnant à l'électricité qui ont donc une empreinte carbone plus faible (tant que l'électricité utlisée est verte). On s'intérresse d'abord à la compréhension des dynamiques des fours existant et connus, avant de proposer des modifications de ces outils pour utiliser plus d'électrcité. Pour ce faire, on dispose des outils du cemef et des connaissance de Franck Pigeonneau, qui maîtrise déjà les outils.
+    Le but est de simuler des fours à verre alimentés principalement par source électrique, afin d'identifier les dynamiques de ces fours particuliers et permettre la conception de fours industriels fonctionnant à l'électricité qui ont donc une empreinte carbone plus faible (tant que l'électricité utlisée est verte). On s'intérresse d'abord à la compréhension des dynamiques des fours existant et connus, avant de proposer des modifications de ces outils pour utiliser plus d'électrcité. Pour ce faire, on dispose des outils du cemef et des connaissance de Franck Pigeonneau, qui maîtrise déjà les outils.
     
+    \section{Principes du four à verre}
+    \subsection{Introduction}
+    Le but du four à verre industriel est de produire en continue un verre de la meilleur qualité possible, mais aussi de qualité uniforme, et cela en continu. Pour cela, des matières premières sont insérées dans le fours en continu, et la production de verre se fait sans arrêt pour toute la durée de fonctionnement du four (10 à 20 ans). Des boucles de convection assurent un mélange des matériaux au sein du four et un temps de résidence suffisament long pour laisser le temps aux bulles de s'évacuer. Le verre étant très visqueux (10 000 fois plus que l'eau dans le four), le matériau doit rester plusieurs jours dans le four.
     
+    \begin{center}
+        \begin{figure}[h]
+            \includegraphics[width=\linewidth]{FourAVerre.png}
+        \end{figure}
+    \end{center}
+
+    \subsection{Chauffage du four}
+    Aujourd'hui, les fours sont alimentés principalement en gaz naturel. Pour minimiser l'énergie apportée à l'air qui sert de comburant, deux alimentation fonctionnent par alternance. Lorsque l'une sert d'entrée, l'autre sert de sortie et l'air chaud de l'intérieur passe à travers un récupérateur de chaleur. De taille très importante, cet appareil représente une part significative du coût du four mais voit son utilisation rentabilisée au bout de quelques années par les économies de gaz qu'il permet. Ainsi, lorsque l'air entre dans le four, il n'est plus à température ambiente mais déjà à plusieurs centaines de degrés.\\
+    Le gaz naturel pourrais être remplacé par du dihydrogène, qui a l'avantage de pouvoir être produit par électricité. Cependant, cette méthode pose aussi des problèmes. En effet, il n'existe aujourd'hui toujours pas de réseau de distributionde dihydrogène à grande échelle ce qui signifie qu'il doit être produit sur site, principalement à partir d'hydrocarbures. De plus, les flammes de dihydrogène sont invisibles par les caméra qui sont sensibles au visible, ce qui signifie qu'elle ne sont pas compatibles avec l'équipement de surveillance actuel qui permet la gestion des flammes.
+
+    \subsection{Géométrie du four}
+    \begin{center}
+        \begin{figure}[h]
+            \includegraphics[width=\linewidth]{VueEnCoupe.png}
+        \end{figure}
+    \end{center}
+    La forme du bain est étidiée pour maximiser la qualité du verre produit. Lors de son entrée, la matière est prise dans une première boucle de convection, qui lui permet de fondre et de s'homogénéiser. Cette boucle de trouve dans la plus grande zone du bain, séparée de l'autre zone par un petit muret. Celui-ci à pour but de faciliter la formation de la seconde boucle de convection, séparée de la première et qui a pour but de parfaire la préparation du verre, en éliminant les dernières bulles et en finalisant l'homogénéisation du mélange. La géométrie du bain est très importante pour la qualité finale du verre, et on se reposera sur des formes existantes pour créer notre modèle numérique afin de maximiser nos chances de trouver une forme qui fonctionne.
+
+    \subsection{Extraction du verre}
+    Une fois que le verre a fini sont parcours dans le four, il est extrait du bain par une gorge qui le mène vers des feeders. À cette étape, le verre doit atteindre sa température optimale de formage, et être maintenu assez chaud jusqu'à sont arrivée dans le moule. Pour cette raison, bien que le verre doive descendre en température, il est tout de même nécessaire de chauffer les conduite afin de garder le verre assez chaud, ce qui est une autre source d'émissions de GES.
+
+    \section{Modèles étudiés}
+    Afin de comparer les fours classiques, avec très peu de contribution électrique, et les fours hybrides, avec une puissance apportée principalement par électricité, on va modéliser deux fours de tailles identiques.
+
+    \subsection{Four classique}
+    Le premier modèle étidié est un four classique, à alimentation principalement thermique avec appoint de chauffage par courant triphasé via trois électrodes.
+
+    \begin{center}
+        \begin{figure}[H]
+            \includegraphics[width=0.7\linewidth]{FourWall.png}
+        \end{figure}
+    \end{center}
+
+    On a reproduit ici la géométrie classique d'un four à verre. Les électrodes centrales permettent d'aider à la formation de la boucle de convection dans le grand bassin.
     
-    \section{ Déroulement de la simulation}
+
+    \subsection{Four hybride}
+    Ce modèle a pour but d'étudier le comportment du four chauffé principalemnt par les électodes. Pour limiter la densité de courant sur les électrodes et ainsi réduire la corrosion du métal, on place de nmobreuses électrodes. Elle fonctionnent par groupes de trois, dans lesquels les électrodes sont déphasées de $\frac{2\pi}{3}$ l'une par rapport à l'autre, ce qui fait qu'elles forment globalemnt trois groupes de cinq électrodes en phase, ce qui correspond à une aimentation industrielle standard en courant triphasé.
+
+    \begin{center}
+        \begin{figure}[H]
+            \includegraphics[width=0.7\linewidth]{Four5Elec.png}
+        \end{figure}
+    \end{center}
+
+
+
+
+    \section{Déroulement de la simulation}
     Tâche 1 : positionnement du problème : \\
-    Conditions limites, conditions initiales, mise en équations \\[0.3 cm]
+    Conditions limites, conditions initiales, mise en équations \\
+
+
     Tâche 2: prise en main des outils de calcul\\
-    Maillage, cluster, post-traitement, CIMLIB, vitesse des calculs \\ [0.3 cm]
+    Maillage, cluster, post-traitement, CIMLIB, vitesse des calculs \\
+
     
     Tâche 3 : Calcul sur un cas à voûte chaude\\ 
-    Obtenir un cas convergé, bilan énergétique \\ [0.3 cm]
+    Obtenir un cas convergé, bilan énergétique \\
+
     
     Tâche 4 : Calcul sur un cas à voûte plus froide \\ 
-    Same\\ [0.3 cm]
+    Same\\
+
     
-    Tâche 5: Bilan du gain énergétique et des émissions carbone \\ [0.5cm]
+    Tâche 5: Bilan du gain énergétique et des émissions carbone \\
     
     
     On  utilise le logiciel Paraview pour visualiser les résultats.
@@ -54,27 +113,44 @@
     Faire plusieurs calculs avec des tailles différentes.
     
     \section{Positionnement du problème}
-    - Les équations que nous nous appliquerons à résoudre seront les suivantes : \\
+    On va s'attcher à résoudre par méthode des éléments finis les équation qui régissent la dynamique du verre, considéré incompressible, qui sont les suivantes.
+    
     \subsection{ Equations de Navier-Stokes et thermique}
     - Les équations que nous nous appliquerons à résoudre seront les suivantes : \\
-    $$
-    \left\{
-    \begin{array} {ll} 
-        \vec {\nabla}. \vec{V} = 0  ~~~~~~~~~  conservation~de~la~masse\\
+
+    \begin{figure}[H]
+        \centering
+        \begin{subfigure}[c]{\textwidth}
+            $$\vec {\nabla} \cdot \vec{u} = 0$$
+            \caption{Conservation de la masse}
+        \end{subfigure}
+        \begin{subfigure}[c]{\textwidth}
+            $$\rho_{0} \frac{D\vec{u}}{Dt} = - \vec {\nabla} P + \vec {\nabla} \cdot [ 2 \eta \vec{\mathbb{E}}] - \rho_{0} \beta (T-T_{0}) \vec{g} $$
+            \caption{Conservation de la quantité de mouvement}
+        \end{subfigure}
+        \begin{subfigure}[c]{\textwidth}
+            $$\vec{\mathbb{E}} = \frac{1}{2} [\vec{\nabla} \vec{u} + (\vec{\nabla} \vec{u})^t ]$$
+            \caption{}
+        \end{subfigure}
+        \begin{subfigure}[c]{\textwidth}
+            $$\rho [ C_{p}+ \Delta H_{r} \frac{d\alpha}{dT}] \frac{DT}{Dt} = \vec {\nabla} \cdot  (\lambda_{eq}(T) \vec{\nabla} T ) + \sigma_{e}(T) (\vec \nabla\phi)^2$$
+            \caption{Équation de la chaleur}
+        \end{subfigure}
+        \begin{subfigure}[c]{\textwidth}
+            $$\vec{\nabla} \cdot (\sigma_{e} \vec{\nabla} \phi) = 0$$
+            \caption{Conservation du flux électrique}
+        \end{subfigure}
         
-        \rho_{0} \frac{D\vec{V}}{Dt} = -\rho_{0} \beta (T-T_{0}) \vec{g} + \vec {\nabla} . [ 2 \eta (T) \vec{D}] - \vec {\nabla} P  ~~~~~~~~~ conservation~du~moment \\   
-        
-        \vec{D} = \frac{1}{2} [\vec{\nabla} \vec{V} + (\vec{\nabla} \vec{V})^t ] \\
-        \rho [ C_{p}+ \Delta H_{r} \frac{d\alpha}{dT}] \frac{DT}{Dt} = \vec {\nabla} .  (\lambda_{eq}(T) \vec{\nabla} T ) + \sigma_{e}(T) (\vec \nabla\phi)^2  ~~~~~~~~~ \acute equation~de ~la~chaleur \\
-        
-        \vec{\nabla} . (\sigma_{e} \vec{\nabla} \phi) = 0  ~~~~~~~~~ conservation~du~flux~ \acute electrique
-        
-        
-    \end{array}
-    \right. 
-    $$
-    Comme les transfert de chaleur sous formes radiatives sont très importants, on ne peut pas les négliger dans l'équation habituelle de diffusion de la chaleur: $ \rho C_{p} \frac{\partial T}{\partial t} = - \vec{\nabla} . (\lambda\vec{\nabla}T) $. Cependant, comme le milieu est semi-transparent, on peut modéliser l'ensemble des transfert en remplaçant $\lambda$ par $\lambda_{eq} = \lambda + \frac{16n^{2} \sigma T^{3}}{3\beta_{R}} $.
-    \\ [0.5 cm]
+    \end{figure}
+
+    Les grandeurs en jeux sont les suivantes:
+    \begin{list}{$\circ$}{}
+        \item $\vec{u}$ est la vitesse du fluide
+        \item $\mathbb{E}$ est le tenseur des taux de déformation
+    \end{list}{$\circ$}{}
+
+    Comme les transfert de chaleur sous forme radiative sont très importants, on ne peut pas les négliger dans l'équation habituelle de diffusion de la chaleur: $ \rho C_{p} \frac{\partial T}{\partial t} = - \vec{\nabla} . (\lambda\vec{\nabla}T) $. Cependant, comme le milieu est semi-transparent, on peut modéliser l'ensemble des transfert en remplaçant $\lambda$ par $\lambda_{eq} = \lambda + \frac{16n^{2} \sigma T^{3}}{3\beta_{R}} $.
+    \\
     
     
     \subsection{Puissance électrique}
