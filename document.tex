@@ -129,12 +129,8 @@
             \caption{Conservation de la quantité de mouvement}
         \end{subfigure}
         \begin{subfigure}[c]{\textwidth}
-            $$\vec{\mathbb{E}} = \frac{1}{2} [\vec{\nabla} \vec{u} + (\vec{\nabla} \vec{u})^t ]$$
-            \caption{}
-        \end{subfigure}
-        \begin{subfigure}[c]{\textwidth}
-            $$\rho [ C_{p}+ \Delta H_{r} \frac{d\alpha}{dT}] \frac{DT}{Dt} = \vec {\nabla} \cdot  (\lambda_{eq}(T) \vec{\nabla} T ) + \sigma_{e}(T) (\vec \nabla\phi)^2$$
-            \caption{Équation de la chaleur}
+            $$\rho_{0} \left[ C_{p}+ \Delta H_{r} \frac{d\alpha}{dT} \right] \frac{DT}{Dt} = \vec {\nabla} \cdot  (\lambda_{eq} \vec{\nabla} T ) + \sigma_{e} (\vec \nabla\phi)^2$$
+            \caption{Conservation de l'enthalpie}
         \end{subfigure}
         \begin{subfigure}[c]{\textwidth}
             $$\vec{\nabla} \cdot (\sigma_{e} \vec{\nabla} \phi) = 0$$
@@ -146,8 +142,13 @@
     Les grandeurs en jeux sont les suivantes:
     \begin{list}{$\circ$}{}
         \item $\vec{u}$ est la vitesse du fluide
-        \item $\mathbb{E}$ est le tenseur des taux de déformation
-    \end{list}{$\circ$}{}
+        \item $\mathbb{E}$ est le tenseur des taux de déformation: $\mathbb{E} = \frac{1}{2} (\vec{\nabla} \vec{u} + ^{\mathsf{t}}\vec{\nabla} \vec{u})$
+        \item $T_{0}$ est la température de référence, à laquelle la masse volumique $\rho_{0}$ est définie
+        \item $\beta$ est le coefficient de dilatation volumique: $$\beta = -\frac{1}{\rho} \frac{\partial\rho}{\partial T}$$
+        \item $\eta$ est la viscosité, modélidée par une loi de Vogel-Fulcher-Tamman: $$log~\eta = A_{\eta} + B_{\eta}\frac{1}{T - T_{\eta}}$$
+        \item $\alpha$ est le taux de conversion de matière dans le bain, on considère que c'est une fonctoin d'erreur en la température pour représenter le fait que plus le bain est chaud, plus les réactions de décarbonatation ont lieu
+        \item 
+    \end{list}
 
     Comme les transfert de chaleur sous forme radiative sont très importants, on ne peut pas les négliger dans l'équation habituelle de diffusion de la chaleur: $ \rho C_{p} \frac{\partial T}{\partial t} = - \vec{\nabla} . (\lambda\vec{\nabla}T) $. Cependant, comme le milieu est semi-transparent, on peut modéliser l'ensemble des transfert en remplaçant $\lambda$ par $\lambda_{eq} = \lambda + \frac{16n^{2} \sigma T^{3}}{3\beta_{R}} $.
     \\
@@ -163,16 +164,11 @@
     
     \[ P_{eq}=\phi_{elec} \int_{\partial elec} \sigma_{e}(T)\vec \nabla\phi \cdot \vec{n}~dS\]
     \\
-    Car le potentiel est constant = $\phi_{elec} $ à la rontière des électrodes. \\
-    \subsection{ Expressions des différentes grandeurs et constantes}
-    Le taux de conversion $\alpha$ est une sigmoïde : fonction d'erreur de Gauss\\ [0.3cm]
-    
-    - On modélise la dépendance de la viscosité à la température par une loi de type VFT ( Vogel-Fulcher-Tamman) \\ [0.5 cm]
-    $$
-    \eta (T)  = 10^{A_{\eta}} e^{\frac{ln(10) B}{T-T_{\eta}}} ~~~~~~~~~ log(\eta) = A_{\eta} + \frac{B}{T-T_{\eta}}
-    $$
+    Car le potentiel est constant = $\phi_{elec} $ à la rontière des électrodes.
 
-    - La dépendance de la masse volumique est : \\ [0.5 cm]
+    \subsection{Expressions des différentes grandeurs et constantes}
+
+    - La dépendance de la masse volumique est : \\
     \begin{center}
         
         
