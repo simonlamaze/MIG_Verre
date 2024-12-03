@@ -161,6 +161,19 @@
 
     Ces équations seront résolus autmoatiquemenr par le système de simulation, par simple déclaration du type de résolution demandé et des conditions aux limites.
 
+        
+    \subsection{État aux frontières}
+    
+    Les flux thermiques sont donnés par les lois de Newton et Stefan aux parois et surfaces libres. le batch est introduit à iso température. on considère les transfert thermiques de Boltzmann seulement pour la surface libre.
+    On peut calculer les flux aux frontières par la loi de Newton sur les transferts conducto-convectifs.
+        $$
+        \phi_{wall} = h_{wall} (T - T_{\infty})
+        $$
+    $T_{haut, min}$ : Température minimale de voûte
+    \break
+    $\Delta T_{haut}$ : Différence de température maximale
+
+
     
     \subsection{Calcul de grandeurs macroscopiques}
     Les équations précédentes donnent les variations infinitésimales des différents grandeurs locales, mais on s'intéresse aussi à la manière dont elles varient globalement, notamment pour déterminer les différentes puissances en jeux dans le système.
@@ -188,26 +201,23 @@
     \subsection{Temps de résidence}
     Le temps de résidence des particules dans le four est une grandeur essentielle, qui permet de quantifier l'élimination des bulles dans le verre produit. Il existe différentes manières de le calculer.
     \paragraph{Méthode analytique}
-    On peut calculer :
-    \paragraph{Simulation de diffusion}
+    Cette méthode consiste à calculer la réponse du four à un dirac. Pour simplifier les calculs, on peut calculer la réponse à un échelon de particules en entrée du four, qui satisfait alors l'équation de transport $$\frac{DC}{Dt} = 0 $$On peut le faire au moyen du logiciel de simulation, a posteriori sur une solution qui a atteint le régime permanent. Pour obtenir le flux de particules qui sort du four, il suffit alors de calculer le flux moyen à travers la sortie: $$
+        F = \frac{\int_{sortie} C\vec{u} \cdot \vec{dS}}{\int_{sortie} \vec{u} \cdot \vec{dS}}
     $$
-    \phi_{C} =  \oiint_S C\vec{u} \cdot \vec{n}~dS  ~~~~~~~~~~ \phi = \oiint_S \vec{u} \cdot \vec{n}~dS  ~~~~~~~~~~
-    \langle C \rangle = \frac{\phi_{C}}{\phi}
-    $$ 
-    
-    La distribution des temps de résidence, à savoir la réponse à un dirac, est donnée par \[E(t)=\frac{d\langle C \rangle}{dt}\]
-    
-    \subsection{État aux frontières}
-    
-    Les flux thermiques sont donnés par les lois de Newton et Stefan aux parois et surfaces libres. le batch est introduit à iso température. on considère les transfert thermiques de Boltzmann seulement pour la surface libre.
-    On peut calculer les flux aux frontières par la loi de Newton sur les transferts conducto-convectifs.
-        $$
-        \phi_{wall} = h_{wall} (T - T_{\infty})
-        $$
-    $T_{haut, min}$ : Température minimale de voûte
-    \break
-    $\Delta T_{haut}$ : Différence de température maximale
+    Pour obtenir la réponse à un Dirac, et donc la distribution des temps de résidence dans le four, il suffit alors de dériver par rapport au temps. On obtient alors la distribution des temps de résidence: $$
+        E(t) = \frac{dF}{dt}
+    $$
 
+
+    % $$
+    % \phi_{C} =  \oiint_S C\vec{u} \cdot \vec{n}~dS  ~~~~~~~~~~ \phi = \oiint_S \vec{u} \cdot \vec{n}~dS  ~~~~~~~~~~
+    % \langle C \rangle = \frac{\phi_{C}}{\phi}
+    % $$ 
+    
+    % La distribution des temps de résidence, à savoir la réponse à un dirac, est donnée par \[E(t)=\frac{d\langle C \rangle}{dt}\]
+
+    \paragraph{Simulation de diffusion}
+    Une autre méthode consiste à simuler la diffusion de particules dans le champ de vitesse obtenu dans une simulation qui a atteint le régime permanent. 
 
 	
 	\section{Réalisation des simulations}
