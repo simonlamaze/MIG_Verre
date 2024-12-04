@@ -24,11 +24,12 @@
 \usepackage{pxfonts}
 
 \title{MIG Verre - Modélisation des fours}
-\author{\small{Simon Lamaze - Corto Beck - Girardet Grégoire - Fraenkel Paul}}
+\author{\small{Corto Beck - Fraenkel Paul - Girardet Grégoire - Simon Lamaze}}
+\date{}
 
 \begin{document}
-    \raggedright
     \maketitle
+    \tableofcontents
     
     \section{Introduction}
     Ce mini-projet traite de la modélisation et de l'optimisation énergétique des fours à verre.  La compréhension des phénomènes physiques qui prennt place dans un four est essentielle à l'optimisation des procédés. \\ [0.5 cm]
@@ -168,10 +169,10 @@
 
 
     
-    \section{Meusre de grandeurs macroscopiques}
+    \section{Mesure de grandeurs sur les fours}
     Les équations précédentes donnent les variations infinitésimales des différents grandeurs locales, ce qui permet de déterminer l'évolution du four par résolution de ces équation. Une fois que le calcul de l'état du four est déterminé à un instant donné, on peut calculer différentes grandeurs macroscopiques pour mieux comprendre l'évolution du système.
 
-    \paragraph{Puissances}
+    \subsection{Puissances}
     \paragraph{Puissance électrique}Pour déterminer la puissance fournie au fluide par le sélectrodes, on calcul en chaque point le flux la puissance, que l'on peut ensuite intégrer.\\
     En chaque volume infinitésimal $dV$, la puissance électrique dissipée est $\delta P = \sigma_{e} \vec{E}^{2} dV$, où $\vec{E} = -\vec{\nabla} \phi$. Ainsi, la puissance électrique totale est:
     $$
@@ -204,18 +205,39 @@
     $$
 
 
-    % $$
-    % \phi_{C} =  \oiint_S C\vec{u} \cdot \vec{n}~dS  ~~~~~~~~~~ \phi = \oiint_S \vec{u} \cdot \vec{n}~dS  ~~~~~~~~~~
-    % \langle C \rangle = \frac{\phi_{C}}{\phi}
-    % $$ 
-    
-    % La distribution des temps de résidence, à savoir la réponse à un dirac, est donnée par \[E(t)=\frac{d\langle C \rangle}{dt}\]
-
     \paragraph{Simulation de diffusion}
     Une autre méthode consiste à simuler la diffusion de particules dans le champ de vitesse obtenu dans une simulation qui a atteint le régime permanent. 
 
+    \subsection{Usure des fours}
+    Le verre en fusoin est très corrosif, et tous les éléments en contact avec le bain sont sujets à différentes usures.
+
+    \paragraph{Usure des réfractaires}
+    Au contact direct du verre, les réfractaires ont pour but d'isoler thermiquement le bain de verre en fusion et sont les donnent sa forme au four. Ils sont changés à chaque nouvelle campagne, car ils sont usés de manière très importante, notament à l'inteface avec l'air car le dioxygène de l'air rend le milieu encore plus corrosif. Leur usure n'est pas simulée ici.
+
+    \subsection{Corrosion des électrodes}
+    A la frontière des électrodes, les ordres de grandeurs des puissances et densités de courant mis en jeu sont importants, ce qui favorise les réactions
+    d'oxydo-réduction. On étudie le cas d'électrodes majoritairement composées de molybdène ,qui peut être oxydé par beaucoup de composantes du
+    mélange vitreux . A l'aide de données expérimentales ( Matej, 2003) , on a tracé une régression linéaire de la vitesse de corrosion en fonction de la densité de courant ;
+    Le modèle est simpliste en raison du peu de données disponible et de la complexité du phénomène étudié ( $r^{2}=0.59$. Voici la régression, en bleu le modèle, en orange les données:
+
+    
+    \begin{center}
+        \begin{figure}[H]
+            \includegraphics[width=\linewidth]{vitesse de corrosion = f(j)}
+        \end{figure}
+    \end{center}
+
+    Cette étude permet de calculer l'épaisseur totale corrodée sur les parois latérales de l'électrode au cours du temps, en voici la courbe pour l'électrode S .
+    La valeur obtenue de $50\mu m$ par heure environ n'est pas aberrante avec la fréquence de renouvellement des électrodes .
+
+    
+    \begin{center}
+        \begin{figure}[H]
+            \includegraphics[width=\linewidth]{Corrosion des électrodes}
+        \end{figure}
+    \end{center}
 	
-	\section{Réalisation des simulations}
+	\section{Réalisation d'une simulations}
 
     \subsection{Création du four}
     On commence par créer un maillage représentant le four à partir de ses dimensions, qui ont été déterminées préalablement. On utilise l'outil gmesh, qui génère un ensemble de points et de segments les reliants. Tous les champs, scalaires et vectoriels, seront calculés en ces points lors de la simulation. Il est donc nécessaire qu'il y en ait assez pour garantir la précision de la simulation, mais la quantité de calcul augmente avec le nombre de point. Il faut donc trouver la bonne finesse, qui peut être variable dans le maillage. On augmente la densité dans la gorge (tunnel d'évacuation du verre) et à proximité des zones de forte variation dans les champs.
@@ -260,36 +282,6 @@
     \subsection{Calculs de la simulation}
     Pour réaliser les calculs, on utilse le cluster du cemef: un serveur disposant de 100 noeuds de calcul, chacun disposant de deux processeurs pour un total de 64 coeurs. Une fois la simulation lancée, les taches sont réparties de façon automatique entre les coeurs pour une vitesse de calcul maximale. On peut agir sur la simulation au moyen d'un fichier lu à chaque itération qui sert d'interface homme-machine (ihm), et ainsi changer différents paramètres: température d'entrée de la matière dans le four, paramètres de l'asservissement PID, ... De plus, la simulation produit un fichier qui recense la valeur de certains paramètres à chaque itération, comme la température de sortie, les puissances électriques et thermiques fournies et les pertes thermiques à travers les parois, et des fichiers qui enregistre complètement les champs régulièrement. On peut alors surveiller l'avancement de la simulation, et agir sur les paramètres afin d'obtenit un résultat satisfaisant (les calculs étant très longs, on veut pouvoir mener à bien une simulation qui n'a pas bien commencé).
 
-    
-    \subsection{Simulation avec un autre type de verre}
-    Nous avons réalisé une simulation en changeant les paramètres des grandeurs physiques du verre fondu dans le four, 
-    en leur substituant ceux d'un verre d'une composition calculée par le mini-projet s'attachant à la recherche de compositions 
-    optimisées de verre par algorithme génétique . Ce nouveau verre était composé à 65\(\%\) de \(SIO_{2}\), à 14 \(\%\)de CaO 
-    et à 21 \(\%\) de \(Na_{2}O\). Sa température de transition vitreuse, utiliser un tel verre permet de sensiblement diminuer la température de voute , et d'augmenter ainsi l'efficacité énergétique, 
-    ainsi que l'efficacité carbone .
-
-    \subsection{Corrosion des électrodes}
-    A la frontière des électrodes, les ordres de grandeurs des puissances et densités de courant mis en jeu sont importants, ce qui favorise les réactions
-    d'oxydo-réduction. On étudie le cas d'électrodes majoritairement composées de molybdène ,qui peut être oxydé par beaucoup de composantes du
-    mélange vitreux . A l'aide de données expérimentales ( Matej, 2003) , on a tracé une régression linéaire de la vitesse de corrosion en fonction de la densité de courant ;
-    Le modèle est simpliste en raison du peu de données disponible et de la complexité du phénomène étudié ( $r^{2}=0.59$. Voici la régression, en bleu le modèle, en orange les données:
-
-    
-    \begin{center}
-        \begin{figure}[H]
-            \includegraphics{vitesse de corrosion = f(j)}
-        \end{figure}
-    \end{center}
-
-    Cette étude permet de calculer l'épaisseur totale corrodée sur les parois latérales de l'électrode au cours du temps, en voici la courbe pour l'électrode S .
-    La valeur obtenue de $50\mu m$ par heure environ n'est pas aberrante avec la fréquence de renouvellement des électrodes .
-
-    
-    \begin{center}
-        \begin{figure}[H]
-            \includegraphics{Corrosion des électrodes}
-        \end{figure}
-    \end{center}
 
     \section{Régulation à l'aide d'un PID}
     \subsection{Asservissement en puissance électrique}
@@ -349,6 +341,17 @@
 
     \paragraph{Détermination de DT}
     On cherche à calculer DT de sorte que la température maximale à la surface du four ne dépasse pas la température maximale possible à la voute d'un four à verre, qui est d'environ 1800°C. On doit donc toujours avoir $DT < 500K$. Comme on s'attend à avoir une erreur la plus faible au début de la simulation avec $\epsilon_{0} \approx 100K$, ce qui nous donne $K_p = 2,5$ pour un temps de réponse maximal en température. On utilise cette fois $K_{i} = 10^{-5}$.
+
+
+    \section{Simulations réalisées}
+    \subsection{Simulation avec un autre type de verre}
+    Nous avons réalisé une simulation en changeant les paramètres des grandeurs physiques du verre fondu dans le four, 
+    en leur substituant ceux d'un verre d'une composition calculée par le mini-projet s'attachant à la recherche de compositions 
+    optimisées de verre par algorithme génétique . Ce nouveau verre était composé à 65\(\%\) de \(SIO_{2}\), à 14 \(\%\)de CaO 
+    et à 21 \(\%\) de \(Na_{2}O\). Sa température de transition vitreuse, utiliser un tel verre permet de sensiblement diminuer la température de voute , et d'augmenter ainsi l'efficacité énergétique, 
+    ainsi que l'efficacité carbone .
+
+
 
     \begin{appendices}
     \section{Commandes}
