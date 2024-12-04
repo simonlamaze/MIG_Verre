@@ -200,13 +200,23 @@
     Pour réaliser les calculs, on utilse le cluster du cemef: un serveur disposant de 100 noeuds de calcul, chacun disposant de deux processeurs pour un total de 64 coeurs. Une fois la simulation lancée, les taches sont réparties de façon automatique entre les coeurs pour une vitesse de calcul maximale. On peut agir sur la simulation au moyen d'un fichier lu à chaque itération qui sert d'interface homme-machine (ihm), et ainsi changer différents paramètres: température d'entrée de la matière dans le four, paramètres de l'asservissement PID, ... De plus, la simulation produit un fichier qui recense la valeur de certains paramètres à chaque itération, comme la température de sortie, les puissances électriques et thermiques fournies et les pertes thermiques à travers les parois, et des fichiers qui enregistre complètement les champs régulièrement. On peut alors surveiller l'avancement de la simulation, et agir sur les paramètres afin d'obtenit un résultat satisfaisant (les calculs étant très longs, on veut pouvoir mener à bien une simulation qui n'a pas bien commencé).
 
     
-    \section{Simulations réalisées}
-    
-	
-	\subsection{Première série de calculs}
-	\paragraph{}
-	Disposant de 4 postes de calculs , nous avons commencé par chercher à simuler un four  d'une forme ressemblant à celle d'un four industriel .
+    \subsection{Simulation avec un autre type de verre}
+    Nous avons réalisé une simulation en changeant les paramètres des grandeurs physiques du verre fondu dans le four, 
+    en leur substituant ceux d'un verre d'une composition calculée par le mini-projet s'attachant à la recherche de compositions 
+    optimisées de verre par algorithme génétique . Ce nouveau verre était composé à 65\(\%\) de \(SIO_{2}\), à 14 \(\%\)de CaO 
+    et à 21 \(\%\) de \(Na_{2}O\). Sa température de transition vitreuse, utiliser un tel verre permet de sensiblement diminuer la température de voute , et d'augmenter ainsi l'efficacité énergétique, 
+    ainsi que l'efficacité carbone .
 
+    \subsection{Corrosion des électrodes}
+    A la frontière des électrodes, les ordres de grandeurs des puissances et densités de courant mis en jeu sont importants, ce qui favorise les réactions
+    d'oxydo-réduction. On étudie le cas d'électrodes majoritairement composées de molybdène ,qui peut être oxydé par beaucoup de composantes du
+    mélange vitreux . A l'aide de données expérimentales ( Matej, 2003) , on a tracé une régression linéaire de la vitesse de corrosion en fonction de la densité de courant ;
+    Le modèle est simpliste en raison du peu de données disponible et de la complexité du phénomène étudié . Voici la régression, en bleu le modèle, en orange les données: \\
+
+    \includegraphics(vitesse de corrosion = f(j))
+
+    Cette étude permet de calculer l'épaisseur totale corrodée sur les parois latérales de l'électrode au cours du temps, en voici la courbe pour l'électrode S .
+    La valeur obtenue de 50\(\mu m \) par heure environ n'est pas aberrante avec la fréquence de renouvellement des électrodes .
 
     \section{Régulation à l'aide d'un PID}
     \subsection{Asservissement en puissance électrique}
