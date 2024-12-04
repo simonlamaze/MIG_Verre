@@ -8,6 +8,7 @@
 \usepackage{listings}
 \usepackage[toc,page]{appendix}
 \usepackage{hyperref}
+\usepackage{float}
 \hypersetup{
     colorlinks,
     citecolor=black,
@@ -271,14 +272,24 @@
     A la frontière des électrodes, les ordres de grandeurs des puissances et densités de courant mis en jeu sont importants, ce qui favorise les réactions
     d'oxydo-réduction. On étudie le cas d'électrodes majoritairement composées de molybdène ,qui peut être oxydé par beaucoup de composantes du
     mélange vitreux . A l'aide de données expérimentales ( Matej, 2003) , on a tracé une régression linéaire de la vitesse de corrosion en fonction de la densité de courant ;
-    Le modèle est simpliste en raison du peu de données disponible et de la complexité du phénomène étudié ( \(r^{2}=0.59\). Voici la régression, en bleu le modèle, en orange les données: \\
+    Le modèle est simpliste en raison du peu de données disponible et de la complexité du phénomène étudié ( $r^{2}=0.59$. Voici la régression, en bleu le modèle, en orange les données:
 
-    \includegraphics(vitesse de corrosion = f(j))
+    
+    \begin{center}
+        \begin{figure}[H]
+            \includegraphics{vitesse de corrosion = f(j)}
+        \end{figure}
+    \end{center}
 
     Cette étude permet de calculer l'épaisseur totale corrodée sur les parois latérales de l'électrode au cours du temps, en voici la courbe pour l'électrode S .
-    La valeur obtenue de 50\(\mu m \) par heure environ n'est pas aberrante avec la fréquence de renouvellement des électrodes .
+    La valeur obtenue de $50\mu m$ par heure environ n'est pas aberrante avec la fréquence de renouvellement des électrodes .
 
-    \includegraphics(Corrosion des électrodes)
+    
+    \begin{center}
+        \begin{figure}[H]
+            \includegraphics{Corrosion des électrodes}
+        \end{figure}
+    \end{center}
 
     \section{Régulation à l'aide d'un PID}
     \subsection{Asservissement en puissance électrique}
