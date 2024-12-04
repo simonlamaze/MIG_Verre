@@ -41,135 +41,195 @@
     \subsection{Objectifs}
     Le but est de simule des verres alimentés principalement par source électrique, afin d'identifier les dynamiques de ces fours particuliers et permettre la conception de fours industriels fonctionnant à l'électricité qui ont donc une empreinte carbone plus faible (tant que l'électricité utlisée est verte). On s'intérresse d'abord à la compréhension des dynamiques des fours existant et connus, avant de proposer des modifications de ces outils pour utiliser plus d'électrcité. Pour ce faire, on dispose des outils du cemef et des connaissance de Franck Pigeonneau, qui maîtrise déjà les outils.
     
+    \section{Principes du four à verre}
+    \subsection{Introduction}
+    Le but du four à verre industriel est de produire en continue un verre de la meilleur qualité possible, mais aussi de qualité uniforme, et cela en continu. Pour cela, des matières premières sont insérées dans le fours en continu, et la production de verre se fait sans arrêt pour toute la durée de fonctionnement du four (10 à 20 ans). Des boucles de convection assurent un mélange des matériaux au sein du four et un temps de résidence suffisament long pour laisser le temps aux bulles de s'évacuer. Le verre étant très visqueux (10 000 fois plus que l'eau dans le four), le matériau doit rester plusieurs jours dans le four.
     
-    
-    \section{ Déroulement de la simulation}
-    Tâche 1 : positionnement du problème : \\
-    Conditions limites, conditions initiales, mise en équations \\[0.3 cm]
-    Tâche 2: prise en main des outils de calcul\\
-    Maillage, cluster, post-traitement, CIMLIB, vitesse des calculs \\ [0.3 cm]
-    
-    Tâche 3 : Calcul sur un cas à voûte chaude\\ 
-    Obtenir un cas convergé, bilan énergétique \\ [0.3 cm]
-    
-    Tâche 4 : Calcul sur un cas à voûte plus froide \\ 
-    Same\\ [0.3 cm]
-    
-    Tâche 5: Bilan du gain énergétique et des émissions carbone \\ [0.5cm]
-    
-    
-    On  utilise le logiciel Paraview pour visualiser les résultats.
-    Visualiser la propagation d'un champ pour définir le temps de résidence.
-    Faire plusieurs calculs avec des tailles différentes.
-    
-    \section{Positionnement du problème}
-    - Les équations que nous nous appliquerons à résoudre seront les suivantes : \\
-    \subsection{ Equations de Navier-Stokes et thermique}
-    - Les équations que nous nous appliquerons à résoudre seront les suivantes : \\
-    $$
-    \left\{
-    \begin{array} {ll} 
-        \vec {\nabla}. \vec{V} = 0  ~~~~~~~~~  conservation~de~la~masse\\
-        
-        \rho_{0} \frac{D\vec{V}}{Dt} = -\rho_{0} \beta (T-T_{0}) \vec{g} + \vec {\nabla} . [ 2 \eta (T) \vec{D}] - \vec {\nabla} P  ~~~~~~~~~ conservation~du~moment \\   
-        
-        \vec{D} = \frac{1}{2} [\vec{\nabla} \vec{V} + (\vec{\nabla} \vec{V})^t ] \\
-        \rho [ C_{p}+ \Delta H_{r} \frac{d\alpha}{dT}] \frac{DT}{Dt} = \vec {\nabla} .  (\lambda_{eq}(T) \vec{\nabla} T ) + \sigma_{e}(T) (\vec \nabla\phi)^2  ~~~~~~~~~ \acute equation~de ~la~chaleur \\
-        
-        \vec{\nabla} . (\sigma_{e} \vec{\nabla} \phi) = 0  ~~~~~~~~~ conservation~du~flux~ \acute electrique
-        
-        
-    \end{array}
-    \right. 
-    $$
-    Comme les transfert de chaleur sous formes radiatives sont très importants, on ne peut pas les négliger dans l'équation habituelle de diffusion de la chaleur: $ \rho C_{p} \frac{\partial T}{\partial t} = - \vec{\nabla} . (\lambda\vec{\nabla}T) $. Cependant, comme le milieu est semi-transparent, on peut modéliser l'ensemble des transfert en remplaçant $\lambda$ par $\lambda_{eq} = \lambda + \frac{16n^{2} \sigma T^{3}}{3\beta_{R}} $.
-    \\ [0.5 cm]
-    
-    
-    \subsection{Puissance électrique}
-    Pour déterminer la puissance fournie au fluide par le sélectrodes, on calcul en chaque point le flux 
-    On se place dans le cas uniphasé, en réalité, dans l'industrie le régime est triphasé, plus de calculs en annexes. \\ [0.2 cm ]
-    $$
-    [ P_{eq}=\int_\Omega \sigma_{e}(T)(\vec \nabla\phi)^2~dV  = \int_\Omega \vec \nabla[\sigma_{e}(T)\vec \nabla\phi]~dV
-    $$
-    par intégration par partie et loi de conservation du potentiel ($ \vec{\nabla}^2 \phi = 0 $). Le théorème de Green-Ostrogradski donne: 
-    
-    \[ P_{eq}=\phi_{elec} \int_{\partial elec} \sigma_{e}(T)\vec \nabla\phi \cdot \vec{n}~dS\]
-    \\
-    Car le potentiel est constant = $\phi_{elec} $ à la rontière des électrodes. \\
-    \subsection{ Expressions des différentes grandeurs et constantes}
-    Le taux de conversion $\alpha$ est une sigmoïde : fonction d'erreur de Gauss\\ [0.3cm]
-    
-    - On modélise la dépendance de la viscosité à la température par une loi de type VFT ( Vogel-Fulcher-Tamman) \\ [0.5 cm]
-    $$
-    \eta (T)  = 10^{A_{\eta}} e^{\frac{ln(10) B}{T-T_{\eta}}} ~~~~~~~~~ log(\eta) = A_{\eta} + \frac{B}{T-T_{\eta}}
-    $$
+    \begin{center}
+        \begin{figure}[h]
+            \includegraphics[width=\linewidth]{FourAVerre.png}
+        \end{figure}
+    \end{center}
 
-    - La dépendance de la masse volumique est : \\ [0.5 cm]
+    \subsection{Chauffage du four}
+    Aujourd'hui, les fours sont alimentés principalement en gaz naturel. Pour minimiser l'énergie apportée à l'air qui sert de comburant, deux alimentation fonctionnent par alternance. Lorsque l'une sert d'entrée, l'autre sert de sortie et l'air chaud de l'intérieur passe à travers un récupérateur de chaleur. De taille très importante, cet appareil représente une part significative du coût du four mais voit son utilisation rentabilisée au bout de quelques années par les économies de gaz qu'il permet. Ainsi, lorsque l'air entre dans le four, il n'est plus à température ambiente mais déjà à plusieurs centaines de degrés.\\
+    Le gaz naturel pourrais être remplacé par du dihydrogène, qui a l'avantage de pouvoir être produit par électricité. Cependant, cette méthode pose aussi des problèmes. En effet, il n'existe aujourd'hui toujours pas de réseau de distributionde dihydrogène à grande échelle ce qui signifie qu'il doit être produit sur site, principalement à partir d'hydrocarbures. De plus, les flammes de dihydrogène sont invisibles par les caméra qui sont sensibles au visible, ce qui signifie qu'elle ne sont pas compatibles avec l'équipement de surveillance actuel qui permet la gestion des flammes.
+
+    \subsection{Géométrie du four}
     \begin{center}
+        \begin{figure}[h]
+            \includegraphics[width=\linewidth]{VueEnCoupe.png}
+        \end{figure}
+    \end{center}
+    La forme du bain est étidiée pour maximiser la qualité du verre produit. Lors de son entrée, la matière est prise dans une première boucle de convection, qui lui permet de fondre et de s'homogénéiser. Cette boucle de trouve dans la plus grande zone du bain, séparée de l'autre zone par un petit muret. Celui-ci à pour but de faciliter la formation de la seconde boucle de convection, séparée de la première et qui a pour but de parfaire la préparation du verre, en éliminant les dernières bulles et en finalisant l'homogénéisation du mélange. La géométrie du bain est très importante pour la qualité finale du verre, et on se reposera sur des formes existantes pour créer notre modèle numérique afin de maximiser nos chances de trouver une forme qui fonctionne.
+
+    \subsection{Extraction du verre}
+    Une fois que le verre a fini sont parcours dans le four, il est extrait du bain par une gorge qui le mène vers des feeders. À cette étape, le verre doit atteindre sa température optimale de formage, et être maintenu assez chaud jusqu'à sont arrivée dans le moule. Pour cette raison, bien que le verre doive descendre en température, il est tout de même nécessaire de chauffer les conduite afin de garder le verre assez chaud, ce qui est une autre source d'émissions de GES.
+
+    \section{Modèles étudiés}
+    Afin de comparer les fours classiques, avec très peu de contribution électrique, et les fours hybrides, avec une puissance apportée principalement par électricité, on va modéliser deux fours de tailles identiques.
+
+    \subsection{Four classique}
+    Le premier modèle étidié est un four classique, à alimentation principalement thermique avec appoint de chauffage par courant triphasé via trois électrodes.
+
+    \begin{center}
+        \begin{figure}[H]
+            \includegraphics[width=0.7\linewidth]{FourWall.png}
+        \end{figure}
+    \end{center}
+
+    On a reproduit ici la géométrie classique d'un four à verre. Les électrodes centrales permettent d'aider à la formation de la boucle de convection dans le grand bassin.
+
+
+    \subsection{Four hybride}
+    Ce modèle a pour but d'étudier le comportment du four chauffé principalemnt par les électodes. Pour limiter la densité de courant sur les électrodes et ainsi réduire la corrosion du métal, on place de nmobreuses électrodes. Elle fonctionnent par groupes de trois, dans lesquels les électrodes sont déphasées de $\frac{2\pi}{3}$ l'une par rapport à l'autre, ce qui fait qu'elles forment globalemnt trois groupes de cinq électrodes en phase, ce qui correspond à une aimentation industrielle standard en courant triphasé.
+
+    \begin{center}
+        \begin{figure}[H]
+            \includegraphics[width=0.7\linewidth]{Four5Elec.png}
+        \end{figure}
+    \end{center}
+
+
+    \section{Problèmes à résoudre}
+    On va s'attcher à résoudre par méthode des éléments finis les équation qui régissent la dynamique du verre, considéré incompressible, qui sont les suivantes.
+    
+    \subsection{Équations du fluide}
+    Les équations que nous nous appliquerons à résoudre seront les suivantes :
+
+    \begin{figure}[H]
+        \centering
+        \begin{equation}
+            \vec {\nabla} \cdot \vec{u} = 0
+            \tag{Conservation de la masse}
+            \label{eq:ConsMasse}
+        \end{equation}
+        \begin{equation}
+            \rho_{0} \frac{D\vec{u}}{Dt} = - \vec {\nabla} P + \vec {\nabla} \cdot [ 2 \eta \vec{\mathbb{E}}] - \rho_{0} \beta (T-T_{0}) \vec{g}
+            \tag{Conservation de la quantité de mouvement}
+            \label{eq:ConsQteMvt}
+        \end{equation}
+        \begin{equation}
+            \rho_{0} \left[ C_{p}+ \Delta H_{r} \frac{d\alpha}{dT} \right] \frac{DT}{Dt} = \vec {\nabla} \cdot  (\lambda_{eq} \vec{\nabla} T ) + \sigma_{e} (\vec \nabla\phi)^2
+            \tag{Conservation de l'enthalpie}
+            \label{eq:ConsEnth}
+        \end{equation}
+        \begin{equation}
+            \vec{\nabla} \cdot (\sigma_{e} \vec{\nabla} \phi) = 0
+            \tag{Conservation du flux électrique}
+            \label{eq:ConsFluxElec}
+        \end{equation}
         
+    \end{figure}
+
+    Les grandeurs en jeux sont les suivantes:
+    \begin{list}{$\circ$}{}
+        \item $\vec{u}$ est la vitesse du fluide
+        \item $\mathbb{E}$ est le tenseur des taux de déformation: $\mathbb{E} = \frac{1}{2} (\vec{\nabla} \vec{u} + ^{\mathsf{t}}\vec{\nabla} \vec{u})$
+        \item $T_{0}$ est la température de référence, à laquelle la masse volumique $\rho_{0}$ est définie
+        \item $\rho$ est la masse volumique du fluide, définie par:$$\rho(T) = \rho_{0} (1 - \beta \Delta T)$$
+        \item $\beta$ est le coefficient de dilatation volumique: $$\beta = -\frac{1}{\rho} \frac{\partial\rho}{\partial T}$$
+        \item $\eta$ est la viscosité, modélidée par une loi de Vogel-Fulcher-Tamman: $$log~\eta = A_{\eta} + B_{\eta}\frac{1}{T - T_{\eta}}$$
+        \item $\alpha$ est le taux de conversion de matière dans le bain. On considère que c'est une fonctoin d'erreur en la température pour représenter le fait que plus le bain est chaud, plus les réactions de décarbonatation qui consomme de la chaleur ont lieu
+        \item $\sigma_{e}$ la conductivité électrique du milieu, donnée par: $$\sigma_{e} (T) =  A_{e} e^{\frac{-B_{e}}{T}}$$
+        \item $\phi$ est le potentiel électrique. Il est complex: $\phi = \phi_{r} + i\phi_{i} $
+        \item $\lambda_{eq}$ est la conductivité électrique du milieu. Comme les transfert de chaleur sous forme radiative sont très importants, on ne peut pas les négliger dans l'équation habituelle de diffusion de la chaleur: $ \rho C_{p} \frac{\partial T}{\partial t} = - \vec{\nabla} . (\lambda\vec{\nabla}T) $. Cependant, comme le milieu est semi-transparent, on peut modéliser l'ensemble des transfert en remplaçant $\lambda$ par $$\lambda_{eq} = \lambda + \frac{16n^{2} \sigma T^{3}}{3\beta_{R}} $$
+    \end{list}
+
+    On note ici $\frac{DG}{Dt}$ la dérivée particulaire de la grandeur G, qui correpond à la variation de la grandeur G le long des trajectoires des particules: $$\frac{DG}{Dt} = \lim_{\delta t \to 0} \frac{G(\vec{r}(t + \delta t), t + \delta t) - G(\vec{r}, t)}{\delta t} = \frac{\partial G}{\partial t} + \left(\vec {u} \cdot \vec {\nabla } \right) G$$
+
+    Ces équations seront résolus autmoatiquemenr par le système de simulation, par simple déclaration du type de résolution demandé et des conditions aux limites.
+
         
-        $$
-        \rho(T) = \rho_{0}  (1 - \beta \Delta T) ~~~~~~~~~ 
-        \beta = -\frac{1}{\rho_{0}} \frac{d\rho}{dt}
-        $$
-        \\
-    \end{center}
-    
-    
-    
-    - La dépendance de la conductivité électrique est : \\ [0.5 cm]
-    \begin{center}
-        $ 
-        \sigma_{e} (T) =  A_{e} e^{\frac{-B_{e}}{T}}
-        $
-    \end{center}
-    
-    - Dérivée particulaire : ~~~~~~~( importante en méca flu )\\
-    
-    \begin{center}
-        $ \frac{DG}{Dt}=\frac{\partial G}{\partial t} + (\vec {v} \cdot \vec {\nabla } ) G
-        $ \\    
-    \end{center}
-    
-    
-    
-    - Pour calculer le temps  de résidence, à savoir la réponse à un échelon C en entrée :\\ [0.5cm]
-    $$
-    \phi_{C} =  \oiint_S C\vec{u} \cdot \vec{n}~dS  ~~~~~~~~~~ \phi = \oiint_S \vec{u} \cdot \vec{n}~dS  ~~~~~~~~~~
-    \langle C \rangle = \frac{\phi_{C}}{\phi}
-    $$ 
-    \\ [0.5 cm]
-    La distribution des temps de résidence, à savoir la réponse à un dirac, est donnée par \[E(t)=\frac{d\langle C \rangle}{dt}\]
-    
     \subsection{État aux frontières}
     
-    Les flux thermiques sont donnés par les lois de Newton et Stefan aux parois et surfaces libres. le batch est introduit à iso température. on considère les transfert thermiques de Boltzmann seulement pour la surface libre.
-    On peut calculer les flux aux frontières par la loi de Newton sur les transferts conducto-convectifs.\\ 
-    \begin{center}
-        $$
-        \phi_{wall} = h_{wall} (T - T_{\infty})
-        $$
-    \end{center}
-    
-    
-    
-    $T_{haut, min}$ : Température minimale de voûte
-    \break
-    $\Delta T_{haut}$ : Différence de température maximale
+    \paragraph{Frontière verre/murs}
+    Les flux thermiques du verre vers les murs est donné par la lois de Newton à l'interface et par la loi de Fourier au sein des réfractaires. On peut calculer les flux aux frontières par la loi de Newton sur les transferts conducto-convectifs.
+    $$
+    \vec{j}_{Q} = h_{wall} (T - T_{\infty}) \vec{dS}
+    $$
+    Ici, $T_{\infty}$ est la température à l'extérieur du four, et comme on peut considérer que les réfractaires et l'interface verre/réfractaires forment deux résistance thermiques en série, la résistance thermique du mur est intégrée au terme $h_{wall}$ :
+    $$\vec{j}_{Q} = h (T - T_{\infty}) \vec{dS}\;\; avec \;\;h = R_{mur} + \frac{1}{h_{wall}}
+    $$
+    On utilise $h = 2,5$, valeur donnée par un rapport déjà publié à ce sujet.
 
+    \paragraph{Frontière verre/surface libre}
+    Les transferts radiatifs étant très importants à cette interface, on utilise en plus la loi de Stefan-Boltzmann. On à alors:
+    $$
+        \vec{j}_{Q} = h_{top}(T_{voute} - T) + \epsilon\sigma(T_{voute}^{4} - T^{4})
+    $$
+
+    \paragraph{Entrées de matière}
+    On modélise l'apport de matière dans le four par une alimentation continue en liquide à $T_{0} = 600K$, pour garantir la présence d'une coulée continue. En réalité, l'apport de matière se fait par à-coup, en batch. Pour simplifier la modélisation, on a choisit de ne pas en tenir compte. De plus, la matière entre avec une vitesse non nulle. On modélise tout cela par une température fixe sur la surface des entrées et un vecteur vitesse normale aux entrées de matières, situées l'une face à l'autre d'un côté du four, avec un flux total de matière à travers la surfce égal à la tirée du four (débit de matière à travers le four).
+
+    \paragraph{Sortie}
+    La sortie de matière est modélisée par une surfae en laquelle la vitesse est orthogonale à la paroi, avec un débit de matière total fixe égale à la tirée. Par ailleurs, la température n'y est pas fixée.
+
+
+    
+    \section{Meusre de grandeurs macroscopiques}
+    Les équations précédentes donnent les variations infinitésimales des différents grandeurs locales, ce qui permet de déterminer l'évolution du four par résolution de ces équation. Une fois que le calcul de l'état du four est déterminé à un instant donné, on peut calculer différentes grandeurs macroscopiques pour mieux comprendre l'évolution du système.
+
+    \paragraph{Puissances}
+    \paragraph{Puissance électrique}Pour déterminer la puissance fournie au fluide par le sélectrodes, on calcul en chaque point le flux la puissance, que l'on peut ensuite intégrer.\\
+    En chaque volume infinitésimal $dV$, la puissance électrique dissipée est $\delta P = \sigma_{e} \vec{E}^{2} dV$, où $\vec{E} = -\vec{\nabla} \phi$. Ainsi, la puissance électrique totale est:
+    $$
+    P_{elec}=\iiint_{four} \sigma_{e}\left[\vec \nabla\phi\right]^2~dV  = \iiint_{four} \vec \nabla \cdot \left[\sigma_{e}\vec \nabla\phi\right]~dV
+    $$
+    Grâce à une intégration par partie, la loi de conservation du flux et le théorème de Green-Ostrogradski donnent:
+
+    $$P_{elec}=\phi \int_{\partial electrode} \sigma_{e} \vec \nabla\phi \cdot \vec{n}~dS
+    $$
+
+    \paragraph{Puissances thermiques}
+    Pour calculer la puissance fournie sous forme thermique par les bruleurs, on calcul l'intégrale du flux thermique à travers la surface libre dans la simulation:
+    $$
+        P_{bruleurs} = \iint_{surface libre} \vec{j}_{thermique} \cdot \vec{dS}
+    $$
+
+    De même, on peut calculer les pertes thermiques à travers les parois du four:
+    $$
+        P_{pertes} = \iint_{murs} \vec{j}_{thermique} \cdot \vec{dS}
+    $$
+
+    \subsection{Temps de résidence}
+    Le temps de résidence des particules dans le four est une grandeur essentielle, qui permet de quantifier l'élimination des bulles dans le verre produit. Il existe différentes manières de le calculer.
+    \paragraph{Méthode analytique}
+    Cette méthode consiste à calculer la réponse du four à un dirac. Pour simplifier les calculs, on peut calculer la réponse à un échelon de particules en entrée du four, qui satisfait alors l'équation de transport $$\frac{DC}{Dt} = 0 $$On peut le faire au moyen du logiciel de simulation, a posteriori sur une solution qui a atteint le régime permanent. Pour obtenir le flux de particules qui sort du four, il suffit alors de calculer le flux moyen à travers la sortie: $$
+        F = \frac{\int_{sortie} C\vec{u} \cdot \vec{dS}}{\int_{sortie} \vec{u} \cdot \vec{dS}}
+    $$
+    Pour obtenir la réponse à un Dirac, et donc la distribution des temps de résidence dans le four, il suffit alors de dériver par rapport au temps. On obtient alors la distribution des temps de résidence: $$
+        E(t) = \frac{dF}{dt}
+    $$
+
+
+    % $$
+    % \phi_{C} =  \oiint_S C\vec{u} \cdot \vec{n}~dS  ~~~~~~~~~~ \phi = \oiint_S \vec{u} \cdot \vec{n}~dS  ~~~~~~~~~~
+    % \langle C \rangle = \frac{\phi_{C}}{\phi}
+    % $$ 
+    
+    % La distribution des temps de résidence, à savoir la réponse à un dirac, est donnée par \[E(t)=\frac{d\langle C \rangle}{dt}\]
+
+    \paragraph{Simulation de diffusion}
+    Une autre méthode consiste à simuler la diffusion de particules dans le champ de vitesse obtenu dans une simulation qui a atteint le régime permanent. 
 
 	
 	\section{Réalisation des simulations}
 
     \subsection{Création du four}
-    On commence par créer un maillage représentant le four à partir de ses dimensions, qui ont été déterminées préalablement. On utilise l'outil gmesh, qui génère un ensemble de points et de segments les reliants. Tous les champs, scalaires et vectoriels, seront calculés en ces points lors de la simulation. Il est donc nécessaire qu'il y en ait assez pour garantir la précision de la simulation, mais la quantité de calcul augmente avec le nombre de point. Il faut donc trouver la bonne finesse, qui peut être variable dans le maillage. On augmente la densité dans la gorge (tunnel d'évacuation du verre) et à proximité des zones de forte variation dans les champs.\\
-    TODO: ajouter images du four (mesh, geométrie)\\
+    On commence par créer un maillage représentant le four à partir de ses dimensions, qui ont été déterminées préalablement. On utilise l'outil gmesh, qui génère un ensemble de points et de segments les reliants. Tous les champs, scalaires et vectoriels, seront calculés en ces points lors de la simulation. Il est donc nécessaire qu'il y en ait assez pour garantir la précision de la simulation, mais la quantité de calcul augmente avec le nombre de point. Il faut donc trouver la bonne finesse, qui peut être variable dans le maillage. On augmente la densité dans la gorge (tunnel d'évacuation du verre) et à proximité des zones de forte variation dans les champs.
+    
+    \begin{center}
+        \begin{figure}[H]
+            \includegraphics[width=0.7\linewidth]{ExempleMesh.png}
+        \end{figure}
+    \end{center}
+
     Une fois le maillage crée, on converti le fichier produit en un format particulier utilisé par la bibliothèque de calcul au moyen d'un script pyhton.
 
     \subsection{Définition du four pour le calcul}
     Une fois que l'on dispose du maillage du four, et que l'on a décidé des paramètres de la simulation (durée, pas de temps, conditions aux limites, ...) on peut rentrer ces paramètres de façon à ce qu'ils puissent être lus par le logiciel de simulation. Pour cela, on utilise un langage de déclaration créé sur mesure pour l'outil. Tous les champs doivent être initialisés, et la façon dont ils sont calculés à chaque pas de temps est défini, au moyen de solveurs d'équations aux dérivées partielles prédéfinis.\\
-    \begin{figure}
+    \begin{figure}[H]
         \caption{Exemple de code pour le calcul d'une température de voute à profil gaussien}
         \label{code.1}
         \begin{lstlisting}[frame=single]
