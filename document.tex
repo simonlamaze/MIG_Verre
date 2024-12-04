@@ -95,32 +95,6 @@
     \end{center}
 
 
-
-
-    \section{Déroulement de la simulation}
-    Tâche 1 : positionnement du problème : \\
-    Conditions limites, conditions initiales, mise en équations \\
-
-
-    Tâche 2: prise en main des outils de calcul\\
-    Maillage, cluster, post-traitement, CIMLIB, vitesse des calculs \\
-
-    
-    Tâche 3 : Calcul sur un cas à voûte chaude\\ 
-    Obtenir un cas convergé, bilan énergétique \\
-
-    
-    Tâche 4 : Calcul sur un cas à voûte plus froide \\ 
-    Same\\
-
-    
-    Tâche 5: Bilan du gain énergétique et des émissions carbone \\
-    
-    
-    On  utilise le logiciel Paraview pour visualiser les résultats.
-    Visualiser la propagation d'un champ pour définir le temps de résidence.
-    Faire plusieurs calculs avec des tailles différentes.
-    
     \section{Problèmes à résoudre}
     On va s'attcher à résoudre par méthode des éléments finis les équation qui régissent la dynamique du verre, considéré incompressible, qui sont les suivantes.
     
@@ -267,14 +241,6 @@
 
     \subsection{Calculs de la simulation}
     Pour réaliser les calculs, on utilse le cluster du cemef: un serveur disposant de 100 noeuds de calcul, chacun disposant de deux processeurs pour un total de 64 coeurs. Une fois la simulation lancée, les taches sont réparties de façon automatique entre les coeurs pour une vitesse de calcul maximale. On peut agir sur la simulation au moyen d'un fichier lu à chaque itération qui sert d'interface homme-machine (ihm), et ainsi changer différents paramètres: température d'entrée de la matière dans le four, paramètres de l'asservissement PID, ... De plus, la simulation produit un fichier qui recense la valeur de certains paramètres à chaque itération, comme la température de sortie, les puissances électriques et thermiques fournies et les pertes thermiques à travers les parois, et des fichiers qui enregistre complètement les champs régulièrement. On peut alors surveiller l'avancement de la simulation, et agir sur les paramètres afin d'obtenit un résultat satisfaisant (les calculs étant très longs, on veut pouvoir mener à bien une simulation qui n'a pas bien commencé).
-
-    
-    \section{Simulations réalisées}
-    
-	
-	\subsection{Première série de calculs}
-	\paragraph{}
-	Disposant de 4 postes de calculs , nous avons commencé par chercher à simuler un four  d'une forme ressemblant à celle d'un four industriel .
 
 
     \section{Régulation à l'aide d'un PID}
