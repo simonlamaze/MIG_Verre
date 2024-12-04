@@ -83,7 +83,7 @@
     \end{center}
 
     On a reproduit ici la géométrie classique d'un four à verre. Les électrodes centrales permettent d'aider à la formation de la boucle de convection dans le grand bassin.
-    
+
 
     \subsection{Four hybride}
     Ce modèle a pour but d'étudier le comportment du four chauffé principalemnt par les électodes. Pour limiter la densité de courant sur les électrodes et ainsi réduire la corrosion du métal, on place de nmobreuses électrodes. Elle fonctionnent par groupes de trois, dans lesquels les électrodes sont déphasées de $\frac{2\pi}{3}$ l'une par rapport à l'autre, ce qui fait qu'elles forment globalemnt trois groupes de cinq électrodes en phase, ce qui correspond à une aimentation industrielle standard en courant triphasé.
@@ -147,19 +147,34 @@
         
     \subsection{État aux frontières}
     
-    Les flux thermiques sont donnés par les lois de Newton et Stefan aux parois et surfaces libres. le batch est introduit à iso température. on considère les transfert thermiques de Boltzmann seulement pour la surface libre.
-    On peut calculer les flux aux frontières par la loi de Newton sur les transferts conducto-convectifs.
-        $$
-        \phi_{wall} = h_{wall} (T - T_{\infty})
-        $$
-    $T_{haut, min}$ : Température minimale de voûte
-    \break
-    $\Delta T_{haut}$ : Différence de température maximale
+    \paragraph{Frontière verre/murs}
+    Les flux thermiques du verre vers les murs est donné par la lois de Newton à l'interface et par la loi de Fourier au sein des réfractaires. On peut calculer les flux aux frontières par la loi de Newton sur les transferts conducto-convectifs.
+    $$
+    \vec{j}_{Q} = h_{wall} (T - T_{\infty}) \vec{dS}
+    $$
+    Ici, $T_{\infty}$ est la température à l'extérieur du four, et comme on peut considérer que les réfractaires et l'interface verre/réfractaires forment deux résistance thermiques en série, la résistance thermique du mur est intégrée au terme $h_{wall}$ :
+    $$\vec{j}_{Q} = h (T - T_{\infty}) \vec{dS}\;\; avec \;\;h = R_{mur} + \frac{1}{h_{wall}}
+    $$
+    On utilise $h = 2,5$, valeur donnée par un rapport déjà publié à ce sujet.
+
+    \paragraph{Frontière verre/surface libre}
+    Les transferts radiatifs étant très importants à cette interface, on utilise en plus la loi de Stefan-Boltzmann. On à alors:
+    $$
+        \vec{j}_{Q} = h_{top}(T_{voute} - T) + \epsilon\sigma(T_{voute}^{4} - T^{4})
+    $$
+
+    \paragraph{Entrées de matière}
+    On modélise l'apport de matière dans le four par une alimentation continue en liquide à $T_{0} = 600K$, pour garantir la présence d'une coulée continue. En réalité, l'apport de matière se fait par à-coup, en batch. Pour simplifier la modélisation, on a choisit de ne pas en tenir compte. De plus, la matière entre avec une vitesse non nulle. On modélise tout cela par une température fixe sur la surface des entrées et un vecteur vitesse normale aux entrées de matières, situées l'une face à l'autre d'un côté du four, avec un flux total de matière à travers la surfce égal à la tirée du four (débit de matière à travers le four).
+
+    \paragraph{Sortie}
+    La sortie de matière est modélisée par une surfae en laquelle la vitesse est orthogonale à la paroi, avec un débit de matière total fixe égale à la tirée. Par ailleurs, la température n'y est pas fixée.
 
 
     
-    \subsection{Calcul de grandeurs macroscopiques}
-    Les équations précédentes donnent les variations infinitésimales des différents grandeurs locales, mais on s'intéresse aussi à la manière dont elles varient globalement, notamment pour déterminer les différentes puissances en jeux dans le système.
+    \section{Meusre de grandeurs macroscopiques}
+    Les équations précédentes donnent les variations infinitésimales des différents grandeurs locales, ce qui permet de déterminer l'évolution du four par résolution de ces équation. Une fois que le calcul de l'état du four est déterminé à un instant donné, on peut calculer différentes grandeurs macroscopiques pour mieux comprendre l'évolution du système.
+
+    \paragraph{Puissances}
     \paragraph{Puissance électrique}Pour déterminer la puissance fournie au fluide par le sélectrodes, on calcul en chaque point le flux la puissance, que l'on peut ensuite intégrer.\\
     En chaque volume infinitésimal $dV$, la puissance électrique dissipée est $\delta P = \sigma_{e} \vec{E}^{2} dV$, où $\vec{E} = -\vec{\nabla} \phi$. Ainsi, la puissance électrique totale est:
     $$
@@ -206,13 +221,19 @@
 	\section{Réalisation des simulations}
 
     \subsection{Création du four}
-    On commence par créer un maillage représentant le four à partir de ses dimensions, qui ont été déterminées préalablement. On utilise l'outil gmesh, qui génère un ensemble de points et de segments les reliants. Tous les champs, scalaires et vectoriels, seront calculés en ces points lors de la simulation. Il est donc nécessaire qu'il y en ait assez pour garantir la précision de la simulation, mais la quantité de calcul augmente avec le nombre de point. Il faut donc trouver la bonne finesse, qui peut être variable dans le maillage. On augmente la densité dans la gorge (tunnel d'évacuation du verre) et à proximité des zones de forte variation dans les champs.\\
-    TODO: ajouter images du four (mesh, geométrie)\\
+    On commence par créer un maillage représentant le four à partir de ses dimensions, qui ont été déterminées préalablement. On utilise l'outil gmesh, qui génère un ensemble de points et de segments les reliants. Tous les champs, scalaires et vectoriels, seront calculés en ces points lors de la simulation. Il est donc nécessaire qu'il y en ait assez pour garantir la précision de la simulation, mais la quantité de calcul augmente avec le nombre de point. Il faut donc trouver la bonne finesse, qui peut être variable dans le maillage. On augmente la densité dans la gorge (tunnel d'évacuation du verre) et à proximité des zones de forte variation dans les champs.
+    
+    \begin{center}
+        \begin{figure}[H]
+            \includegraphics[width=0.7\linewidth]{ExempleMesh.png}
+        \end{figure}
+    \end{center}
+
     Une fois le maillage crée, on converti le fichier produit en un format particulier utilisé par la bibliothèque de calcul au moyen d'un script pyhton.
 
     \subsection{Définition du four pour le calcul}
     Une fois que l'on dispose du maillage du four, et que l'on a décidé des paramètres de la simulation (durée, pas de temps, conditions aux limites, ...) on peut rentrer ces paramètres de façon à ce qu'ils puissent être lus par le logiciel de simulation. Pour cela, on utilise un langage de déclaration créé sur mesure pour l'outil. Tous les champs doivent être initialisés, et la façon dont ils sont calculés à chaque pas de temps est défini, au moyen de solveurs d'équations aux dérivées partielles prédéfinis.\\
-    \begin{figure}
+    \begin{figure}[H]
         \caption{Exemple de code pour le calcul d'une température de voute à profil gaussien}
         \label{code.1}
         \begin{lstlisting}[frame=single]
